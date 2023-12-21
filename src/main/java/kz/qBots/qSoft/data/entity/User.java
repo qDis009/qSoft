@@ -1,0 +1,80 @@
+package kz.qBots.qSoft.data.entity;
+
+import jakarta.persistence.*;
+import kz.qBots.qSoft.data.enums.Language;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.telegram.telegrambots.meta.api.objects.Chat;
+
+import java.util.Set;
+
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(schema = "market",name = "user")
+public class User {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
+
+  private long chatId;
+  private Integer lastMessageId;
+  private boolean deleted = false;
+  private String fullName;
+  private String phoneNumber;
+  private String IEName;
+  private String tgUserName;
+
+  @Enumerated(EnumType.STRING)
+  private Language language = Language.RUS;
+
+  private String address;
+
+  @OneToMany(mappedBy = "user")
+  private Set<ItemFeedback> itemFeedbacks;
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+      name = "user_role",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "role_id"))
+  private Set<Role> roles;
+
+  @ManyToMany
+  @JoinTable(
+      name = "favourite",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "item_id"))
+  private Set<Item> items;
+
+  @ManyToMany
+  @JoinTable(
+      name = "order_history",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "order_id"))
+  private Set<Order> orders;
+
+  @ManyToMany
+  @JoinTable(
+      name = "user_shop",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "shop_id"))
+  private Set<Shop> shops;
+
+  @OneToMany(mappedBy = "user")
+  private Set<Cart> carts;
+
+  @OneToMany(mappedBy = "user")
+  private Set<ShopFeedback> shopFeedbacks;
+
+  @OneToMany(mappedBy = "user")
+  private Set<Complaint> complaints;
+  public User(long chatId,String tgUserName){
+    this.chatId=chatId;
+    this.tgUserName=tgUserName;
+  }
+}
