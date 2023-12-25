@@ -1,9 +1,7 @@
 package kz.qBots.qSoft.data.dto;
 
-import kz.qBots.qSoft.data.entity.*;
 import kz.qBots.qSoft.data.enums.Language;
 
-import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,5 +17,4 @@ public class UserDto {
   private String tgUserName;
   private Language language;
   private String address;
-  private Set<Shop> shops;
 }

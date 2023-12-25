@@ -1,6 +1,7 @@
 package kz.qBots.qSoft.data.entity;
 
 import jakarta.persistence.*;
+import kz.qBots.qSoft.data.enums.ClientType;
 import kz.qBots.qSoft.data.enums.Language;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +32,8 @@ public class User {
 
   @Enumerated(EnumType.STRING)
   private Language language = Language.RUS;
+  @Enumerated(EnumType.STRING)
+  private ClientType clientType;
 
   private String address;
 
