@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface CategoryComponent {
-    Page<Category> findAll(Pageable pageable);
-    Category findById(int id);
+  Page<Category> findAll(Pageable pageable);
+
+  Category findById(int id);
 }

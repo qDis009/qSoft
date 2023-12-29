@@ -12,14 +12,15 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CategoryComponentImpl implements CategoryComponent {
-    private final CategoryRepository categoryRepository;
-    @Override
-    public Page<Category> findAll(Pageable pageable) {
-        return categoryRepository.findAll(pageable);
-    }
+  private final CategoryRepository categoryRepository;
 
-    @Override
-    public Category findById(int id) {
-        return categoryRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-    }
+  @Override
+  public Page<Category> findAll(Pageable pageable) {
+    return categoryRepository.findAll(pageable);
+  }
+
+  @Override
+  public Category findById(int id) {
+    return categoryRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+  }
 }
