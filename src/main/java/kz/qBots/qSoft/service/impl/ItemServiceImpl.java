@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
@@ -26,5 +28,16 @@ public class ItemServiceImpl implements ItemService {
   @Override
   public Page<ItemDto> findAll(Pageable pageable) {
     return itemComponent.findAll(pageable).map(itemMapper::mapItemToItemDto);
+  }
+
+  @Override
+  public List<ItemDto> findItemsByUserId(int userId) {
+    return itemComponent.findItemsByUserId(userId).stream().map(itemMapper::mapItemToItemDto).toList();
+  }
+
+  @Override
+  public ItemDto findById(int id) {
+    Item item=itemComponent.findById(id);
+    return itemMapper.mapItemToItemDto(item);
   }
 }

@@ -1,7 +1,6 @@
 package kz.qBots.qSoft.data.dto;
 
 import kz.qBots.qSoft.data.entity.Cart;
-import kz.qBots.qSoft.data.entity.Shop;
 import kz.qBots.qSoft.data.enums.DeliveryType;
 import kz.qBots.qSoft.data.enums.OrderStatus;
 import kz.qBots.qSoft.data.enums.PaymentType;
@@ -21,5 +20,6 @@ public class OrderDto {
   private String created;
   private String delivered;
   private Integer shopId;
+  private Integer userId;
   private Set<Cart> carts;
 }

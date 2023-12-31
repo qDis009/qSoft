@@ -16,4 +16,5 @@ public interface ItemComponent {
   void update(Item item);
 
   Page<Item> findAll(Pageable pageable);
+  List<Item> findItemsByUserId(int userId);
 }

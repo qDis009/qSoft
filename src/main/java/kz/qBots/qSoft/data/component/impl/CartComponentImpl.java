@@ -15,4 +15,9 @@ public class CartComponentImpl implements CartComponent {
   public Cart create(Cart cart) {
     return cartRepository.save(cart);
   }
+
+  @Override
+  public void delete(int id) {
+    cartRepository.deleteById(id);
+  }
 }

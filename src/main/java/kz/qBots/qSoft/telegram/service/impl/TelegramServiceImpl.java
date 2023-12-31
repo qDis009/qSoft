@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kz.qBots.qSoft.config.property.TelegramProperty;
 import kz.qBots.qSoft.telegram.service.TelegramService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TelegramServiceImpl implements TelegramService {
@@ -46,7 +48,7 @@ public class TelegramServiceImpl implements TelegramService {
         try{
             this.sendApiMethod(new DeleteMessage(String.valueOf(chatId),messageId));
         }catch (TelegramApiException e){
-            //TODO
+            log.warn("Cannot delete message with id: {} in chat: {}", messageId, chatId);
         }
     }
     private <T extends Serializable, Method extends BotApiMethod<T>> T sendApiMethod(

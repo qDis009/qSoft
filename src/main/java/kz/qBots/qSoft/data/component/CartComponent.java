@@ -4,4 +4,5 @@ import kz.qBots.qSoft.data.entity.Cart;
 
 public interface CartComponent {
   Cart create(Cart cart);
+  void delete(int id);
 }

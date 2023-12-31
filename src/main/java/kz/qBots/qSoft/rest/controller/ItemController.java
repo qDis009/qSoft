@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +20,10 @@ public class ItemController {
     @GetMapping("/get-all")
     public ResponseEntity<Page<ItemDto>> getAll(@PageableDefault(size = Integer.MAX_VALUE)Pageable pageable){
         return ResponseEntity.ok(itemService.findAll(pageable));
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<ItemDto> getById(@PathVariable("id") int id){
+        return ResponseEntity.ok(itemService.findById(id));
     }
 
 }

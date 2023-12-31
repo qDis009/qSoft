@@ -19,4 +19,9 @@ public class CartServiceImpl implements CartService {
         Cart cart=cartMapper.mapCartRequestToCart(model);
         return cartMapper.mapCartToCartDto(cartComponent.create(cart));
     }
+
+    @Override
+    public void delete(int id) {
+        cartComponent.delete(id);
+    }
 }

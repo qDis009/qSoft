@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.telegram.telegrambots.meta.api.objects.Chat;
 
 import java.util.Set;
 
@@ -16,7 +15,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(schema = "market",name = "user")
+@Table(schema = "market", name = "user")
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +31,9 @@ public class User {
 
   @Enumerated(EnumType.STRING)
   private Language language = Language.RUS;
+
   @Enumerated(EnumType.STRING)
-  private ClientType clientType;
+  private ClientType clientType = ClientType.RETAIL;
 
   private String address;
 
@@ -56,17 +56,13 @@ public class User {
 
   @ManyToMany
   @JoinTable(
-      name = "order_history",
-      joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "order_id"))
-  private Set<Order> orders;
-
-  @ManyToMany
-  @JoinTable(
       name = "user_shop",
       joinColumns = @JoinColumn(name = "user_id"),
       inverseJoinColumns = @JoinColumn(name = "shop_id"))
   private Set<Shop> shops;
+
+  @OneToMany(mappedBy = "user")
+  private Set<Order> orders;
 
   @OneToMany(mappedBy = "user")
   private Set<Cart> carts;
@@ -76,8 +72,9 @@ public class User {
 
   @OneToMany(mappedBy = "user")
   private Set<Complaint> complaints;
-  public User(long chatId,String tgUserName){
-    this.chatId=chatId;
-    this.tgUserName=tgUserName;
+
+  public User(long chatId, String tgUserName) {
+    this.chatId = chatId;
+    this.tgUserName = tgUserName;
   }
 }

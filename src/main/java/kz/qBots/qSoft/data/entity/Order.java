@@ -14,7 +14,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(schema = "market",name = "order")
+@Table(schema = "market", name = "order")
 public class Order {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +28,8 @@ public class Order {
   @Enumerated(EnumType.STRING)
   private DeliveryType deliveryType;
 
-//  @Enumerated(EnumType.STRING)
-//  private OrderStatus orderStatus;
+  @Enumerated(EnumType.STRING)
+  private OrderStatus orderStatus;
 
   @CreationTimestamp
   @Column(updatable = false)
@@ -39,12 +39,9 @@ public class Order {
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   private LocalDateTime delivered;
 
-  @ManyToMany
-  @JoinTable(
-      name = "order_history",
-      joinColumns = @JoinColumn(name = "order_id"),
-      inverseJoinColumns = @JoinColumn(name = "user_id"))
-  private Set<User> users;
+  @ManyToOne
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  private User user;
 
   @ManyToOne
   @JoinColumn(name = "shop_id", referencedColumnName = "id")
@@ -52,4 +49,5 @@ public class Order {
 
   @OneToMany(mappedBy = "order")
   private Set<Cart> carts;
+
 }

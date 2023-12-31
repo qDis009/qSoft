@@ -40,4 +40,9 @@ public class ItemComponentImpl implements ItemComponent {
   public Page<Item> findAll(Pageable pageable) {
     return itemRepository.findAll(pageable);
   }
+
+  @Override
+  public List<Item> findItemsByUserId(int userId) {
+    return itemRepository.findItemsByUserId(userId);
+  }
 }
