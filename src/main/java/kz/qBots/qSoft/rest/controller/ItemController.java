@@ -1,6 +1,7 @@
 package kz.qBots.qSoft.rest.controller;
 
 import kz.qBots.qSoft.data.dto.ItemDto;
+import kz.qBots.qSoft.data.enums.ItemType;
 import kz.qBots.qSoft.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,14 @@ public class ItemController {
     @GetMapping("/{id}")
     public ResponseEntity<ItemDto> getById(@PathVariable("id") int id){
         return ResponseEntity.ok(itemService.findById(id));
+    }
+    @GetMapping("/get-retail-hit")
+    public ResponseEntity<Page<ItemDto>> getRetailHit(@PageableDefault(size = Integer.MAX_VALUE) Pageable pageable){
+        return ResponseEntity.ok(itemService.findItemsByItemType(ItemType.RETAIL,pageable));
+    }
+    @GetMapping("get-wholesale-hit")
+    public ResponseEntity<Page<ItemDto>> getWholesaleHit(@PageableDefault(size = Integer.MAX_VALUE) Pageable pageable){
+        return ResponseEntity.ok(itemService.findItemsByItemType(ItemType.WHOLESALE,pageable));
     }
 
 }

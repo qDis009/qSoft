@@ -3,6 +3,7 @@ package kz.qBots.qSoft.service.impl;
 import kz.qBots.qSoft.data.component.ItemComponent;
 import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.entity.Item;
+import kz.qBots.qSoft.data.enums.ItemType;
 import kz.qBots.qSoft.mapper.ItemMapper;
 import kz.qBots.qSoft.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -39,5 +40,10 @@ public class ItemServiceImpl implements ItemService {
   public ItemDto findById(int id) {
     Item item=itemComponent.findById(id);
     return itemMapper.mapItemToItemDto(item);
+  }
+
+  @Override
+  public Page<ItemDto> findItemsByItemType(ItemType itemType, Pageable pageable) {
+    return itemComponent.findItemsByItemType(itemType,pageable).map(itemMapper::mapItemToItemDto);
   }
 }

@@ -20,7 +20,8 @@ public class Order {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  private int price;
+  private int total;
+  private double discount;
 
   @Enumerated(EnumType.STRING)
   private PaymentType paymentType;
@@ -50,4 +51,11 @@ public class Order {
   @OneToMany(mappedBy = "order")
   private Set<Cart> carts;
 
+  public void addDiscount(double itemDiscount) {
+    discount += itemDiscount;
+  }
+
+  public void addTotal(double price) {
+    total += price;
+  }
 }

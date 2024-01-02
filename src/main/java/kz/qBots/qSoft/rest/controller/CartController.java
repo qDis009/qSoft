@@ -15,7 +15,7 @@ public class CartController {
   private final CartService cartService;
 
   @PostMapping("/create")
-  public ResponseEntity<CartDto> create(@RequestParam CartRequest model) {
+  public ResponseEntity<CartDto> create(@RequestPart CartRequest model) {
     return ResponseEntity.ok(cartService.create(model));
   }
 
@@ -25,4 +25,13 @@ public class CartController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
+  @PatchMapping("/{id}/reduce-count")
+  public ResponseEntity<CartDto> reduceCount(@PathVariable("id") int id) {
+    return ResponseEntity.ok(cartService.reduceCount(id));
+  }
+
+  @PatchMapping("/{id}/increase-count")
+  public ResponseEntity<CartDto> increaseCount(@PathVariable("id") int id) {
+    return ResponseEntity.ok(cartService.increaseCount(id));
+  }
 }

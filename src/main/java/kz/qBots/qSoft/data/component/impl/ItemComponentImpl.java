@@ -3,6 +3,7 @@ package kz.qBots.qSoft.data.component.impl;
 import jakarta.persistence.EntityNotFoundException;
 import kz.qBots.qSoft.data.component.ItemComponent;
 import kz.qBots.qSoft.data.entity.Item;
+import kz.qBots.qSoft.data.enums.ItemType;
 import kz.qBots.qSoft.data.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -44,5 +45,10 @@ public class ItemComponentImpl implements ItemComponent {
   @Override
   public List<Item> findItemsByUserId(int userId) {
     return itemRepository.findItemsByUserId(userId);
+  }
+
+  @Override
+  public Page<Item> findItemsByItemType(ItemType itemType, Pageable pageable) {
+    return itemRepository.findByItemTypeOrderBySoldCount(itemType,pageable);
   }
 }

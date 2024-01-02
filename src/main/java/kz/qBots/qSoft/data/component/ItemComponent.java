@@ -1,6 +1,7 @@
 package kz.qBots.qSoft.data.component;
 
 import kz.qBots.qSoft.data.entity.Item;
+import kz.qBots.qSoft.data.enums.ItemType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,4 +18,5 @@ public interface ItemComponent {
 
   Page<Item> findAll(Pageable pageable);
   List<Item> findItemsByUserId(int userId);
+  Page<Item> findItemsByItemType(ItemType itemType, Pageable pageable);
 }

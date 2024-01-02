@@ -13,7 +13,8 @@ import java.util.Set;
 @Setter
 public class OrderDto {
   private Integer id;
-  private int price;
+  private int total;
+  private double discount;
   private PaymentType paymentType;
   private DeliveryType deliveryType;
   private OrderStatus orderStatus;

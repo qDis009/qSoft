@@ -24,4 +24,24 @@ public class CartServiceImpl implements CartService {
     public void delete(int id) {
         cartComponent.delete(id);
     }
+
+    @Override
+    public CartDto reduceCount(int id) {
+        Cart cart=cartComponent.findById(id);
+        int itemCount=cart.getItemCount();
+        itemCount++;
+        cart.setItemCount(itemCount);
+        cartComponent.update(cart);
+        return cartMapper.mapCartToCartDto(cart);
+    }
+
+    @Override
+    public CartDto increaseCount(int id) {
+        Cart cart=cartComponent.findById(id);
+        int itemCount=cart.getItemCount();
+        itemCount--;
+        cart.setItemCount(itemCount);
+        cartComponent.update(cart);
+        return cartMapper.mapCartToCartDto(cart);
+    }
 }
