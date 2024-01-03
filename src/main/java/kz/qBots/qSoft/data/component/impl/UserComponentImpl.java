@@ -7,6 +7,8 @@ import kz.qBots.qSoft.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserComponentImpl implements UserComponent {
@@ -35,5 +37,11 @@ public class UserComponentImpl implements UserComponent {
   @Override
   public void update(User user) {
     userRepository.save(user);
+  }
+
+  @Override
+  public List<User> findByRoleName(String roleName) {
+    return userRepository.findByRoles_Name(roleName);
+
   }
 }

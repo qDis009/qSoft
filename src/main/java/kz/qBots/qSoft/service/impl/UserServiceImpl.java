@@ -31,8 +31,8 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-  private final static String CLICK_THE_BUTTON = "Нажмите кнопку";
-  private final static String MAGAZINE = "Магазин";
+  private static final String CLICK_THE_BUTTON = "Нажмите кнопку";
+  private static final String MAGAZINE = "Магазин";
   private final UserComponent userComponent;
   private final UserMapper userMapper;
   private final OrderService orderService;
@@ -42,10 +42,12 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void processMagazineCommand(User user) {
-    try{
-      deletePreviousWebAppInfo(user.getChatId(),user.getLastMessageId());
-      StartCommandDto startCommandDto=new StartCommandDto(1,user.getChatId(), Role.USER); //TODO shopId
-      SendMessage message=SendMessage.builder()
+    try {
+      deletePreviousWebAppInfo(user.getChatId(), user.getLastMessageId());
+      StartCommandDto startCommandDto =
+          new StartCommandDto(1, user.getChatId(), Role.USER); // TODO shopId
+      SendMessage message =
+          SendMessage.builder()
               .parseMode(TelegramConstants.PARSE_MODE_HTML)
               .chatId(user.getChatId())
               .text(CLICK_THE_BUTTON)
@@ -53,10 +55,10 @@ public class UserServiceImpl implements UserService {
               .build();
       user.setLastMessageId(telegramService.sendMessage(message));
       userComponent.update(user);
-    }catch (InvalidCommandException e){
-      //TODO
-    }catch (TelegramApiException e){
-      //TODO
+    } catch (InvalidCommandException e) {
+      // TODO
+    } catch (TelegramApiException e) {
+      // TODO
     }
   }
 
@@ -71,6 +73,11 @@ public class UserServiceImpl implements UserService {
     User user = userMapper.mapUserDtoToUser(userDto);
     userComponent.update(user);
     return userDto;
+  }
+
+  @Override
+  public List<User> findByRoleName(String roleName) {
+    return userComponent.findByRoleName(roleName);
   }
 
   @Override
@@ -97,17 +104,17 @@ public class UserServiceImpl implements UserService {
       // TODO log
     }
   }
+
   private String buildWebAppInfoUrl(StartCommandDto startCommandDto) {
     return startCommandDto.buildWebAppInfoUrl(serverProperty.getUrl());
   }
-  private InlineKeyboardMarkup prepareWebAppInfo(StartCommandDto startCommandDto){
-    WebAppInfo webAppInfo=new WebAppInfo();
+
+  private InlineKeyboardMarkup prepareWebAppInfo(StartCommandDto startCommandDto) {
+    WebAppInfo webAppInfo = new WebAppInfo();
     webAppInfo.setUrl(buildWebAppInfoUrl(startCommandDto));
-    InlineKeyboardButton inlineKeyboardButton=InlineKeyboardButton.builder()
-            .webApp(webAppInfo)
-            .text(MAGAZINE)
-            .build();
-    InlineKeyboardMarkup inlineKeyboardMarkup=new InlineKeyboardMarkup();
+    InlineKeyboardButton inlineKeyboardButton =
+        InlineKeyboardButton.builder().webApp(webAppInfo).text(MAGAZINE).build();
+    InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
     inlineKeyboardMarkup.setKeyboard(List.of(List.of(inlineKeyboardButton)));
     return inlineKeyboardMarkup;
   }

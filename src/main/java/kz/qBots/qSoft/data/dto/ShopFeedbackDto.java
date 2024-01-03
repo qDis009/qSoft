@@ -9,7 +9,6 @@ public class ShopFeedbackDto {
   private Integer id;
   private double grade;
   private String comment;
-  private String created;
   private Integer shopId;
   private Integer userId;
 }

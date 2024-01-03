@@ -17,10 +17,6 @@ public class ShopFeedback {
     private Integer id;
     private double grade;
     private String comment;
-    @CreationTimestamp
-    @Column(updatable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd 'T' HH:mm:ss.SSS 'Z'")
-    private LocalDateTime created;
     @ManyToOne
     @JoinColumn(name = "shop_id",referencedColumnName = "id")
     private Shop shop;

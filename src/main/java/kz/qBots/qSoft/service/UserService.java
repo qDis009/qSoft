@@ -16,4 +16,5 @@ public interface UserService {
     Page<OrderDto> getOrdersHistory(int id, Pageable pageable);
     List<ItemDto> getFavorite(int userId);
     void processMagazineCommand(User user);
+    List<User> findByRoleName(String roleName);
 }

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -16,4 +17,5 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     @Transactional
     @Query(value = "update market.user set language = :language where id = :id",nativeQuery = true)
     void setLanguage(int id,String language);
+    List<User> findByRoles_Name(String roleName);
 }

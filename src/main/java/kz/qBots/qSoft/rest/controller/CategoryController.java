@@ -16,14 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/category")
 public class CategoryController {
-    private final CategoryService categoryService;
-    @GetMapping("/get-all")
-    public ResponseEntity<Page<CategoryDto>> getAll(@PageableDefault(size = Integer.MAX_VALUE)Pageable pageable){
-        return ResponseEntity.ok(categoryService.findAll(pageable));
-    }
-    @GetMapping("/{id}")
-    public ResponseEntity<CategoryDto> getById(@PathVariable("id") int id){
-        return ResponseEntity.ok(categoryService.findById(id));
-    }
+  private final CategoryService categoryService;
 
+  @GetMapping("/get-all")
+  public ResponseEntity<Page<CategoryDto>> getAll(
+      @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
+    return ResponseEntity.ok(categoryService.findAll(pageable));
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<CategoryDto> getById(@PathVariable("id") int id) {
+    return ResponseEntity.ok(categoryService.findById(id));
+  }
 }
