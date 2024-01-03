@@ -1,5 +1,7 @@
 package kz.qBots.qSoft.data.component;
 
-public interface SubCategoryComponent {
+import kz.qBots.qSoft.data.entity.SubCategory;
 
+public interface SubCategoryComponent {
+    SubCategory findById(int id);
 }

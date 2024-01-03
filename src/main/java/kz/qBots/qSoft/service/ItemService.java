@@ -13,4 +13,5 @@ public interface ItemService {
     List<ItemDto> findItemsByUserId(int userId);
     ItemDto findById(int id);
     Page<ItemDto> findItemsByItemType(ItemType itemType, Pageable pageable);
+    Page<ItemDto> getStocks(Pageable pageable);
 }

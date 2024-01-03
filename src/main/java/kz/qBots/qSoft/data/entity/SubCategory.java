@@ -27,4 +27,6 @@ public class SubCategory {
       joinColumns = @JoinColumn(name = "sub_category_id"),
       inverseJoinColumns = @JoinColumn(name = "shop_id"))
   private Set<Shop> shops;
+  @OneToMany(mappedBy = "subCategory")
+  private Set<Item> items;
 }

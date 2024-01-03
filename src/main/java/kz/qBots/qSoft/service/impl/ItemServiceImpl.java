@@ -46,4 +46,9 @@ public class ItemServiceImpl implements ItemService {
   public Page<ItemDto> findItemsByItemType(ItemType itemType, Pageable pageable) {
     return itemComponent.findItemsByItemType(itemType,pageable).map(itemMapper::mapItemToItemDto);
   }
+
+  @Override
+  public Page<ItemDto> getStocks(Pageable pageable) {
+    return itemComponent.getStocks(pageable).map(itemMapper::mapItemToItemDto);
+  }
 }

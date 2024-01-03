@@ -41,4 +41,10 @@ public class ItemController {
       @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
     return ResponseEntity.ok(itemService.findItemsByItemType(ItemType.WHOLESALE, pageable));
   }
+
+  @GetMapping("/get-stocks")
+  public ResponseEntity<Page<ItemDto>> getStocks(
+      @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
+    return ResponseEntity.ok(itemService.getStocks(pageable));
+  }
 }

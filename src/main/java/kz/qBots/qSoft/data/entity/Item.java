@@ -18,7 +18,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(schema = "market",name = "item")
+@Table(schema = "market", name = "item")
 public class Item {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +38,7 @@ public class Item {
   private String article;
   private String descriptionKz;
   private String descriptionRu;
+
   @Enumerated(EnumType.STRING)
   private ItemType itemType;
 
@@ -62,6 +63,10 @@ public class Item {
   @ManyToOne
   @JoinColumn(name = "shop_id", referencedColumnName = "id")
   private Shop shop;
+
+  @ManyToOne
+  @JoinColumn(name = "sub_category_id", referencedColumnName = "id")
+  private SubCategory subCategory;
 
   @JsonIgnore
   public double getDiscount() {

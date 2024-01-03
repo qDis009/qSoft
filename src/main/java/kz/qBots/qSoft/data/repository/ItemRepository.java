@@ -18,4 +18,5 @@ public interface ItemRepository extends JpaRepository<Item,Integer> {
     @Query("select u.items from User u where u.id = :userId")
     List<Item> findItemsByUserId(@Param("userId") Integer userId);
     Page<Item> findByItemTypeOrderBySoldCountDesc(ItemType itemType, Pageable pageable);
+    Page<Item> findByDiscountPercentageExistsOrderByDiscountPercentageDesc(Pageable pageable);
 }
