@@ -12,10 +12,11 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @RequestMapping("/shop-feedback")
 public class ShopFeedbackController {
-    private final ShopFeedbackService shopFeedbackService;
-    @PostMapping("/create")
-    public ResponseEntity<ShopFeedbackDto> create(@RequestPart ShopFeedbackRequest model, @RequestParam MultipartFile file){
-        return ResponseEntity.ok(shopFeedbackService.create(model));
-    }
+  private final ShopFeedbackService shopFeedbackService;
 
+  @PostMapping("/create")
+  public ResponseEntity<ShopFeedbackDto> create(
+      @RequestPart ShopFeedbackRequest model, @RequestParam MultipartFile file) {
+    return ResponseEntity.ok(shopFeedbackService.create(model));
+  }
 }

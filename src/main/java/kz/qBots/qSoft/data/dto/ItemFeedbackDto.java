@@ -10,6 +10,6 @@ public class ItemFeedbackDto {
   private String comment;
   private double grade;
   private String created;
-  private Integer shopId;
+  private Integer itemId;
   private Integer userId;
 }

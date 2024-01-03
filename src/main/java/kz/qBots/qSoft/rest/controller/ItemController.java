@@ -17,22 +17,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/item")
 public class ItemController {
-    private final ItemService itemService;
-    @GetMapping("/get-all")
-    public ResponseEntity<Page<ItemDto>> getAll(@PageableDefault(size = Integer.MAX_VALUE)Pageable pageable){
-        return ResponseEntity.ok(itemService.findAll(pageable));
-    }
-    @GetMapping("/{id}")
-    public ResponseEntity<ItemDto> getById(@PathVariable("id") int id){
-        return ResponseEntity.ok(itemService.findById(id));
-    }
-    @GetMapping("/get-retail-hit")
-    public ResponseEntity<Page<ItemDto>> getRetailHit(@PageableDefault(size = Integer.MAX_VALUE) Pageable pageable){
-        return ResponseEntity.ok(itemService.findItemsByItemType(ItemType.RETAIL,pageable));
-    }
-    @GetMapping("get-wholesale-hit")
-    public ResponseEntity<Page<ItemDto>> getWholesaleHit(@PageableDefault(size = Integer.MAX_VALUE) Pageable pageable){
-        return ResponseEntity.ok(itemService.findItemsByItemType(ItemType.WHOLESALE,pageable));
-    }
+  private final ItemService itemService;
 
+  @GetMapping("/get-all")
+  public ResponseEntity<Page<ItemDto>> getAll(
+      @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
+    return ResponseEntity.ok(itemService.findAll(pageable));
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<ItemDto> getById(@PathVariable("id") int id) {
+    return ResponseEntity.ok(itemService.findById(id));
+  }
+
+  @GetMapping("/get-retail-hit")
+  public ResponseEntity<Page<ItemDto>> getRetailHit(
+      @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
+    return ResponseEntity.ok(itemService.findItemsByItemType(ItemType.RETAIL, pageable));
+  }
+
+  @GetMapping("get-wholesale-hit")
+  public ResponseEntity<Page<ItemDto>> getWholesaleHit(
+      @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
+    return ResponseEntity.ok(itemService.findItemsByItemType(ItemType.WHOLESALE, pageable));
+  }
 }

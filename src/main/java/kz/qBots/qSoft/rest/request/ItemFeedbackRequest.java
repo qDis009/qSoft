@@ -5,9 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ShopFeedbackRequest {
-  private double grade;
+public class ItemFeedbackRequest {
   private String comment;
-  private Integer shopId;
+  private double grade;
+  private String created;
+  private Integer itemId;
   private Integer userId;
 }

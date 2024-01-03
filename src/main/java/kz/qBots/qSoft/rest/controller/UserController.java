@@ -26,7 +26,7 @@ public class UserController {
   }
 
   @GetMapping("/{id}/favorite")
-  public ResponseEntity<List<ItemDto>> getFavorite(@PathVariable("id") Integer id){
+  public ResponseEntity<List<ItemDto>> getFavorite(@PathVariable("id") Integer id) {
     return ResponseEntity.ok(userService.getFavorite(id));
   }
 
@@ -46,7 +46,6 @@ public class UserController {
   public ResponseEntity<Page<OrderDto>> getOrdersHistory(
       @PathVariable("id") Integer id,
       @PageableDefault(value = Integer.MAX_VALUE) Pageable pageable) {
-    return ResponseEntity.ok(userService.getOrdersHistory(id,pageable));
+    return ResponseEntity.ok(userService.getOrdersHistory(id, pageable));
   }
-
 }
