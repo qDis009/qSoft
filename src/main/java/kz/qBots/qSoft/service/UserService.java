@@ -17,4 +17,5 @@ public interface UserService {
     List<ItemDto> getFavorite(int userId);
     void processMagazineCommand(User user);
     List<User> findByRoleName(String roleName);
+    ItemDto addFavorite(int userId,int itemId);
 }

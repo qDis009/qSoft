@@ -8,9 +8,11 @@ import kz.qBots.qSoft.mapper.ItemMapper;
 import kz.qBots.qSoft.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,7 +50,14 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public Page<ItemDto> getStocks(Pageable pageable) {
-    return itemComponent.getStocks(pageable).map(itemMapper::mapItemToItemDto);
+  public List<ItemDto> getStocks() {
+    List<Item> items=itemComponent.findAll();
+    List<Item> itemsWithStock=new ArrayList<>();
+    for(Item it:items){
+      if(it.getDiscountPercentage()!=0){
+        itemsWithStock.add(it);
+      }
+    }
+    return itemsWithStock.stream().map(itemMapper::mapItemToItemDto).toList();
   }
 }

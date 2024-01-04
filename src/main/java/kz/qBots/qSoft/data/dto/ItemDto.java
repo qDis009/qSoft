@@ -15,7 +15,7 @@ public class ItemDto {
   private String nameRu;
   private String nameKz;
   private int soldCount;
-  private int discountPercentage;
+  private Integer discountPercentage;
   private int retailPrice;
   private int wholesalePrice;
   private boolean enabled;

@@ -43,6 +43,11 @@ public class ItemComponentImpl implements ItemComponent {
   }
 
   @Override
+  public List<Item> findAll() {
+    return itemRepository.findAll();
+  }
+
+  @Override
   public List<Item> findItemsByUserId(int userId) {
     return itemRepository.findItemsByUserId(userId);
   }
@@ -52,8 +57,4 @@ public class ItemComponentImpl implements ItemComponent {
     return itemRepository.findByItemTypeOrderBySoldCountDesc(itemType,pageable);
   }
 
-  @Override
-  public Page<Item> getStocks(Pageable pageable) {
-    return itemRepository.findByDiscountPercentageExistsOrderByDiscountPercentageDesc(pageable);
-  }
 }

@@ -19,5 +19,5 @@ public interface ItemComponent {
   Page<Item> findAll(Pageable pageable);
   List<Item> findItemsByUserId(int userId);
   Page<Item> findItemsByItemType(ItemType itemType, Pageable pageable);
-  Page<Item> getStocks(Pageable pageable);
+  List<Item> findAll();
 }

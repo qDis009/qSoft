@@ -1,10 +1,12 @@
 package kz.qBots.qSoft.service.impl;
 
 import kz.qBots.qSoft.config.property.ServerProperty;
+import kz.qBots.qSoft.data.component.ItemComponent;
 import kz.qBots.qSoft.data.component.UserComponent;
 import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.dto.OrderDto;
 import kz.qBots.qSoft.data.dto.UserDto;
+import kz.qBots.qSoft.data.entity.Item;
 import kz.qBots.qSoft.data.entity.User;
 import kz.qBots.qSoft.exception.InvalidCommandException;
 import kz.qBots.qSoft.mapper.UserMapper;
@@ -19,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -39,6 +42,7 @@ public class UserServiceImpl implements UserService {
   private final ItemService itemService;
   private final TelegramService telegramService;
   private final ServerProperty serverProperty;
+  private final ItemComponent itemComponent;
 
   @Override
   public void processMagazineCommand(User user) {
@@ -93,6 +97,14 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<ItemDto> getFavorite(int id) {
     return itemService.findItemsByUserId(id);
+  }
+  @Transactional
+  @Override
+  public ItemDto addFavorite(int userId, int itemId) {
+    User user=userComponent.findById(userId);
+    Item item=itemComponent.findById(itemId);
+
+    return null;
   }
 
   private void deletePreviousWebAppInfo(Long chatId, Integer messageId) {

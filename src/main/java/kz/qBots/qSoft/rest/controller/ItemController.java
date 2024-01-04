@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/item")
@@ -43,8 +45,7 @@ public class ItemController {
   }
 
   @GetMapping("/get-stocks")
-  public ResponseEntity<Page<ItemDto>> getStocks(
-      @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
-    return ResponseEntity.ok(itemService.getStocks(pageable));
+  public ResponseEntity<List<ItemDto>> getStocks() {
+    return ResponseEntity.ok(itemService.getStocks());
   }
 }
