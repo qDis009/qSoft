@@ -22,7 +22,7 @@ public class CommandServiceImpl implements CommandService {
     String command = getCommand(messageText);
     switch (command) {
       case "/magazine" -> {
-        telegramService.deleteMessage(user.getChatId(), user.getLastMessageId());
+        //telegramService.deleteMessage(user.getChatId(), user.getLastMessageId());
         userService.processMagazineCommand(user);
       }
       case "/manager"->{

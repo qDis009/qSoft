@@ -1,5 +1,6 @@
 package kz.qBots.qSoft.service.impl;
 
+import kz.qBots.qSoft.data.component.ItemComponent;
 import kz.qBots.qSoft.data.component.ItemFeedbackComponent;
 import kz.qBots.qSoft.data.dto.ItemFeedbackDto;
 import kz.qBots.qSoft.data.entity.Item;
@@ -11,11 +12,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ItemFeedbackServiceImpl implements ItemFeedbackService {
     private final ItemFeedbackComponent itemFeedbackComponent;
     private final ItemFeedbackMapper itemFeedbackMapper;
+    private final ItemComponent itemComponent;
     @Transactional
     @Override
     public ItemFeedbackDto create(ItemFeedbackRequest itemFeedbackRequest) {
@@ -28,5 +32,11 @@ public class ItemFeedbackServiceImpl implements ItemFeedbackService {
         double totalGrade=item.getGrade()*itemGradeCount+grade;
         itemGradeCount++;
         item.setGrade(totalGrade/itemGradeCount);
+    }
+
+    @Override
+    public List<ItemFeedbackDto> getFeedbacks(int id) {
+        Item item=itemComponent.findById(id);
+        return item.getItemFeedbacks().stream().map(itemFeedbackMapper::mapItemFeedbackToItemFeedbackDto).toList();
     }
 }

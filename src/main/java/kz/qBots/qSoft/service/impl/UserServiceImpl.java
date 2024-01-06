@@ -3,12 +3,14 @@ package kz.qBots.qSoft.service.impl;
 import kz.qBots.qSoft.config.property.ServerProperty;
 import kz.qBots.qSoft.data.component.ItemComponent;
 import kz.qBots.qSoft.data.component.UserComponent;
+import kz.qBots.qSoft.data.dto.CartDto;
 import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.dto.OrderDto;
 import kz.qBots.qSoft.data.dto.UserDto;
 import kz.qBots.qSoft.data.entity.Item;
 import kz.qBots.qSoft.data.entity.User;
 import kz.qBots.qSoft.exception.InvalidCommandException;
+import kz.qBots.qSoft.mapper.CartMapper;
 import kz.qBots.qSoft.mapper.UserMapper;
 import kz.qBots.qSoft.service.ItemService;
 import kz.qBots.qSoft.service.OrderService;
@@ -43,6 +45,7 @@ public class UserServiceImpl implements UserService {
   private final TelegramService telegramService;
   private final ServerProperty serverProperty;
   private final ItemComponent itemComponent;
+  private final CartMapper cartMapper;
 
   @Override
   public void processMagazineCommand(User user) {
@@ -73,10 +76,22 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public UserDto getByChatId(long chatId) {
+    User user=userComponent.findByChatId(chatId);
+    return userMapper.mapUserToUserDto(user);
+  }
+
+  @Override
   public UserDto update(UserDto userDto) {
     User user = userMapper.mapUserDtoToUser(userDto);
     userComponent.update(user);
     return userDto;
+  }
+
+  @Override
+  public List<CartDto> getCart(int id) {
+    User user=userComponent.findById(id);
+    return user.getCarts().stream().map(cartMapper::mapCartToCartDto).toList();
   }
 
   @Override

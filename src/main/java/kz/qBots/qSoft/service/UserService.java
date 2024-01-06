@@ -1,5 +1,6 @@
 package kz.qBots.qSoft.service;
 
+import kz.qBots.qSoft.data.dto.CartDto;
 import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.dto.OrderDto;
 import kz.qBots.qSoft.data.dto.UserDto;
@@ -25,4 +26,6 @@ public interface UserService {
   List<User> findByRoleName(String roleName);
 
   void addFavorite(int userId, int itemId);
+  List<CartDto> getCart(int id);
+  UserDto getByChatId(long chatId);
 }

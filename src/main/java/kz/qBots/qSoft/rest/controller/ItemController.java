@@ -1,6 +1,7 @@
 package kz.qBots.qSoft.rest.controller;
 
 import kz.qBots.qSoft.data.dto.ItemDto;
+import kz.qBots.qSoft.data.dto.ItemFeedbackDto;
 import kz.qBots.qSoft.data.enums.ItemType;
 import kz.qBots.qSoft.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +48,9 @@ public class ItemController {
   @GetMapping("/get-stocks")
   public ResponseEntity<List<ItemDto>> getStocks() {
     return ResponseEntity.ok(itemService.getStocks());
+  }
+  @GetMapping("/{id}/get-feedbacks")
+  public ResponseEntity<List<ItemFeedbackDto>> getFeedbacks(@PathVariable("id") int id) {
+    return ResponseEntity.ok(itemService.getFeedbacks(id));
   }
 }

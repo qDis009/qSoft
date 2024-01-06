@@ -1,6 +1,7 @@
 package kz.qBots.qSoft.service;
 
 import kz.qBots.qSoft.data.dto.ItemDto;
+import kz.qBots.qSoft.data.dto.ItemFeedbackDto;
 import kz.qBots.qSoft.data.enums.ItemType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,4 +15,5 @@ public interface ItemService {
     ItemDto findById(int id);
     Page<ItemDto> findItemsByItemType(ItemType itemType, Pageable pageable);
     List<ItemDto> getStocks();
+    List<ItemFeedbackDto> getFeedbacks(int id);
 }
