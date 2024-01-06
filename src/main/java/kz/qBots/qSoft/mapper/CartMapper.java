@@ -10,7 +10,6 @@ import org.mapstruct.Mapping;
 public interface CartMapper {
   @Mapping(target = "user.id", source = "userId")
   @Mapping(target = "item.id", source = "itemId")
-  @Mapping(target = "order.id", source = "orderId")
   Cart mapCartRequestToCart(CartRequest model);
 
   @Mapping(target = "userId", source = "user.id")

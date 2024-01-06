@@ -98,13 +98,16 @@ public class UserServiceImpl implements UserService {
   public List<ItemDto> getFavorite(int id) {
     return itemService.findItemsByUserId(id);
   }
+
   @Transactional
   @Override
-  public ItemDto addFavorite(int userId, int itemId) {
-    User user=userComponent.findById(userId);
-    Item item=itemComponent.findById(itemId);
-
-    return null;
+  public void addFavorite(int userId, int itemId) {
+    User user = userComponent.findById(userId);
+    Item item = itemComponent.findById(itemId);
+    user.getItems().add(item);
+    item.getUsers().add(user);
+    userComponent.update(user);
+    itemComponent.update(item);
   }
 
   private void deletePreviousWebAppInfo(Long chatId, Integer messageId) {

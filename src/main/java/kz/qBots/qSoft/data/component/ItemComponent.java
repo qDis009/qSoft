@@ -15,7 +15,6 @@ public interface ItemComponent {
   Item findById(int id);
 
   void update(Item item);
-
   Page<Item> findAll(Pageable pageable);
   List<Item> findItemsByUserId(int userId);
   Page<Item> findItemsByItemType(ItemType itemType, Pageable pageable);

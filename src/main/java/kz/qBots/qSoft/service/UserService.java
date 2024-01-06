@@ -10,12 +10,19 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface UserService {
-    UserDto getById(Integer id);
-    UserDto update(UserDto userDto);
-    void setLanguage(int id,String language);
-    Page<OrderDto> getOrdersHistory(int id, Pageable pageable);
-    List<ItemDto> getFavorite(int userId);
-    void processMagazineCommand(User user);
-    List<User> findByRoleName(String roleName);
-    ItemDto addFavorite(int userId,int itemId);
+  UserDto getById(Integer id);
+
+  UserDto update(UserDto userDto);
+
+  void setLanguage(int id, String language);
+
+  Page<OrderDto> getOrdersHistory(int id, Pageable pageable);
+
+  List<ItemDto> getFavorite(int userId);
+
+  void processMagazineCommand(User user);
+
+  List<User> findByRoleName(String roleName);
+
+  void addFavorite(int userId, int itemId);
 }

@@ -54,7 +54,6 @@ public class ItemComponentImpl implements ItemComponent {
 
   @Override
   public Page<Item> findItemsByItemType(ItemType itemType, Pageable pageable) {
-    return itemRepository.findByItemTypeOrderBySoldCountDesc(itemType,pageable);
+    return itemRepository.findByItemTypeOrderBySoldCountDesc(itemType, pageable);
   }
-
 }

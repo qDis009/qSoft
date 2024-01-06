@@ -31,9 +31,10 @@ public class UserController {
   }
 
   @PostMapping("/{id}/{itemId}")
-  public ResponseEntity<ItemDto> addFavorite(@PathVariable("id") int id,
-                                             @PathVariable("itemId") int itemId) {
-    return null;
+  public ResponseEntity<Void> addFavorite(
+      @PathVariable("id") int id, @PathVariable("itemId") int itemId) {
+    userService.addFavorite(id, itemId);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @PutMapping("/update")
