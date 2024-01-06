@@ -25,8 +25,4 @@ public class UserDto {
   private Language language;
   private String address;
   private ClientType clientType;
-  private Set<Cart> carts;
-  private Set<Order> orders;
-  private Set<ItemFeedback> itemFeedbacks;
-  private Set<Item> items;
 }

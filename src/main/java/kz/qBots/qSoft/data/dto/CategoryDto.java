@@ -13,6 +13,5 @@ public class CategoryDto {
   private Integer id;
   private String nameKz;
   private String nameRu;
-  private Set<Shop> shops;
-  private Set<SubCategory> subCategories;
+  private Set<SubCategoryDto> subCategories;
 }

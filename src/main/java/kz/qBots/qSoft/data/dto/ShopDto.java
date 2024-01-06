@@ -11,7 +11,4 @@ import java.util.Set;
 public class ShopDto {
     private Integer id;
     private String name;
-    private Set<ShopFeedback> shopFeedbacks;
-    private Set<Item> items;
-    private Set<Complaint> complaints;
 }

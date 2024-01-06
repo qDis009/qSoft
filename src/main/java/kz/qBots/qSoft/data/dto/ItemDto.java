@@ -27,8 +27,5 @@ public class ItemDto {
   private String descriptionKz;
   private String descriptionRu;
   private String created;
-  private Set<ItemFeedback> itemFeedbacks;
-  private Integer shopId;
   private ItemType itemType;
-  private Set<User> users;
 }

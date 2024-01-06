@@ -22,5 +22,5 @@ public class OrderDto {
   private String delivered;
   private Integer shopId;
   private Integer userId;
-  private Set<Cart> carts;
+  private Set<CartDto> carts;
 }

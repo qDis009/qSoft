@@ -14,6 +14,5 @@ public class SubCategoryDto {
   private String nameKz;
   private String nameRu;
   private Integer categoryId;
-  private Set<Shop> shops;
-  private Set<Item> items;
+  private Set<ItemDto> items;
 }
