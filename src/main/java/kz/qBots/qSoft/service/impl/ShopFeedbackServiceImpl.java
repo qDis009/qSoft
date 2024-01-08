@@ -27,8 +27,8 @@ public class ShopFeedbackServiceImpl implements ShopFeedbackService {
   @Override
   public ShopFeedbackDto create(ShopFeedbackRequest model) {
     ShopFeedback shopFeedback = shopFeedbackMapper.mapShopFeedbackRequestToShopFeedback(model);
-    if(!shopFeedback.getComment().isEmpty())
-        sendMessageToAdmin(shopFeedback.getComment(), shopFeedback.getUser());
+    if (!shopFeedback.getComment().isEmpty())
+      sendMessageToAdmin(shopFeedback.getComment(), shopFeedback.getUser());
     // TODO add file
     return shopFeedbackMapper.mapShopFeedbackToShopFeedbackDto(
         shopFeedbackComponent.create(shopFeedback));
@@ -47,16 +47,14 @@ public class ShopFeedbackServiceImpl implements ShopFeedbackService {
             + "Текст обращения: "
             + message;
     for (User admin : admins) {
-        SendMessage sendMessage=SendMessage.builder()
-                .text(messageText)
-                .chatId(admin.getChatId())
-                .build();
-        try {
-            admin.setLastMessageId(telegramService.sendMessage(sendMessage));
-        } catch (TelegramApiException e) {
-            //TODO
-        }
+      SendMessage sendMessage =
+          SendMessage.builder().text(messageText).chatId(admin.getChatId()).build();
+      try {
+        admin.setLastMessageId(telegramService.sendMessage(sendMessage));
+      } catch (TelegramApiException e) {
+        // TODO
+      }
     }
-    //TODO add file
+    // TODO add file
   }
 }

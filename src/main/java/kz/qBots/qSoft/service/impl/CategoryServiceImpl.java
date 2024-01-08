@@ -13,16 +13,17 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
-    private final CategoryComponent categoryComponent;
-    private final CategoryMapper categoryMapper;
-    @Override
-    public Page<CategoryDto> findAll(Pageable pageable) {
-        return categoryComponent.findAll(pageable).map(categoryMapper::mapCategoryToCategoryDto);
-    }
-    @Override
-    public CategoryDto findById(int id) {
-        Category category=categoryComponent.findById(id);
-        return categoryMapper.mapCategoryToCategoryDto(category);
-    }
+  private final CategoryComponent categoryComponent;
+  private final CategoryMapper categoryMapper;
 
+  @Override
+  public Page<CategoryDto> findAll(Pageable pageable) {
+    return categoryComponent.findAll(pageable).map(categoryMapper::mapCategoryToCategoryDto);
+  }
+
+  @Override
+  public CategoryDto findById(int id) {
+    Category category = categoryComponent.findById(id);
+    return categoryMapper.mapCategoryToCategoryDto(category);
+  }
 }

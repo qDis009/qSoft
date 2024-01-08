@@ -11,25 +11,25 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface UserService {
-    UserDto getById(Integer id);
+  UserDto getById(Integer id);
 
-    UserDto update(UserDto userDto);
+  UserDto update(UserDto userDto);
 
-    void setLanguage(int id, String language);
+  void setLanguage(int id, String language);
 
-    Page<OrderDto> getOrdersHistory(int id, Pageable pageable);
+  Page<OrderDto> getOrdersHistory(int id, Pageable pageable);
 
-    List<ItemDto> getFavorite(int userId);
+  List<ItemDto> getFavorite(int userId);
 
-    void processMagazineCommand(User user);
+  void processMagazineCommand(User user);
 
-    List<User> findByRoleName(String roleName);
+  List<User> findByRoleName(String roleName);
 
-    void addFavorite(int userId, int itemId);
+  void addFavorite(int userId, int itemId);
 
-    List<CartDto> getCart(int id);
+  List<CartDto> getCart(int id);
 
-    UserDto getByChatId(long chatId);
+  UserDto getByChatId(long chatId);
 
-    void deleteFavorite(int userId, int itemId);
+  void deleteFavorite(int userId, int itemId);
 }

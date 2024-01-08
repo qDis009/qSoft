@@ -11,11 +11,12 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class SubCategoryServiceImpl implements SubCategoryService {
-    private final SubCategoryComponent subCategoryComponent;
-    private final SubCategoryMapper subCategoryMapper;
-    @Override
-    public SubCategoryDto findById(int id) {
-        SubCategory subCategory=subCategoryComponent.findById(id);
-        return subCategoryMapper.mapSubCategoryToSubCategoryDto(subCategory);
-    }
+  private final SubCategoryComponent subCategoryComponent;
+  private final SubCategoryMapper subCategoryMapper;
+
+  @Override
+  public SubCategoryDto findById(int id) {
+    SubCategory subCategory = subCategoryComponent.findById(id);
+    return subCategoryMapper.mapSubCategoryToSubCategoryDto(subCategory);
+  }
 }

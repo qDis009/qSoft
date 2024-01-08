@@ -10,17 +10,20 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Table(schema = "market",name = "shop_feedback")
+@Table(schema = "market", name = "shop_feedback")
 public class ShopFeedback {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private double grade;
-    private String comment;
-    @ManyToOne
-    @JoinColumn(name = "shop_id",referencedColumnName = "id")
-    private Shop shop;
-    @ManyToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
-    private User user;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
+
+  private double grade;
+  private String comment;
+
+  @ManyToOne
+  @JoinColumn(name = "shop_id", referencedColumnName = "id")
+  private Shop shop;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  private User user;
 }

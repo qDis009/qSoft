@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/sub-category")
 public class SubCategoryController {
-    private final SubCategoryService subCategoryService;
-    @GetMapping("/{id}")
-    public ResponseEntity<SubCategoryDto> getById(@PathVariable("id") int id){
-        return ResponseEntity.ok(subCategoryService.findById(id));
-    }
+  private final SubCategoryService subCategoryService;
+
+  @GetMapping("/{id}")
+  public ResponseEntity<SubCategoryDto> getById(@PathVariable("id") int id) {
+    return ResponseEntity.ok(subCategoryService.findById(id));
+  }
 }

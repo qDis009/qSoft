@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class OrderServiceImpl implements OrderService{
-    private final OrderComponent orderComponent;
-    private final OrderMapper orderMapper;
+public class OrderServiceImpl implements OrderService {
+  private final OrderComponent orderComponent;
+  private final OrderMapper orderMapper;
 
-    @Override
-    public Page<OrderDto> findByUserId(int id, Pageable pageable) {
-        return orderComponent.findByUserId(id,pageable).map(orderMapper::mapOrderToOrderDto);
-    }
+  @Override
+  public Page<OrderDto> findByUserId(int id, Pageable pageable) {
+    return orderComponent.findByUserId(id, pageable).map(orderMapper::mapOrderToOrderDto);
+  }
 }

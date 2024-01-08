@@ -19,8 +19,9 @@ public class ItemFeedbackController {
       @RequestBody ItemFeedbackRequest itemFeedbackRequest) {
     return ResponseEntity.ok(itemFeedbackService.create(itemFeedbackRequest));
   }
+
   @DeleteMapping("/{id}/delete")
-  public ResponseEntity<Void> delete(@PathVariable("id") int id){
+  public ResponseEntity<Void> delete(@PathVariable("id") int id) {
     itemFeedbackService.delete(id);
     return new ResponseEntity<>(HttpStatus.OK);
   }

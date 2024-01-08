@@ -5,18 +5,20 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
-@Table(schema = "market",name = "item_feedback")
+@Table(schema = "market", name = "item_feedback")
 public class ItemFeedback {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   private String comment;
+
   private double grade;
 
   @CreationTimestamp

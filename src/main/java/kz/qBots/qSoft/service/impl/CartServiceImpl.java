@@ -12,36 +12,37 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
-    private final CartComponent cartComponent;
-    private final CartMapper cartMapper;
-    @Override
-    public CartDto create(CartRequest model) {
-        Cart cart=cartMapper.mapCartRequestToCart(model);
-        return cartMapper.mapCartToCartDto(cartComponent.create(cart));
-    }
+  private final CartComponent cartComponent;
+  private final CartMapper cartMapper;
 
-    @Override
-    public void delete(int id) {
-        cartComponent.delete(id);
-    }
+  @Override
+  public CartDto create(CartRequest model) {
+    Cart cart = cartMapper.mapCartRequestToCart(model);
+    return cartMapper.mapCartToCartDto(cartComponent.create(cart));
+  }
 
-    @Override
-    public CartDto reduceCount(int id) {
-        Cart cart=cartComponent.findById(id);
-        int itemCount=cart.getItemCount();
-        itemCount++;
-        cart.setItemCount(itemCount);
-        cartComponent.update(cart);
-        return cartMapper.mapCartToCartDto(cart);
-    }
+  @Override
+  public void delete(int id) {
+    cartComponent.delete(id);
+  }
 
-    @Override
-    public CartDto increaseCount(int id) {
-        Cart cart=cartComponent.findById(id);
-        int itemCount=cart.getItemCount();
-        itemCount--;
-        cart.setItemCount(itemCount);
-        cartComponent.update(cart);
-        return cartMapper.mapCartToCartDto(cart);
-    }
+  @Override
+  public CartDto reduceCount(int id) {
+    Cart cart = cartComponent.findById(id);
+    int itemCount = cart.getItemCount();
+    itemCount++;
+    cart.setItemCount(itemCount);
+    cartComponent.update(cart);
+    return cartMapper.mapCartToCartDto(cart);
+  }
+
+  @Override
+  public CartDto increaseCount(int id) {
+    Cart cart = cartComponent.findById(id);
+    int itemCount = cart.getItemCount();
+    itemCount--;
+    cart.setItemCount(itemCount);
+    cartComponent.update(cart);
+    return cartMapper.mapCartToCartDto(cart);
+  }
 }

@@ -23,6 +23,7 @@ public class ItemServiceImpl implements ItemService {
   private final ItemComponent itemComponent;
   private final ItemMapper itemMapper;
   private final ItemFeedbackService itemFeedbackService;
+
   @Override
   public void delete(int id) {
     Item item = itemComponent.findById(id);
@@ -37,9 +38,10 @@ public class ItemServiceImpl implements ItemService {
 
   @Override
   public List<ItemDto> findAll(int userId) {
-    List<ItemDto> items=itemComponent.findAll().stream().map(itemMapper::mapItemToItemDto).toList();
-    List<Item> favoriteItems=itemComponent.findItemsByUserId(userId);
-    for(Item it:favoriteItems){
+    List<ItemDto> items =
+        itemComponent.findAll().stream().map(itemMapper::mapItemToItemDto).toList();
+    List<Item> favoriteItems = itemComponent.findItemsByUserId(userId);
+    for (Item it : favoriteItems) {
       items.get(it.getId()).setFavorite(true);
     }
     return items;
@@ -47,20 +49,25 @@ public class ItemServiceImpl implements ItemService {
 
   @Override
   public List<ItemDto> findItemsByUserId(int userId) {
-    return itemComponent.findItemsByUserId(userId).stream().map(itemMapper::mapItemToItemDto).toList();
+    return itemComponent.findItemsByUserId(userId).stream()
+        .map(itemMapper::mapItemToItemDto)
+        .toList();
   }
 
   @Override
   public ItemDto findById(int id) {
-    Item item=itemComponent.findById(id);
+    Item item = itemComponent.findById(id);
     return itemMapper.mapItemToItemDto(item);
   }
 
   @Override
-  public List<ItemDto> findItemsByItemType(ItemType itemType,int userId) {
-    List<ItemDto> items=itemComponent.findItemsByItemType(itemType).stream().map(itemMapper::mapItemToItemDto).toList();
-    List<Item> favoriteItems=itemComponent.findItemsByUserId(userId);
-    for(Item it:favoriteItems){
+  public List<ItemDto> findItemsByItemType(ItemType itemType, int userId) {
+    List<ItemDto> items =
+        itemComponent.findItemsByItemType(itemType).stream()
+            .map(itemMapper::mapItemToItemDto)
+            .toList();
+    List<Item> favoriteItems = itemComponent.findItemsByUserId(userId);
+    for (Item it : favoriteItems) {
       items.get(it.getId()).setFavorite(true);
     }
     return items;
@@ -68,16 +75,17 @@ public class ItemServiceImpl implements ItemService {
 
   @Override
   public List<ItemDto> getStocks(int userId) {
-    List<Item> items=itemComponent.findAll();
-    List<Item> itemsWithStock=new ArrayList<>();
-    List<Item> favoriteItems=itemComponent.findItemsByUserId(userId);
-    for(Item it:items){
-      if(it.getDiscountPercentage()!=0){
+    List<Item> items = itemComponent.findAll();
+    List<Item> itemsWithStock = new ArrayList<>();
+    List<Item> favoriteItems = itemComponent.findItemsByUserId(userId);
+    for (Item it : items) {
+      if (it.getDiscountPercentage() != 0) {
         itemsWithStock.add(it);
       }
     }
-    List<ItemDto> itemDtoWithStock=itemsWithStock.stream().map(itemMapper::mapItemToItemDto).toList();
-    for(Item it:favoriteItems){
+    List<ItemDto> itemDtoWithStock =
+        itemsWithStock.stream().map(itemMapper::mapItemToItemDto).toList();
+    for (Item it : favoriteItems) {
       itemDtoWithStock.get(it.getId()).setFavorite(true);
     }
     return itemDtoWithStock;

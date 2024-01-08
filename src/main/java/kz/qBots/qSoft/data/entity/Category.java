@@ -9,7 +9,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(schema = "market",name = "category")
+@Table(schema = "market", name = "category")
 public class Category {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

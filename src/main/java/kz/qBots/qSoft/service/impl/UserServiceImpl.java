@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDto getByChatId(long chatId) {
-    User user=userComponent.findByChatId(chatId);
+    User user = userComponent.findByChatId(chatId);
     return userMapper.mapUserToUserDto(user);
   }
 
@@ -90,14 +90,14 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public List<CartDto> getCart(int id) {
-    User user=userComponent.findById(id);
+    User user = userComponent.findById(id);
     return user.getCarts().stream().map(cartMapper::mapCartToCartDto).toList();
   }
 
   @Override
   public void deleteFavorite(int userId, int itemId) {
-    User user=userComponent.findById(userId);
-    Item item=itemComponent.findById(itemId);
+    User user = userComponent.findById(userId);
+    Item item = itemComponent.findById(itemId);
     user.getItems().remove(item);
     userComponent.update(user);
   }

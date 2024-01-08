@@ -8,7 +8,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(schema = "market",name = "shop")
+@Table(schema = "market", name = "shop")
 public class Shop {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +45,7 @@ public class Shop {
 
   @OneToMany(mappedBy = "shop")
   private Set<Item> items;
+
   @OneToMany(mappedBy = "shop")
   private Set<Complaint> complaints;
 }

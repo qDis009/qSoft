@@ -8,7 +8,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(schema = "market",name = "sub_category")
+@Table(schema = "market", name = "sub_category")
 public class SubCategory {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,7 @@ public class SubCategory {
       joinColumns = @JoinColumn(name = "sub_category_id"),
       inverseJoinColumns = @JoinColumn(name = "shop_id"))
   private Set<Shop> shops;
+
   @OneToMany(mappedBy = "subCategory")
   private Set<Item> items;
 }
