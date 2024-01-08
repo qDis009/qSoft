@@ -8,15 +8,19 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ItemComponent {
-  Item create(Item item);
+    Item create(Item item);
 
-  List<Item> findAllByIds(List<Integer> ids);
+    List<Item> findAllByIds(List<Integer> ids);
 
-  Item findById(int id);
+    Item findById(int id);
 
-  void update(Item item);
-  Page<Item> findAll(Pageable pageable);
-  List<Item> findItemsByUserId(int userId);
-  Page<Item> findItemsByItemType(ItemType itemType, Pageable pageable);
-  List<Item> findAll();
+    void update(Item item);
+
+    Page<Item> findAll(Pageable pageable);
+
+    List<Item> findItemsByUserId(int userId);
+
+    List<Item> findItemsByItemType(ItemType itemType);
+
+    List<Item> findAll();
 }

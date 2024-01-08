@@ -28,4 +28,5 @@ public class ItemDto {
   private String descriptionRu;
   private String created;
   private ItemType itemType;
+  private boolean isFavorite;
 }

@@ -11,9 +11,10 @@ import java.util.List;
 public interface ItemService {
     void delete(int id);
     Page<ItemDto> findAll(Pageable pageable);
+    List<ItemDto> findAll(int userId);
     List<ItemDto> findItemsByUserId(int userId);
     ItemDto findById(int id);
-    Page<ItemDto> findItemsByItemType(ItemType itemType, Pageable pageable);
-    List<ItemDto> getStocks();
+    List<ItemDto> findItemsByItemType(ItemType itemType,int userId);
+    List<ItemDto> getStocks(int userId);
     List<ItemFeedbackDto> getFeedbacks(int id);
 }

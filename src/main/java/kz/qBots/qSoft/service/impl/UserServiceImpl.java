@@ -95,6 +95,14 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public void deleteFavorite(int userId, int itemId) {
+    User user=userComponent.findById(userId);
+    Item item=itemComponent.findById(itemId);
+    user.getItems().remove(item);
+    userComponent.update(user);
+  }
+
+  @Override
   public List<User> findByRoleName(String roleName) {
     return userComponent.findByRoleName(roleName);
   }
@@ -120,9 +128,7 @@ public class UserServiceImpl implements UserService {
     User user = userComponent.findById(userId);
     Item item = itemComponent.findById(itemId);
     user.getItems().add(item);
-    item.getUsers().add(user);
     userComponent.update(user);
-    itemComponent.update(item);
   }
 
   private void deletePreviousWebAppInfo(Long chatId, Integer messageId) {

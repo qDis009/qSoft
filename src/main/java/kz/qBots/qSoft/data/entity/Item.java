@@ -52,13 +52,6 @@ public class Item {
   @OneToMany(mappedBy = "item")
   private Set<Cart> carts;
 
-  @ManyToMany
-  @JoinTable(
-      name = "favourite",
-      joinColumns = @JoinColumn(name = "item_id"),
-      inverseJoinColumns = @JoinColumn(name = "user_id"))
-  private Set<User> users;
-
   @ManyToOne
   @JoinColumn(name = "shop_id", referencedColumnName = "id")
   private Shop shop;

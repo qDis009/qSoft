@@ -27,16 +27,22 @@ public class ItemFeedbackServiceImpl implements ItemFeedbackService {
         updateItemGrade(itemFeedback.getItem(),itemFeedback.getGrade());
         return itemFeedbackMapper.mapItemFeedbackToItemFeedbackDto(itemFeedbackComponent.create(itemFeedback));
     }
-    public void updateItemGrade(Item item,double grade){
+    private void updateItemGrade(Item item,double grade){
         int itemGradeCount=item.getItemFeedbacks().size();
         double totalGrade=item.getGrade()*itemGradeCount+grade;
         itemGradeCount++;
         item.setGrade(totalGrade/itemGradeCount);
+        itemComponent.update(item);
     }
 
     @Override
     public List<ItemFeedbackDto> getFeedbacks(int id) {
         Item item=itemComponent.findById(id);
         return item.getItemFeedbacks().stream().map(itemFeedbackMapper::mapItemFeedbackToItemFeedbackDto).toList();
+    }
+    @Transactional
+    @Override
+    public void delete(int id) {
+        //TODO
     }
 }

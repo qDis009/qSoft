@@ -20,37 +20,35 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/item")
 public class ItemController {
-  private final ItemService itemService;
+    private final ItemService itemService;
 
-  @GetMapping("/get-all")
-  public ResponseEntity<Page<ItemDto>> getAll(
-      @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
-    return ResponseEntity.ok(itemService.findAll(pageable));
-  }
+    @GetMapping("/{userId}/get-all")
+    public ResponseEntity<List<ItemDto>> getAll(@PathVariable("userId") int userId) {
+        return ResponseEntity.ok(itemService.findAll(userId));
+    }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<ItemDto> getById(@PathVariable("id") int id) {
-    return ResponseEntity.ok(itemService.findById(id));
-  }
+    @GetMapping("/{id}")
+    public ResponseEntity<ItemDto> getById(@PathVariable("id") int id) {
+        return ResponseEntity.ok(itemService.findById(id));
+    }
 
-  @GetMapping("/get-retail-hit")
-  public ResponseEntity<Page<ItemDto>> getRetailHit(
-      @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
-    return ResponseEntity.ok(itemService.findItemsByItemType(ItemType.RETAIL, pageable));
-  }
+    @GetMapping("/{userId}/get-retail-hit")
+    public ResponseEntity<List<ItemDto>> getRetailHit(@PathVariable("userId") int userId) {
+        return ResponseEntity.ok(itemService.findItemsByItemType(ItemType.RETAIL,userId));
+    }
 
-  @GetMapping("get-wholesale-hit")
-  public ResponseEntity<Page<ItemDto>> getWholesaleHit(
-      @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
-    return ResponseEntity.ok(itemService.findItemsByItemType(ItemType.WHOLESALE, pageable));
-  }
+    @GetMapping("/{userId}/get-wholesale-hit")
+    public ResponseEntity<List<ItemDto>> getWholesaleHit(@PathVariable("userId") int userId) {
+        return ResponseEntity.ok(itemService.findItemsByItemType(ItemType.WHOLESALE,userId));
+    }
 
-  @GetMapping("/get-stocks")
-  public ResponseEntity<List<ItemDto>> getStocks() {
-    return ResponseEntity.ok(itemService.getStocks());
-  }
-  @GetMapping("/{id}/get-feedbacks")
-  public ResponseEntity<List<ItemFeedbackDto>> getFeedbacks(@PathVariable("id") int id) {
-    return ResponseEntity.ok(itemService.getFeedbacks(id));
-  }
+    @GetMapping("/{userId}/get-stocks")
+    public ResponseEntity<List<ItemDto>> getStocks(@PathVariable("userId") int userId) {
+        return ResponseEntity.ok(itemService.getStocks(userId));
+    }
+
+    @GetMapping("/{id}/get-feedbacks")
+    public ResponseEntity<List<ItemFeedbackDto>> getFeedbacks(@PathVariable("id") int id) {
+        return ResponseEntity.ok(itemService.getFeedbacks(id));
+    }
 }

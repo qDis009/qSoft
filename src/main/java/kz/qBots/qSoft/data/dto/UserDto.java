@@ -15,14 +15,13 @@ import java.util.Set;
 @Getter
 @Setter
 public class UserDto {
-  private Integer id;
-  private long chatId;
-  private boolean deleted;
-  private String fullName;
-  private String phoneNumber;
-  private String IEName;
-  private String tgUserName;
-  private Language language;
-  private String address;
-  private ClientType clientType;
+    private Integer id;
+    private long chatId;
+    private boolean deleted;
+    private String fullName;
+    private String phoneNumber;
+    private String IEName;
+    private Language language;
+    private String address;
+    private ClientType clientType;
 }

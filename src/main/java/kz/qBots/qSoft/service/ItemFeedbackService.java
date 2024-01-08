@@ -8,4 +8,5 @@ import java.util.List;
 public interface ItemFeedbackService {
     ItemFeedbackDto create(ItemFeedbackRequest itemFeedbackRequest);
     List<ItemFeedbackDto> getFeedbacks(int id);
+    void delete(int id);
 }
