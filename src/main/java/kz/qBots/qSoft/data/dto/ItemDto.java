@@ -1,12 +1,9 @@
 package kz.qBots.qSoft.data.dto;
 
-import kz.qBots.qSoft.data.entity.ItemFeedback;
-import kz.qBots.qSoft.data.entity.User;
 import kz.qBots.qSoft.data.enums.ItemType;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Set;
 
 @Getter
 @Setter

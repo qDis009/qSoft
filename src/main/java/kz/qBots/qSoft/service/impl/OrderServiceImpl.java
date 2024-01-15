@@ -19,4 +19,9 @@ public class OrderServiceImpl implements OrderService {
   public Page<OrderDto> findByUserId(int id, Pageable pageable) {
     return orderComponent.findByUserId(id, pageable).map(orderMapper::mapOrderToOrderDto);
   }
+
+  @Override
+  public OrderDto findById(int id) {
+    return orderMapper.mapOrderToOrderDto(orderComponent.findById(id));
+  }
 }

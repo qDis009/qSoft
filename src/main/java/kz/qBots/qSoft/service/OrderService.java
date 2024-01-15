@@ -6,4 +6,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
   Page<OrderDto> findByUserId(int id, Pageable pageable);
+  OrderDto findById(int id);
 }

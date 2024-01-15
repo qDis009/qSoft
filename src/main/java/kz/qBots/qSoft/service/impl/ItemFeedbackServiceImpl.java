@@ -2,9 +2,11 @@ package kz.qBots.qSoft.service.impl;
 
 import kz.qBots.qSoft.data.component.ItemComponent;
 import kz.qBots.qSoft.data.component.ItemFeedbackComponent;
+import kz.qBots.qSoft.data.component.UserComponent;
 import kz.qBots.qSoft.data.dto.ItemFeedbackDto;
 import kz.qBots.qSoft.data.entity.Item;
 import kz.qBots.qSoft.data.entity.ItemFeedback;
+import kz.qBots.qSoft.data.entity.User;
 import kz.qBots.qSoft.mapper.ItemFeedbackMapper;
 import kz.qBots.qSoft.rest.request.ItemFeedbackRequest;
 import kz.qBots.qSoft.service.ItemFeedbackService;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +23,7 @@ public class ItemFeedbackServiceImpl implements ItemFeedbackService {
   private final ItemFeedbackComponent itemFeedbackComponent;
   private final ItemFeedbackMapper itemFeedbackMapper;
   private final ItemComponent itemComponent;
+  private final UserComponent userComponent;
 
   @Transactional
   @Override
@@ -111,5 +115,19 @@ public class ItemFeedbackServiceImpl implements ItemFeedbackService {
 
   private boolean isFeedbackWithComment(ItemFeedback itemFeedback) {
     return itemFeedback.getComment() != null;
+  }
+
+  @Override
+  public boolean hasComment(int userId, int itemId) {
+    boolean hasComment=false;
+    User user=userComponent.findById(userId);
+    Set<ItemFeedback> itemFeedbacks=user.getItemFeedbacks();
+    for(ItemFeedback itemFeedback:itemFeedbacks){
+      if(itemFeedback.getItem().getId()==itemId){
+        hasComment=true;
+        break;
+      }
+    }
+    return hasComment;
   }
 }

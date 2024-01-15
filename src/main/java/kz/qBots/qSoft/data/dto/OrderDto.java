@@ -1,6 +1,5 @@
 package kz.qBots.qSoft.data.dto;
 
-import kz.qBots.qSoft.data.entity.Cart;
 import kz.qBots.qSoft.data.enums.DeliveryType;
 import kz.qBots.qSoft.data.enums.OrderStatus;
 import kz.qBots.qSoft.data.enums.PaymentType;
