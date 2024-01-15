@@ -26,16 +26,66 @@ public class ItemFeedbackServiceImpl implements ItemFeedbackService {
   public ItemFeedbackDto create(ItemFeedbackRequest itemFeedbackRequest) {
     ItemFeedback itemFeedback =
         itemFeedbackMapper.mapItemFeedbackRequestToItemFeedback(itemFeedbackRequest);
-    updateItemGradeAfterCreate(itemFeedback.getItem(), itemFeedback.getGrade());
+    if (isFeedbackWithComment(itemFeedback)) {
+      updateFeedbackGradeAfterCreate(itemFeedback);
+    } else {
+      updateGradeAfterCreate(itemFeedback);
+    }
     return itemFeedbackMapper.mapItemFeedbackToItemFeedbackDto(
         itemFeedbackComponent.create(itemFeedback));
   }
 
-  private void updateItemGradeAfterCreate(Item item, double grade) {
-    int itemGradeCount = item.getItemFeedbacks().size();
-    double totalGrade = item.getGrade() * itemGradeCount + grade;
-    itemGradeCount++;
-    item.setGrade(totalGrade / itemGradeCount);
+  private void updateGradeAfterCreate(ItemFeedback itemFeedback) {
+    Item item = itemComponent.findById(itemFeedback.getItem().getId());
+    int gradeCount = item.getGradeCount();
+    double grade = itemFeedback.getGrade();
+    double totalGrade=grade+gradeCount*item.getGrade();
+    gradeCount++;
+    item.setGradeCount(gradeCount);
+    item.setGrade(totalGrade/gradeCount);
+    itemComponent.update(item);
+  }
+
+  private void updateFeedbackGradeAfterCreate(ItemFeedback itemFeedback) {
+    Item item = itemComponent.findById(itemFeedback.getItem().getId());
+    int feedbackGradeCount = item.getFeedbackGradeCount();
+    double feedbackGrade = itemFeedback.getGrade();
+    double totalFeedbackGrade = feedbackGrade + feedbackGradeCount * item.getFeedbackGrade();
+    feedbackGradeCount++;
+    item.setFeedbackGradeCount(feedbackGradeCount);
+    item.setFeedbackGrade(totalFeedbackGrade / feedbackGradeCount);
+    itemComponent.update(item);
+  }
+
+  private void updateGradeAfterDelete(ItemFeedback itemFeedback) {
+    Item item=itemComponent.findById(itemFeedback.getItem().getId());
+    int gradeCount=item.getGradeCount();
+    if(gradeCount==1){
+      item.setGrade(0);
+      item.setGradeCount(0);
+    }else{
+      double grade=itemFeedback.getGrade();
+      double totalGrade=item.getGrade()*gradeCount-grade;
+      gradeCount--;
+      item.setGradeCount(gradeCount);
+      item.setGrade(totalGrade/gradeCount);
+    }
+    itemComponent.update(item);
+  }
+
+  private void updateFeedbackGradeAfterDelete(ItemFeedback itemFeedback) {
+    Item item=itemComponent.findById(itemFeedback.getItem().getId());
+    int feedbackGradeCount=item.getFeedbackGradeCount();
+    if(feedbackGradeCount==1){
+      item.setFeedbackGradeCount(0);
+      item.setFeedbackGrade(0);
+    }else{
+      double feedbackGrade=itemFeedback.getGrade();
+      double totalFeedbackGrade=item.getFeedbackGrade()*feedbackGradeCount-feedbackGrade;
+      feedbackGradeCount--;
+      item.setFeedbackGradeCount(feedbackGradeCount);
+      item.setFeedbackGrade(totalFeedbackGrade/feedbackGradeCount);
+    }
     itemComponent.update(item);
   }
 
@@ -51,19 +101,15 @@ public class ItemFeedbackServiceImpl implements ItemFeedbackService {
   @Override
   public void delete(int id) {
     ItemFeedback itemFeedback = itemFeedbackComponent.findById(id);
-    updateItemGradeAfterDelete(itemFeedback.getItem(), itemFeedback.getGrade());
+    if (isFeedbackWithComment(itemFeedback)) {
+      updateFeedbackGradeAfterDelete(itemFeedback);
+    } else {
+      updateGradeAfterDelete(itemFeedback);
+    }
     itemFeedbackComponent.delete(itemFeedback);
   }
 
-  private void updateItemGradeAfterDelete(Item item, double grade) {
-    int itemGradeCount = item.getItemFeedbacks().size();
-    if (itemGradeCount == 1) {
-      item.setGrade(0);
-    } else {
-      double totalGrade = itemGradeCount * item.getGrade() - grade;
-      itemGradeCount--;
-      item.setGrade(totalGrade / itemGradeCount);
-    }
-    itemComponent.update(item);
+  private boolean isFeedbackWithComment(ItemFeedback itemFeedback) {
+    return itemFeedback.getComment() != null;
   }
 }

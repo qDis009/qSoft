@@ -17,11 +17,11 @@ import java.util.Set;
 public class UserDto {
     private Integer id;
     private long chatId;
-    private boolean deleted;
     private String fullName;
     private String phoneNumber;
     private String IEName;
     private Language language;
     private String address;
     private ClientType clientType;
+    private String shopName;
 }

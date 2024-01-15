@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ItemComponent {
     Item create(Item item);
@@ -18,6 +19,7 @@ public interface ItemComponent {
 
     Page<Item> findAll(Pageable pageable);
 
+    Set<Integer> findIdsByUserId(int userId);
     List<Item> findItemsByUserId(int userId);
 
     List<Item> findItemsByItemType(ItemType itemType);

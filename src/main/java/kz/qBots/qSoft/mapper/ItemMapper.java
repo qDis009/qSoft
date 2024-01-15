@@ -7,6 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ItemMapper {
+  @Mapping(target = "subCategoryId", source = "subCategory.id")
   @Mapping(target = "created", expression = "java(item.getCreated().toString())")
   ItemDto mapItemToItemDto(Item item);
 }

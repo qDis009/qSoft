@@ -20,6 +20,7 @@ public class ItemFeedback {
   private String comment;
 
   private double grade;
+  private String fullName;
 
   @CreationTimestamp
   @Column(updatable = false)

@@ -11,4 +11,5 @@ public class ItemFeedbackRequest {
   private String created;
   private Integer itemId;
   private Integer userId;
+  private String fullName;
 }

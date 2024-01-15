@@ -32,6 +32,9 @@ public class Item {
   private boolean enabled = true;
   private boolean deleted = false;
   private double grade;
+  private double feedbackGrade;
+  private int gradeCount;
+  private int feedbackGradeCount;
   private String imageUrl;
   private String imageUrl3D;
   private String article;

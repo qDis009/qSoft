@@ -12,4 +12,5 @@ public class ItemFeedbackDto {
   private String created;
   private Integer itemId;
   private Integer userId;
+  private String fullName;
 }

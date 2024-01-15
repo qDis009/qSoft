@@ -20,13 +20,12 @@ public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-
   private long chatId;
   private Integer lastMessageId;
-  private boolean deleted = false;
   private String fullName;
   private String phoneNumber;
   private String IEName;
+  private String shopName;
   private String tgUserName;
 
   @Enumerated(EnumType.STRING)

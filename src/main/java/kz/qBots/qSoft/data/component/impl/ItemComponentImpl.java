@@ -10,7 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +53,16 @@ public class ItemComponentImpl implements ItemComponent {
   @Override
   public List<Item> findItemsByUserId(int userId) {
     return itemRepository.findItemsByUserId(userId);
+  }
+
+  @Override
+  public Set<Integer> findIdsByUserId(int userId) {
+    List<Item> items=itemRepository.findItemsByUserId(userId);
+    Set<Integer> ids=new HashSet<>();
+    items.forEach(it->{
+      ids.add(it.getId());
+    });
+    return ids;
   }
 
   @Override

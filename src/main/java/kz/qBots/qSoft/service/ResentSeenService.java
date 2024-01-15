@@ -1,3 +1,10 @@
 package kz.qBots.qSoft.service;
 
-public interface ResentSeenService {}
+import kz.qBots.qSoft.data.dto.ItemDto;
+
+import java.util.List;
+
+public interface ResentSeenService {
+    List<ItemDto> getResentSeenByUserId(int userId);
+    void addResentSeen(int userId,int itemId);
+}

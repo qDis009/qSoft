@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -40,10 +41,12 @@ public class ItemServiceImpl implements ItemService {
   public List<ItemDto> findAll(int userId) {
     List<ItemDto> items =
         itemComponent.findAll().stream().map(itemMapper::mapItemToItemDto).toList();
-    List<Item> favoriteItems = itemComponent.findItemsByUserId(userId);
-    for (Item it : favoriteItems) {
-      items.get(it.getId()).setFavorite(true);
-    }
+    Set<Integer> favoriteItems = itemComponent.findIdsByUserId(userId);
+    items.forEach(it->{
+      if(favoriteItems.contains(it.getId())){
+        it.setFavorite(true);
+      }
+    });
     return items;
   }
 
@@ -66,10 +69,12 @@ public class ItemServiceImpl implements ItemService {
         itemComponent.findItemsByItemType(itemType).stream()
             .map(itemMapper::mapItemToItemDto)
             .toList();
-    List<Item> favoriteItems = itemComponent.findItemsByUserId(userId);
-    for (Item it : favoriteItems) {
-      items.get(it.getId()).setFavorite(true);
-    }
+    Set<Integer> favoriteItems = itemComponent.findIdsByUserId(userId);
+    items.forEach(it->{
+      if(favoriteItems.contains(it.getId())){
+        it.setFavorite(true);
+      }
+    });
     return items;
   }
 
@@ -77,17 +82,19 @@ public class ItemServiceImpl implements ItemService {
   public List<ItemDto> getStocks(int userId) {
     List<Item> items = itemComponent.findAll();
     List<Item> itemsWithStock = new ArrayList<>();
-    List<Item> favoriteItems = itemComponent.findItemsByUserId(userId);
-    for (Item it : items) {
-      if (it.getDiscountPercentage() != 0) {
+    Set<Integer> favoriteItems = itemComponent.findIdsByUserId(userId);
+    items.forEach(it->{
+      if(it.getDiscountPercentage()!=0){
         itemsWithStock.add(it);
       }
-    }
+    });
     List<ItemDto> itemDtoWithStock =
         itemsWithStock.stream().map(itemMapper::mapItemToItemDto).toList();
-    for (Item it : favoriteItems) {
-      itemDtoWithStock.get(it.getId()).setFavorite(true);
-    }
+    itemDtoWithStock.forEach(it->{
+      if(favoriteItems.contains(it.getId())){
+        it.setFavorite(true);
+      }
+    });
     return itemDtoWithStock;
   }
 
