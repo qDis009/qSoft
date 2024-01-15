@@ -11,6 +11,7 @@ import kz.qBots.qSoft.service.UserService;
 import kz.qBots.qSoft.telegram.service.TelegramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -25,7 +26,7 @@ public class ShopFeedbackServiceImpl implements ShopFeedbackService {
   private final UserService userService;
 
   @Override
-  public ShopFeedbackDto create(ShopFeedbackRequest model) {
+  public ShopFeedbackDto create(ShopFeedbackRequest model, MultipartFile file) {
     ShopFeedback shopFeedback = shopFeedbackMapper.mapShopFeedbackRequestToShopFeedback(model);
     if (!shopFeedback.getComment().isEmpty())
       sendMessageToAdmin(shopFeedback.getComment(), shopFeedback.getUser());

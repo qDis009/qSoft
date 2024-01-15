@@ -38,6 +38,7 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
   private static final String CLICK_THE_BUTTON = "Нажмите кнопку";
   private static final String MAGAZINE = "Магазин";
+  private static final String MANAGER = "Менеджер";
   private final UserComponent userComponent;
   private final UserMapper userMapper;
   private final OrderService orderService;
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
               .parseMode(TelegramConstants.PARSE_MODE_HTML)
               .chatId(user.getChatId())
               .text(CLICK_THE_BUTTON)
-              .replyMarkup(prepareWebAppInfo(startCommandDto))
+              .replyMarkup(prepareWebAppInfo(startCommandDto, MAGAZINE))
               .build();
       user.setLastMessageId(telegramService.sendMessage(message));
       userComponent.update(user);
@@ -66,6 +67,27 @@ public class UserServiceImpl implements UserService {
       // TODO
     } catch (TelegramApiException e) {
       // TODO
+    }
+  }
+
+  @Override
+  public void processManagerCommand(User user) {
+    try {
+      deletePreviousWebAppInfo(user.getChatId(), user.getLastMessageId());
+      StartCommandDto startCommandDto = new StartCommandDto(1, user.getChatId(), Role.MANAGER);
+      SendMessage message =
+          SendMessage.builder()
+              .parseMode(TelegramConstants.PARSE_MODE_HTML)
+              .chatId(user.getChatId())
+              .text(CLICK_THE_BUTTON)
+              .replyMarkup(prepareWebAppInfo(startCommandDto, MANAGER))
+              .build();
+      user.setLastMessageId(telegramService.sendMessage(message));
+      userComponent.update(user);
+    } catch (InvalidCommandException e) {
+
+    } catch (TelegramApiException e) {
+
     }
   }
 
@@ -145,11 +167,11 @@ public class UserServiceImpl implements UserService {
     return startCommandDto.buildWebAppInfoUrl(serverProperty.getUrl());
   }
 
-  private InlineKeyboardMarkup prepareWebAppInfo(StartCommandDto startCommandDto) {
+  private InlineKeyboardMarkup prepareWebAppInfo(StartCommandDto startCommandDto, String text) {
     WebAppInfo webAppInfo = new WebAppInfo();
     webAppInfo.setUrl(buildWebAppInfoUrl(startCommandDto));
     InlineKeyboardButton inlineKeyboardButton =
-        InlineKeyboardButton.builder().webApp(webAppInfo).text(MAGAZINE).build();
+        InlineKeyboardButton.builder().webApp(webAppInfo).text(text).build();
     InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
     inlineKeyboardMarkup.setKeyboard(List.of(List.of(inlineKeyboardButton)));
     return inlineKeyboardMarkup;
