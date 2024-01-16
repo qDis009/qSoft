@@ -18,7 +18,7 @@ import kz.qBots.qSoft.service.OrderService;
 import kz.qBots.qSoft.service.UserService;
 import kz.qBots.qSoft.telegram.constants.TelegramConstants;
 import kz.qBots.qSoft.telegram.dto.StartCommandDto;
-import kz.qBots.qSoft.telegram.enums.Roles;
+import kz.qBots.qSoft.telegram.enums.Interface;
 import kz.qBots.qSoft.telegram.service.TelegramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -39,8 +39,6 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
   private static final String CLICK_THE_BUTTON = "Нажмите кнопку";
-  private static final String MAGAZINE = "Магазин";
-  private static final String MANAGER = "Менеджер";
   private final UserComponent userComponent;
   private final UserMapper userMapper;
   private final OrderService orderService;
@@ -51,18 +49,18 @@ public class UserServiceImpl implements UserService {
   private final CartMapper cartMapper;
 
   @Override
-  public void processMagazineCommand(User user) {
+  public void processStartCommand(User user, Interface roleInterface,String text) {
     try {
       deletePreviousWebAppInfo(user.getChatId(), user.getLastMessageId());
       StartCommandDto startCommandDto =
-          new StartCommandDto(1, user.getChatId(), Roles.USER); // TODO shopId
+              new StartCommandDto(1, user.getChatId(),roleInterface); // TODO shopId
       SendMessage message =
-          SendMessage.builder()
-              .parseMode(TelegramConstants.PARSE_MODE_HTML)
-              .chatId(user.getChatId())
-              .text(CLICK_THE_BUTTON)
-              .replyMarkup(prepareWebAppInfo(startCommandDto, MAGAZINE))
-              .build();
+              SendMessage.builder()
+                      .parseMode(TelegramConstants.PARSE_MODE_HTML)
+                      .chatId(user.getChatId())
+                      .text(CLICK_THE_BUTTON)
+                      .replyMarkup(prepareWebAppInfo(startCommandDto, text))
+                      .build();
       user.setLastMessageId(telegramService.sendMessage(message));
       userComponent.update(user);
     } catch (InvalidCommandException e) {
@@ -83,27 +81,6 @@ public class UserServiceImpl implements UserService {
       }
     }
     return isManager;
-  }
-
-  @Override
-  public void processManagerCommand(User user) {
-    try {
-      deletePreviousWebAppInfo(user.getChatId(), user.getLastMessageId());
-      StartCommandDto startCommandDto = new StartCommandDto(1, user.getChatId(), Roles.MANAGER);
-      SendMessage message =
-          SendMessage.builder()
-              .parseMode(TelegramConstants.PARSE_MODE_HTML)
-              .chatId(user.getChatId())
-              .text(CLICK_THE_BUTTON)
-              .replyMarkup(prepareWebAppInfo(startCommandDto, MANAGER))
-              .build();
-      user.setLastMessageId(telegramService.sendMessage(message));
-      userComponent.update(user);
-    } catch (InvalidCommandException e) {
-
-    } catch (TelegramApiException e) {
-
-    }
   }
 
   @Override

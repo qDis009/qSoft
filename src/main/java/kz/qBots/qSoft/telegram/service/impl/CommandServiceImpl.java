@@ -3,6 +3,7 @@ package kz.qBots.qSoft.telegram.service.impl;
 import kz.qBots.qSoft.data.entity.User;
 import kz.qBots.qSoft.exception.InvalidCommandException;
 import kz.qBots.qSoft.service.UserService;
+import kz.qBots.qSoft.telegram.enums.Interface;
 import kz.qBots.qSoft.telegram.service.CommandService;
 import kz.qBots.qSoft.telegram.service.TelegramService;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +24,15 @@ public class CommandServiceImpl implements CommandService {
     switch (command) {
       case "/magazine" -> {
         // telegramService.deleteMessage(user.getChatId(), user.getLastMessageId());
-        userService.processMagazineCommand(user);
+        userService.processStartCommand(user, Interface.USER,"Магазин");
       }
       case "/manager" -> {
-        //TODO check role
-        userService.processManagerCommand(user);
+        // TODO check role
+        if (userService.isManager(user)) {
+          userService.processStartCommand(user, Interface.MANAGER, "Менеджер");
+        }else{
+
+        }
       }
       default -> throw new InvalidCommandException("Cannot found command name: " + command);
     }

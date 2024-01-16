@@ -28,4 +28,9 @@ public class OrderComponentImpl implements OrderComponent {
     public void update(Order order) {
         orderRepository.save(order);
     }
+
+    @Override
+    public void setStatus(int id, String status) {
+        orderRepository.setStatus(id,status);
+    }
 }

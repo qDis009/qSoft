@@ -9,4 +9,5 @@ public interface OrderService {
   Page<OrderDto> findByUserId(int id, Pageable pageable);
   OrderDto findById(int id);
   OrderDto order(OrderRequest orderRequest);
+  void setStatus(int id,String status);
 }

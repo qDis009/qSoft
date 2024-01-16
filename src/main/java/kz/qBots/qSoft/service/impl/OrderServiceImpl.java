@@ -31,4 +31,9 @@ public class OrderServiceImpl implements OrderService {
     //TODO
     return null;
   }
+
+  @Override
+  public void setStatus(int id, String status) {
+    orderComponent.setStatus(id,status);
+  }
 }

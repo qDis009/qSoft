@@ -1,6 +1,5 @@
 package kz.qBots.qSoft.data.repository;
 
-import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.entity.Item;
 import kz.qBots.qSoft.data.enums.ItemType;
 import org.springframework.data.domain.Page;

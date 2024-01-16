@@ -1,6 +1,6 @@
 package kz.qBots.qSoft.telegram.enums;
 
-public enum Roles {
+public enum Interface {
     USER,
     ADMIN,
     MANAGER,

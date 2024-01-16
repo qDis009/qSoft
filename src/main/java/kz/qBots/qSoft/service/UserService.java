@@ -5,6 +5,7 @@ import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.dto.OrderDto;
 import kz.qBots.qSoft.data.dto.UserDto;
 import kz.qBots.qSoft.data.entity.User;
+import kz.qBots.qSoft.telegram.enums.Interface;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,8 +22,7 @@ public interface UserService {
 
     List<ItemDto> getFavorite(int userId);
 
-    void processMagazineCommand(User user);
-    void processManagerCommand(User user);
+    void processStartCommand(User user, Interface roleInterface,String text);
 
     List<User> findByRoleName(String roleName);
 

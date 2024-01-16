@@ -16,5 +16,4 @@ public class OrderRequest {
   private String created;
   private Integer userId;
   private Integer shopId;
-  //TODO add field
 }
