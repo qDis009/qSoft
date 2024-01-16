@@ -3,6 +3,7 @@ package kz.qBots.qSoft.service.impl;
 import kz.qBots.qSoft.data.component.OrderComponent;
 import kz.qBots.qSoft.data.dto.OrderDto;
 import kz.qBots.qSoft.mapper.OrderMapper;
+import kz.qBots.qSoft.rest.request.OrderRequest;
 import kz.qBots.qSoft.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,5 +24,11 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public OrderDto findById(int id) {
     return orderMapper.mapOrderToOrderDto(orderComponent.findById(id));
+  }
+
+  @Override
+  public OrderDto order(OrderRequest orderRequest) {
+    //TODO
+    return null;
   }
 }

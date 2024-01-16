@@ -26,6 +26,7 @@ public class CommandServiceImpl implements CommandService {
         userService.processMagazineCommand(user);
       }
       case "/manager" -> {
+        //TODO check role
         userService.processManagerCommand(user);
       }
       default -> throw new InvalidCommandException("Cannot found command name: " + command);

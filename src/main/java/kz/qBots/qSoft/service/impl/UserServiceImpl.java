@@ -8,6 +8,7 @@ import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.dto.OrderDto;
 import kz.qBots.qSoft.data.dto.UserDto;
 import kz.qBots.qSoft.data.entity.Item;
+import kz.qBots.qSoft.data.entity.Role;
 import kz.qBots.qSoft.data.entity.User;
 import kz.qBots.qSoft.exception.InvalidCommandException;
 import kz.qBots.qSoft.mapper.CartMapper;
@@ -17,7 +18,7 @@ import kz.qBots.qSoft.service.OrderService;
 import kz.qBots.qSoft.service.UserService;
 import kz.qBots.qSoft.telegram.constants.TelegramConstants;
 import kz.qBots.qSoft.telegram.dto.StartCommandDto;
-import kz.qBots.qSoft.telegram.enums.Role;
+import kz.qBots.qSoft.telegram.enums.Roles;
 import kz.qBots.qSoft.telegram.service.TelegramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +55,7 @@ public class UserServiceImpl implements UserService {
     try {
       deletePreviousWebAppInfo(user.getChatId(), user.getLastMessageId());
       StartCommandDto startCommandDto =
-          new StartCommandDto(1, user.getChatId(), Role.USER); // TODO shopId
+          new StartCommandDto(1, user.getChatId(), Roles.USER); // TODO shopId
       SendMessage message =
           SendMessage.builder()
               .parseMode(TelegramConstants.PARSE_MODE_HTML)
@@ -71,10 +73,23 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public boolean isManager(User user) {
+    Set<Role> roles=user.getRoles();
+    boolean isManager=false;
+    for(Role role:roles){
+      if(role.getName().equals("Менеджер")){
+        isManager=true;
+        break;
+      }
+    }
+    return isManager;
+  }
+
+  @Override
   public void processManagerCommand(User user) {
     try {
       deletePreviousWebAppInfo(user.getChatId(), user.getLastMessageId());
-      StartCommandDto startCommandDto = new StartCommandDto(1, user.getChatId(), Role.MANAGER);
+      StartCommandDto startCommandDto = new StartCommandDto(1, user.getChatId(), Roles.MANAGER);
       SendMessage message =
           SendMessage.builder()
               .parseMode(TelegramConstants.PARSE_MODE_HTML)

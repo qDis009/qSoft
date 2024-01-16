@@ -33,4 +33,5 @@ public interface UserService {
     UserDto getByChatId(long chatId);
 
     void deleteFavorite(int userId, int itemId);
+    boolean isManager(User user);
 }
