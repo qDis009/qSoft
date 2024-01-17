@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -66,5 +67,16 @@ public class Item {
   @JsonIgnore
   public double getDiscount() {
     return retailPrice * discountPercentage / 100d;
+  }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Item item = (Item) o;
+    return Objects.equals(id, item.id);
+  }
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
   }
 }

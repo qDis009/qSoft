@@ -20,62 +20,66 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
-    private final UserService userService;
-    private final ResentSeenService resentSeenService;
-    @GetMapping("/{id}/get-favorite")
-    public ResponseEntity<List<ItemDto>> getFavorite(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(userService.getFavorite(id));
-    }
+  private final UserService userService;
+  private final ResentSeenService resentSeenService;
 
-    @PostMapping("/{id}/add-favorite/{itemId}")
-    public ResponseEntity<Void> addFavorite(
-            @PathVariable("id") int id, @PathVariable("itemId") int itemId) {
-        userService.addFavorite(id, itemId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+  @GetMapping("/{id}/get-favorite")
+  public ResponseEntity<List<ItemDto>> getFavorite(@PathVariable("id") Integer id) {
+    return ResponseEntity.ok(userService.getFavorite(id));
+  }
 
-    @DeleteMapping("/{id}/delete-favorite/{itemId}")
-    public ResponseEntity<Void> deleteFavorite(@PathVariable("id") int id, @PathVariable("itemId") int itemId) {
-        userService.deleteFavorite(id, itemId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+  @PostMapping("/{id}/add-favorite/{itemId}")
+  public ResponseEntity<Void> addFavorite(
+      @PathVariable("id") int id, @PathVariable("itemId") int itemId) {
+    userService.addFavorite(id, itemId);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 
-    @PutMapping("/update")
-    public ResponseEntity<UserDto> update(@RequestBody UserDto userDto) {
-        return ResponseEntity.ok(userService.update(userDto));
-    }
+  @DeleteMapping("/{id}/delete-favorite/{itemId}")
+  public ResponseEntity<Void> deleteFavorite(
+      @PathVariable("id") int id, @PathVariable("itemId") int itemId) {
+    userService.deleteFavorite(id, itemId);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 
-    @PatchMapping("/{id}/set-language")
-    public ResponseEntity<Void> setLanguage(
-            @PathVariable("id") Integer id, @RequestParam("language") String language) {
-        userService.setLanguage(id, language);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+  @PutMapping("/update")
+  public ResponseEntity<UserDto> update(@RequestBody UserDto userDto) {
+    return ResponseEntity.ok(userService.update(userDto));
+  }
 
-    @GetMapping("/{id}/order-history")
-    public ResponseEntity<Page<OrderDto>> getOrdersHistory(
-            @PathVariable("id") Integer id,
-            @PageableDefault(value = Integer.MAX_VALUE) Pageable pageable) {
-        return ResponseEntity.ok(userService.getOrdersHistory(id, pageable));
-    }
+  @PatchMapping("/{id}/set-language")
+  public ResponseEntity<Void> setLanguage(
+      @PathVariable("id") Integer id, @RequestParam("language") String language) {
+    userService.setLanguage(id, language);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 
-    @GetMapping("/{id}/cart")
-    public ResponseEntity<List<CartDto>> getCart(@PathVariable("id") int id) {
-        return ResponseEntity.ok(userService.getCart(id));
-    }
+  @GetMapping("/{id}/order-history")
+  public ResponseEntity<Page<OrderDto>> getOrdersHistory(
+      @PathVariable("id") Integer id,
+      @PageableDefault(value = Integer.MAX_VALUE) Pageable pageable) {
+    return ResponseEntity.ok(userService.getOrdersHistory(id, pageable));
+  }
 
-    @GetMapping("/{chatId}")
-    public ResponseEntity<UserDto> getByChatId(@PathVariable("chatId") long chatId) {
-        return ResponseEntity.ok(userService.getByChatId(chatId));
-    }
-    @GetMapping("/{id}/resent-seen")
-    public ResponseEntity<List<ItemDto>> getResentSeen(@PathVariable("id") int id){
-        return ResponseEntity.ok(resentSeenService.getResentSeenByUserId(id));
-    }
-    @PostMapping("/{id}/add-resent-seen/{itemId}")
-    public ResponseEntity<Void> addResentSeen(@PathVariable("id") int userId,
-                                              @PathVariable("itemId") int itemId){
-        resentSeenService.addResentSeen(userId,itemId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+  @GetMapping("/{id}/cart")
+  public ResponseEntity<List<CartDto>> getCart(@PathVariable("id") int id) {
+    return ResponseEntity.ok(userService.getCart(id));
+  }
+
+  @GetMapping("/{chatId}")
+  public ResponseEntity<UserDto> getByChatId(@PathVariable("chatId") long chatId) {
+    return ResponseEntity.ok(userService.getByChatId(chatId));
+  }
+
+  @GetMapping("/{id}/resent-seen")
+  public ResponseEntity<List<ItemDto>> getResentSeen(@PathVariable("id") int id) {
+    return ResponseEntity.ok(resentSeenService.getResentSeenByUserId(id));
+  }
+
+  @PostMapping("/{id}/add-resent-seen/{itemId}")
+  public ResponseEntity<Void> addResentSeen(
+      @PathVariable("id") int userId, @PathVariable("itemId") int itemId) {
+    resentSeenService.addResentSeen(userId, itemId);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 }

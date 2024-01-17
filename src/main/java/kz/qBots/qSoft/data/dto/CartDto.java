@@ -6,9 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CartDto {
-    private Integer id;
-    private Integer userId;
-    private Integer itemId;
-    private Integer orderId;
-    private int itemCount;
+  private Integer id;
+  private int itemPrice;
+  private int itemCount;
+  private String itemName;
+  private Integer userId;
+  private Integer itemId;
+  private Integer orderId;
 }

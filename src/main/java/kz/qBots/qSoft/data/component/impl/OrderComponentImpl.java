@@ -3,12 +3,14 @@ package kz.qBots.qSoft.data.component.impl;
 import jakarta.persistence.EntityNotFoundException;
 import kz.qBots.qSoft.data.component.OrderComponent;
 import kz.qBots.qSoft.data.entity.Order;
+import kz.qBots.qSoft.data.enums.OrderStatus;
 import kz.qBots.qSoft.data.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +34,15 @@ public class OrderComponentImpl implements OrderComponent {
     @Override
     public void setStatus(int id, String status) {
         orderRepository.setStatus(id,status);
+    }
+
+    @Override
+    public List<Order> findByStatus(OrderStatus status) {
+        return orderRepository.findByOrderStatus(status);
+    }
+
+    @Override
+    public List<Order> findByExcludedOrderStatus(List<OrderStatus> excludedOrderStatus) {
+        return orderRepository.findByOrderStatusNotIn(excludedOrderStatus);
     }
 }

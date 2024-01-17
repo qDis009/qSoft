@@ -22,4 +22,6 @@ public class OrderDto {
   private Integer shopId;
   private Integer userId;
   private Set<CartDto> carts;
+  private String comment;
+  private String rejectReason;
 }

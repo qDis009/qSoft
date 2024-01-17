@@ -16,4 +16,5 @@ public class OrderRequest {
   private String created;
   private Integer userId;
   private Integer shopId;
+  private String comment;
 }

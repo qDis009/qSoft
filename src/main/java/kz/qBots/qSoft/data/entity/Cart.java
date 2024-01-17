@@ -14,6 +14,8 @@ public class Cart {
   private Integer id;
 
   private int itemCount;
+  private int itemPrice;
+  private String itemName;
 
   @ManyToOne
   @JoinColumn(name = "order_id", referencedColumnName = "id")

@@ -21,6 +21,8 @@ public class Order {
   private Integer id;
   private int total;
   private double discount;
+  private String comment;
+  private String rejectReason;
 
   @Enumerated(EnumType.STRING)
   private PaymentType paymentType;
