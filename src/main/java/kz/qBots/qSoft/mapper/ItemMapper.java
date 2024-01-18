@@ -9,5 +9,6 @@ import org.mapstruct.Mapping;
 public interface ItemMapper {
   @Mapping(target = "subCategoryId", source = "subCategory.id")
   @Mapping(target = "created", expression = "java(item.getCreated().toString())")
+  @Mapping(target = "discount",expression = "java(item.getDiscount())")
   ItemDto mapItemToItemDto(Item item);
 }

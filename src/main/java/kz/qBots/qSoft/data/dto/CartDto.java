@@ -7,8 +7,10 @@ import lombok.Setter;
 @Setter
 public class CartDto {
   private Integer id;
-  private int itemPrice;
+  private int totalPrice;
   private int itemCount;
+  private double totalDiscount;
+  private boolean enabled;
   private String itemName;
   private Integer userId;
   private Integer itemId;

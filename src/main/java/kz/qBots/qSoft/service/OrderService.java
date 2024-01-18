@@ -17,4 +17,5 @@ public interface OrderService {
   List<OrderDto> getManagerAcceptedOrders();
   void rejectOrder(int id,String reason);
   List<OrderDto> getInWayOrders();
+  List<OrderDto> getCompletedOrders();
 }

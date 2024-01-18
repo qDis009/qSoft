@@ -15,5 +15,8 @@ public interface CartMapper {
   @Mapping(target = "userId", source = "user.id")
   @Mapping(target = "itemId", source = "item.id")
   @Mapping(target = "orderId", source = "order.id")
+  @Mapping(target = "totalPrice",expression = "java(cart.getTotalPrice())")
+  @Mapping(target = "totalDiscount",expression = "java(cart.getTotalDiscount())")
   CartDto mapCartToCartDto(Cart cart);
+
 }

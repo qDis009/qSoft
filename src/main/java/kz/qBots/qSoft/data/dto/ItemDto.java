@@ -12,7 +12,7 @@ public class ItemDto {
   private String nameRu;
   private String nameKz;
   private int soldCount;
-  private Integer discountPercentage;
+  private double discount;
   private int retailPrice;
   private int wholesalePrice;
   private int gradeCount;

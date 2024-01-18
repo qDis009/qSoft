@@ -2,6 +2,7 @@ package kz.qBots.qSoft.mapper;
 
 import kz.qBots.qSoft.data.dto.OrderDto;
 import kz.qBots.qSoft.data.entity.Order;
+import kz.qBots.qSoft.rest.request.OrderRequest;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,4 +15,7 @@ public interface OrderMapper {
     @Mapping(target = "shopId",source = "shop.id")
     @Mapping(target = "created", expression = "java(order.getCreated().toString())")
     OrderDto mapOrderToOrderDto(Order order);
+    @Mapping(target = "user.id",source = "userId")
+    @Mapping(target = "shop.id",source = "shopId")
+    Order mapOrderRequestToOrder(OrderRequest orderRequest);
 }

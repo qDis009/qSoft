@@ -16,10 +16,10 @@ import java.util.List;
 public class OrderController {
   private final OrderService orderService;
 
-  //  @PostMapping
-  //  public ResponseEntity<OrderDto> order(@RequestBody OrderRequest orderRequest) {
-  //    return ResponseEntity.ok(orderService.order(orderRequest));
-  //  }
+  @PostMapping
+  public ResponseEntity<OrderDto> order(@RequestBody OrderRequest orderRequest) {
+    return ResponseEntity.ok(orderService.order(orderRequest));
+  }
 
   @GetMapping("/{id}")
   public ResponseEntity<OrderDto> getById(@PathVariable("id") int id) {
@@ -33,12 +33,12 @@ public class OrderController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  @GetMapping("/get-manager-new-orders")
+  @GetMapping("/manager-new-orders")
   public ResponseEntity<List<OrderDto>> getManagerNewOrders() {
     return ResponseEntity.ok(orderService.getManagerNewOrders());
   }
 
-  @GetMapping("/get-manager-accepted-orders")
+  @GetMapping("/manager-accepted-orders")
   public ResponseEntity<List<OrderDto>> getManagerAcceptedOrders() {
     return ResponseEntity.ok(orderService.getManagerAcceptedOrders());
   }
@@ -50,8 +50,13 @@ public class OrderController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  @GetMapping("/get-in-way-orders")
+  @GetMapping("/in-way-orders")
   public ResponseEntity<List<OrderDto>> getInWayOrders() {
     return ResponseEntity.ok(orderService.getInWayOrders());
+  }
+
+  @GetMapping("/completed-orders")
+  public ResponseEntity<List<OrderDto>> getCompletedOrders() {
+    return ResponseEntity.ok(orderService.getCompletedOrders());
   }
 }

@@ -52,11 +52,11 @@ public class Order {
   @OneToMany(mappedBy = "order")
   private Set<Cart> carts;
 
-  public void addDiscount(double itemDiscount) {
-    discount += itemDiscount;
+  public void addDiscount(double totalDiscount) {
+    discount += totalDiscount;
   }
 
-  public void addTotal(double price) {
-    total += price;
+  public void addTotal(double totalPrice) {
+    total += totalPrice;
   }
 }

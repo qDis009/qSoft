@@ -23,7 +23,7 @@ public class UserController {
   private final UserService userService;
   private final ResentSeenService resentSeenService;
 
-  @GetMapping("/{id}/get-favorite")
+  @GetMapping("/{id}/favorite")
   public ResponseEntity<List<ItemDto>> getFavorite(@PathVariable("id") Integer id) {
     return ResponseEntity.ok(userService.getFavorite(id));
   }

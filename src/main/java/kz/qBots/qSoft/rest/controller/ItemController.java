@@ -29,22 +29,22 @@ public class ItemController {
     return ResponseEntity.ok(itemService.findById(id));
   }
 
-  @GetMapping("/get-retail-hit/{userId}")
+  @GetMapping("/retail-hit/{userId}")
   public ResponseEntity<List<ItemDto>> getRetailHit(@PathVariable("userId") int userId) {
     return ResponseEntity.ok(itemService.findItemsByItemType(ItemType.RETAIL, userId));
   }
 
-  @GetMapping("/get-wholesale-hit/{userId}")
+  @GetMapping("/wholesale-hit/{userId}")
   public ResponseEntity<List<ItemDto>> getWholesaleHit(@PathVariable("userId") int userId) {
     return ResponseEntity.ok(itemService.findItemsByItemType(ItemType.WHOLESALE, userId));
   }
 
-  @GetMapping("/get-stocks/{userId}")
+  @GetMapping("/stocks/{userId}")
   public ResponseEntity<List<ItemDto>> getStocks(@PathVariable("userId") int userId) {
     return ResponseEntity.ok(itemService.getStocks(userId));
   }
 
-  @GetMapping("/{id}/get-feedbacks")
+  @GetMapping("/{id}/feedbacks")
   public ResponseEntity<List<ItemFeedbackDto>> getFeedbacks(@PathVariable("id") int id) {
     return ResponseEntity.ok(itemService.getFeedbacks(id));
   }

@@ -1,5 +1,6 @@
 package kz.qBots.qSoft.rest.request;
 
+import kz.qBots.qSoft.data.dto.CartDto;
 import kz.qBots.qSoft.data.enums.DeliveryType;
 import kz.qBots.qSoft.data.enums.PaymentType;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import java.util.Set;
 public class OrderRequest {
   private DeliveryType deliveryType;
   private PaymentType paymentType;
-  private Set<CartRequest> carts;
+  private Set<CartDto> carts;
   private String created;
   private Integer userId;
   private Integer shopId;

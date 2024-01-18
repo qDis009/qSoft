@@ -2,6 +2,7 @@ package kz.qBots.qSoft.data.repository;
 
 import kz.qBots.qSoft.data.entity.Order;
 import kz.qBots.qSoft.data.enums.OrderStatus;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +23,5 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
   void setStatus(int id, String status);
   List<Order> findByOrderStatus(OrderStatus status);
   List<Order> findByOrderStatusNotIn(List<OrderStatus> excludedOrderStatus);
+  List<Order> findByOrderStatusIn(List<OrderStatus> orderStatuses);
 }

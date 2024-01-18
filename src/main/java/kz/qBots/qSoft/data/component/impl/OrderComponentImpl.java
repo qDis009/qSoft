@@ -45,4 +45,14 @@ public class OrderComponentImpl implements OrderComponent {
     public List<Order> findByExcludedOrderStatus(List<OrderStatus> excludedOrderStatus) {
         return orderRepository.findByOrderStatusNotIn(excludedOrderStatus);
     }
+
+    @Override
+    public List<Order> findByOrderStatuses(List<OrderStatus> orderStatuses) {
+        return orderRepository.findByOrderStatusIn(orderStatuses);
+    }
+
+    @Override
+    public Order create(Order order) {
+        return orderRepository.save(order);
+    }
 }

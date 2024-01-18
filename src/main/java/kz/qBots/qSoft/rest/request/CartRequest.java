@@ -8,7 +8,8 @@ import lombok.Setter;
 public class CartRequest {
   private Integer userId;
   private Integer itemId;
-  private Integer itemCount;
+  private int  itemCount;
   private int itemPrice;
+  private double itemDiscount;
   private String itemName;
 }

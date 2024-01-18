@@ -1,5 +1,6 @@
 package kz.qBots.qSoft.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,9 @@ public class Cart {
 
   private int itemCount;
   private int itemPrice;
+  private double itemDiscount;
   private String itemName;
+  private boolean enabled=true;
 
   @ManyToOne
   @JoinColumn(name = "order_id", referencedColumnName = "id")
@@ -28,4 +31,12 @@ public class Cart {
   @ManyToOne
   @JoinColumn(name = "item_id", referencedColumnName = "id")
   private Item item;
+  @JsonIgnore
+  public int getTotalPrice() {
+    return itemPrice * itemCount;
+  }
+  @JsonIgnore
+  public double getTotalDiscount() {
+    return itemCount * itemDiscount;
+  }
 }

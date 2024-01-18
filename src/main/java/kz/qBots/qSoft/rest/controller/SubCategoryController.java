@@ -22,7 +22,7 @@ public class SubCategoryController {
   public ResponseEntity<SubCategoryDto> getById(@PathVariable("id") int id) {
     return ResponseEntity.ok(subCategoryService.findById(id));
   }
-  @GetMapping("/{id}/get-items/{userId}")
+  @GetMapping("/{id}/items/{userId}")
   public ResponseEntity<List<ItemDto>> getItemsBySubCategory(@PathVariable("id") int id,
                                                              @PathVariable("userId") int userId){
     return ResponseEntity.ok(subCategoryService.findItemsBySubCategoryId(id,userId));

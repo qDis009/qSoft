@@ -15,4 +15,6 @@ public interface OrderComponent {
     void setStatus(int id,String status);
     List<Order> findByStatus(OrderStatus status);
     List<Order> findByExcludedOrderStatus(List<OrderStatus> excludedOrderStatus);
+    List<Order> findByOrderStatuses(List<OrderStatus> orderStatuses);
+    Order create(Order order);
 }
