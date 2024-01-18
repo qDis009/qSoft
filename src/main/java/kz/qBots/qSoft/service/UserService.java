@@ -4,12 +4,15 @@ import kz.qBots.qSoft.data.dto.CartDto;
 import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.dto.OrderDto;
 import kz.qBots.qSoft.data.dto.UserDto;
+import kz.qBots.qSoft.data.entity.Cart;
+import kz.qBots.qSoft.data.entity.Order;
 import kz.qBots.qSoft.data.entity.User;
 import kz.qBots.qSoft.telegram.enums.Interface;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
     UserDto getById(Integer id);
