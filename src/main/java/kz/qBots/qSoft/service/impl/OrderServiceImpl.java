@@ -1,5 +1,7 @@
 package kz.qBots.qSoft.service.impl;
 
+import kz.qBots.qSoft.config.constants.DeliveryTypeConstants;
+import kz.qBots.qSoft.config.constants.PaymentTypeConstants;
 import kz.qBots.qSoft.data.component.CartComponent;
 import kz.qBots.qSoft.data.component.OrderComponent;
 import kz.qBots.qSoft.data.component.UserComponent;
@@ -11,7 +13,6 @@ import kz.qBots.qSoft.data.enums.OrderStatus;
 import kz.qBots.qSoft.mapper.OrderMapper;
 import kz.qBots.qSoft.rest.request.OrderRequest;
 import kz.qBots.qSoft.service.OrderService;
-import kz.qBots.qSoft.service.UserService;
 import kz.qBots.qSoft.telegram.service.TelegramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -52,17 +53,60 @@ public class OrderServiceImpl implements OrderService {
     setOrderToCarts(orderCarts, order);
     order.setOrderStatus(OrderStatus.NEW);
     orderComponent.update(order);
-    sendNotificationToUser(user, order, orderCarts);
+    sendOrderNotificationToClient(user, order, orderCarts);
+    sendNotificationToManager(order);
     return orderMapper.mapOrderToOrderDto(order);
   }
 
-  private void sendNotificationToUser(User user, Order order, Set<Cart> orderCarts) {
+  private void sendNotificationToManager(Order order) {
+    List<User> managers = userComponent.findByRoleName("MANAGER");
+    StringBuilder message = new StringBuilder();
+    message
+        .append("Клиент оформил заказ!\n")
+        .append("Заказ №")
+        .append(order.getId())
+        .append("\n")
+        .append("Тип оплаты: ")
+        .append(PaymentTypeConstants.PAYMENT_TYPE_STRING_MAP.get(order.getPaymentType()))
+        .append("\n")
+        .append("Доставка: ")
+        .append(DeliveryTypeConstants.DELIVERY_TYPE_STRING_MAP.get(order.getDeliveryType()))
+        .append("\n")
+        .append("ФИО: ")
+        .append(order.getUser().getFullName())
+        .append("\n")
+        .append("Номер телефона: ")
+        .append(order.getPhoneNumber())
+        .append("\n")
+        .append("Адрес: ")
+        .append(order.getAddress())
+        .append("\n")
+        .append("Название ИП: ")
+        .append(order.getIEName())
+        .append("\n")
+        .append("Название магазина: ")
+        .append(order.getShopName())
+        .append("\n")
+        .append("Комментарий к заказу: ")
+        .append(order.getComment());
+    for (User manager : managers) {
+      SendMessage sendMessage =
+          SendMessage.builder().text(message.toString()).chatId(manager.getChatId()).build();
+      try {
+        telegramService.sendMessage(sendMessage);
+      } catch (TelegramApiException e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
+
+  private void sendOrderNotificationToClient(User user, Order order, Set<Cart> orderCarts) {
     StringBuilder messageText = new StringBuilder();
     messageText.append("Ayan-market - Ваш заказ (№").append(order.getId()).append(")").append("\n");
     messageText.append(order.getCreated()).append(" Вы оформили заказ").append("\n");
     for (Cart cart : orderCarts) {
       messageText
-          .append(cart.getItemName())
+          .append(cart.getItem().getNameRu())
           .append(" (")
           .append(cart.getItemCount())
           .append(" шт. KZT ")
@@ -87,6 +131,75 @@ public class OrderServiceImpl implements OrderService {
       order.addDiscount(cart.getTotalDiscount());
       order.addTotal(cart.getTotalPrice());
       cartComponent.update(cart);
+    }
+  }
+
+  @Override
+  public void acceptOrderByManager(int id) {
+    Order order = orderComponent.findById(id);
+    order.setOrderStatus(OrderStatus.ACCEPTED_BY_MANAGER);
+    sendNotificationToStorekeeper(order);
+    sendManagerNotificationToClient(order);
+    orderComponent.update(order);
+  }
+
+  private void sendManagerNotificationToClient(Order order) {
+    User client = userComponent.findById(order.getUser().getId());
+    String message = "Ваш заказ №" +
+            order.getId() +
+            " принят менеджером!" +
+            "\n" +
+            "Ожидайте когда с Вами свяжутся. Спасибо!";
+    SendMessage sendMessage=SendMessage.builder()
+                    .text(message)
+                            .chatId(client.getChatId())
+                                    .build();
+    try {
+      telegramService.sendMessage(sendMessage);
+    } catch (TelegramApiException e) {
+      //TODO log
+    }
+  }
+
+  private void sendNotificationToStorekeeper(Order order) {
+    List<User> storekeepers = userComponent.findByRoleName("STOREKEEPER");
+    StringBuilder message = new StringBuilder();
+    message
+        .append("Менеджер принял заказ!\n")
+        .append("Заказ №")
+        .append(order.getId())
+        .append("\n")
+        .append("Тип оплаты: ")
+        .append(PaymentTypeConstants.PAYMENT_TYPE_STRING_MAP.get(order.getPaymentType()))
+        .append("\n")
+        .append("Доставка: ")
+        .append(DeliveryTypeConstants.DELIVERY_TYPE_STRING_MAP.get(order.getDeliveryType()))
+        .append("\n")
+        .append("ФИО: ")
+        .append(order.getUser().getFullName())
+        .append("\n")
+        .append("Номер телефона: ")
+        .append(order.getPhoneNumber())
+        .append("\n")
+        .append("Адрес: ")
+        .append(order.getAddress())
+        .append("\n")
+        .append("Название ИП: ")
+        .append(order.getIEName())
+        .append("\n")
+        .append("Название магазина: ")
+        .append(order.getShopName())
+        .append("\n")
+        .append("Комментарий к заказу: ")
+        .append(order.getComment());
+    for (User storekeeper : storekeepers) {
+      SendMessage sendMessage =
+          SendMessage.builder().text(message.toString()).chatId(storekeeper.getChatId()).build();
+      try {
+        telegramService.sendMessage(sendMessage);
+      } catch (TelegramApiException e) {
+        // TODO log
+      }
     }
   }
 
@@ -116,7 +229,19 @@ public class OrderServiceImpl implements OrderService {
     Order order = orderComponent.findById(id);
     order.setOrderStatus(OrderStatus.REJECTED);
     order.setRejectReason(reason);
+    sendRejectReasonToClient(reason, order);
     orderComponent.update(order);
+  }
+
+  private void sendRejectReasonToClient(String reason, Order order) {
+    String message = "К сожалению, Ваш заказ №" + order.getId() + " отклонен! Причина: " + reason;
+    SendMessage sendMessage =
+        SendMessage.builder().text(message).chatId(order.getUser().getChatId()).build();
+    try {
+      telegramService.sendMessage(sendMessage);
+    } catch (TelegramApiException e) {
+      // TODO log
+    }
   }
 
   @Override
@@ -132,5 +257,37 @@ public class OrderServiceImpl implements OrderService {
     return orderComponent.findByOrderStatuses(completedOrderStatuses).stream()
         .map(orderMapper::mapOrderToOrderDto)
         .toList();
+  }
+
+  @Override
+  public List<OrderDto> getStorekeeperNewOrders() {
+    return orderComponent.findByStatus(OrderStatus.ACCEPTED_BY_MANAGER).stream()
+        .map(orderMapper::mapOrderToOrderDto)
+        .toList();
+  }
+
+  @Override
+  public void acceptOrderByStorekeeper(int id) {
+    Order order = orderComponent.findById(id);
+    order.setOrderStatus(OrderStatus.ACCEPTED_BY_STOREKEEPER);
+    sendStorekeeperNotificationToClient(order);
+    orderComponent.update(order);
+  }
+  private void sendStorekeeperNotificationToClient(Order order){
+    String message="Ваш заказ №"+order.getId()+" принят кладовщиком";
+    SendMessage sendMessage=SendMessage.builder()
+            .text(message)
+            .chatId(order.getUser().getChatId())
+            .build();
+    try {
+      telegramService.sendMessage(sendMessage);
+    } catch (TelegramApiException e) {
+      //TODO
+    }
+  }
+
+  @Override
+  public List<OrderDto> getStorekeeperAcceptedOrders() {
+    return orderComponent.findByStatus(OrderStatus.ACCEPTED_BY_STOREKEEPER).stream().map(orderMapper::mapOrderToOrderDto).toList();
   }
 }

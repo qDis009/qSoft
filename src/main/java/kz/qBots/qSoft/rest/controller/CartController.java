@@ -15,7 +15,7 @@ public class CartController {
   private final CartService cartService;
 
   @PostMapping("/create")
-  public ResponseEntity<CartDto> create(@RequestPart CartRequest model) {
+  public ResponseEntity<CartDto> create(@RequestBody CartRequest model) {
     return ResponseEntity.ok(cartService.create(model));
   }
 

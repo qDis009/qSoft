@@ -1,7 +1,6 @@
 package kz.qBots.qSoft.service;
 
 import kz.qBots.qSoft.data.dto.OrderDto;
-import kz.qBots.qSoft.data.enums.OrderStatus;
 import kz.qBots.qSoft.rest.request.OrderRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,4 +17,8 @@ public interface OrderService {
   void rejectOrder(int id,String reason);
   List<OrderDto> getInWayOrders();
   List<OrderDto> getCompletedOrders();
+  void acceptOrderByManager(int id);
+  List<OrderDto> getStorekeeperNewOrders();
+  void acceptOrderByStorekeeper(int id);
+  List<OrderDto> getStorekeeperAcceptedOrders();
 }

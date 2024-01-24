@@ -23,6 +23,11 @@ public class Order {
   private double discount;
   private String comment;
   private String rejectReason;
+  private String pdfFileUrl;
+  private String phoneNumber;
+  private String address;
+  private String IEName;
+  private String shopName;
 
   @Enumerated(EnumType.STRING)
   private PaymentType paymentType;

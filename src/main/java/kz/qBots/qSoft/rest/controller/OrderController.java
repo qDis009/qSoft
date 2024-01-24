@@ -59,4 +59,24 @@ public class OrderController {
   public ResponseEntity<List<OrderDto>> getCompletedOrders() {
     return ResponseEntity.ok(orderService.getCompletedOrders());
   }
+
+  @PatchMapping("/{id}/accept-by-manager")
+  public ResponseEntity<Void> acceptOrderByManager(@PathVariable("id") int id) {
+    orderService.acceptOrderByManager(id);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @GetMapping("/storekeeper-new-orders")
+  public ResponseEntity<List<OrderDto>> getStorekeeperNewOrders() {
+    return ResponseEntity.ok(orderService.getStorekeeperNewOrders());
+  }
+  @GetMapping("/storekeeper-accepted-orders")
+  public ResponseEntity<List<OrderDto>> getStorekeeperAcceptedOrders(){
+    return ResponseEntity.ok(orderService.getStorekeeperAcceptedOrders());
+  }
+  @PatchMapping("/{id}/accept-by-storekeeper")
+  public ResponseEntity<Void> acceptOrderByStorekeeper(@PathVariable("id") int id) {
+    orderService.acceptOrderByStorekeeper(id);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 }

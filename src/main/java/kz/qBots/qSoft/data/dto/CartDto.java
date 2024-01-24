@@ -9,10 +9,9 @@ public class CartDto {
   private Integer id;
   private int totalPrice;
   private int itemCount;
-  private double totalDiscount;
   private boolean enabled;
-  private String itemName;
+  private double totalDiscount;
   private Integer userId;
-  private Integer itemId;
+  private ItemDto item;
   private Integer orderId;
 }

@@ -18,4 +18,8 @@ public class OrderRequest {
   private Integer userId;
   private Integer shopId;
   private String comment;
+  private String phoneNumber;
+  private String address;
+  private String IEName;
+  private String shopName;
 }

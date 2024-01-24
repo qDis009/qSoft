@@ -5,5 +5,5 @@ public enum Interface {
     ADMIN,
     MANAGER,
     COURIER,
-    SKLAD
+    STOREKEEPER
 }
