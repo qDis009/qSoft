@@ -16,10 +16,10 @@ public class OrderRequest {
   private Set<CartDto> carts;
   private String created;
   private Integer userId;
-  private Integer shopId;
   private String comment;
   private String phoneNumber;
   private String address;
   private String IEName;
   private String shopName;
+  private String fullName;
 }

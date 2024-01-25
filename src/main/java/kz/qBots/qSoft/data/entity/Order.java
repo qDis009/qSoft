@@ -28,6 +28,7 @@ public class Order {
   private String address;
   private String IEName;
   private String shopName;
+  private String fullName;
 
   @Enumerated(EnumType.STRING)
   private PaymentType paymentType;

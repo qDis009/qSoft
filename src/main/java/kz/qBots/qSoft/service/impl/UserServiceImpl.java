@@ -29,6 +29,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.webapp.WebAppInfo;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -73,12 +74,25 @@ public class UserServiceImpl implements UserService {
     Set<Role> roles=user.getRoles();
     boolean isManager=false;
     for(Role role:roles){
-      if(role.getName().equals("Менеджер")){
+      if(role.getName().equals("MANAGER")){
         isManager=true;
         break;
       }
     }
     return isManager;
+  }
+
+  @Override
+  public boolean isStorekeeper(User user) {
+    Set<Role> roles=user.getRoles();
+    boolean isStorekeeper=false;
+    for(Role role:roles){
+      if(role.getName().equals("STOREKEEPER")){
+        isStorekeeper=true;
+        break;
+      }
+    }
+    return isStorekeeper;
   }
 
   @Override
@@ -103,7 +117,14 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<CartDto> getCart(int id) {
     User user = userComponent.findById(id);
-    return user.getCarts().stream().map(cartMapper::mapCartToCartDto).toList();
+    Set<Cart> carts=user.getCarts();
+    List<Cart> enabledCarts=new ArrayList<>();
+    carts.forEach(cart->{
+      if(cart.isEnabled()){
+        enabledCarts.add(cart);
+      }
+    });
+    return enabledCarts.stream().map(cartMapper::mapCartToCartDto).toList();
   }
 
   @Override

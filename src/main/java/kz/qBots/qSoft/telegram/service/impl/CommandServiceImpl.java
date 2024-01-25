@@ -27,7 +27,7 @@ public class CommandServiceImpl implements CommandService {
         userService.processStartCommand(user, Interface.USER,"Магазин");
       }
       case "/manager" -> {
-        // TODO check role
+        //TODO check role
         if (userService.isManager(user)) {
           userService.processStartCommand(user, Interface.MANAGER, "Менеджер");
         }else{

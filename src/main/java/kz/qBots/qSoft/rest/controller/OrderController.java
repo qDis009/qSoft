@@ -45,8 +45,8 @@ public class OrderController {
 
   @PatchMapping("/{id}/reject")
   public ResponseEntity<Void> rejectOrder(
-      @PathVariable("id") int id, @RequestParam("reason") String reason) {
-    orderService.rejectOrder(id, reason);
+      @PathVariable("id") int id, @RequestParam("reason") String reason,@RequestParam("role") String role) {
+    orderService.rejectOrder(id, reason,role);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
@@ -55,9 +55,9 @@ public class OrderController {
     return ResponseEntity.ok(orderService.getInWayOrders());
   }
 
-  @GetMapping("/completed-orders")
+  @GetMapping("/manager-completed-orders")
   public ResponseEntity<List<OrderDto>> getCompletedOrders() {
-    return ResponseEntity.ok(orderService.getCompletedOrders());
+    return ResponseEntity.ok(orderService.getManagerCompletedOrders());
   }
 
   @PatchMapping("/{id}/accept-by-manager")
@@ -70,13 +70,26 @@ public class OrderController {
   public ResponseEntity<List<OrderDto>> getStorekeeperNewOrders() {
     return ResponseEntity.ok(orderService.getStorekeeperNewOrders());
   }
+
   @GetMapping("/storekeeper-accepted-orders")
-  public ResponseEntity<List<OrderDto>> getStorekeeperAcceptedOrders(){
+  public ResponseEntity<List<OrderDto>> getStorekeeperAcceptedOrders() {
     return ResponseEntity.ok(orderService.getStorekeeperAcceptedOrders());
   }
+
   @PatchMapping("/{id}/accept-by-storekeeper")
   public ResponseEntity<Void> acceptOrderByStorekeeper(@PathVariable("id") int id) {
     orderService.acceptOrderByStorekeeper(id);
     return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @PatchMapping("/{id}/complete-order-by-storekeeper")
+  public ResponseEntity<Void> completeOrderByStorekeeper(@PathVariable("id") int id) {
+    orderService.completeOrderByStorekeeper(id);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @GetMapping("/storekeeper-completed-orders")
+  public ResponseEntity<List<OrderDto>> getStorekeeperCompletedOrders() {
+    return ResponseEntity.ok(orderService.getStorekeeperCompletedOrders());
   }
 }

@@ -28,4 +28,5 @@ public class OrderDto {
   private String address;
   private String IEName;
   private String shopName;
+  private String fullName;
 }

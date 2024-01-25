@@ -45,7 +45,7 @@ public class CartServiceImpl implements CartService {
   public CartDto reduceCount(int id) {
     Cart cart = cartComponent.findById(id);
     int itemCount = cart.getItemCount();
-    itemCount++;
+    itemCount--;
     cart.setItemCount(itemCount);
     cartComponent.update(cart);
     return cartMapper.mapCartToCartDto(cart);
@@ -55,7 +55,7 @@ public class CartServiceImpl implements CartService {
   public CartDto increaseCount(int id) {
     Cart cart = cartComponent.findById(id);
     int itemCount = cart.getItemCount();
-    itemCount--;
+    itemCount++;
     cart.setItemCount(itemCount);
     cartComponent.update(cart);
     return cartMapper.mapCartToCartDto(cart);

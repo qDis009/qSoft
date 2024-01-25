@@ -14,11 +14,13 @@ public interface OrderService {
   void setStatus(int id,String status);
   List<OrderDto> getManagerNewOrders();
   List<OrderDto> getManagerAcceptedOrders();
-  void rejectOrder(int id,String reason);
+  void rejectOrder(int id,String reason,String role);
   List<OrderDto> getInWayOrders();
-  List<OrderDto> getCompletedOrders();
+  List<OrderDto> getManagerCompletedOrders();
   void acceptOrderByManager(int id);
   List<OrderDto> getStorekeeperNewOrders();
   void acceptOrderByStorekeeper(int id);
   List<OrderDto> getStorekeeperAcceptedOrders();
+  void completeOrderByStorekeeper(int id);
+  List<OrderDto> getStorekeeperCompletedOrders();
 }

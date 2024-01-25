@@ -16,6 +16,5 @@ public interface OrderMapper {
     @Mapping(target = "created", expression = "java(order.getCreated().toString())")
     OrderDto mapOrderToOrderDto(Order order);
     @Mapping(target = "user.id",source = "userId")
-    @Mapping(target = "shop.id",source = "shopId")
     Order mapOrderRequestToOrder(OrderRequest orderRequest);
 }
