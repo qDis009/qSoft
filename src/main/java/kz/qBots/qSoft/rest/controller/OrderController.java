@@ -45,8 +45,10 @@ public class OrderController {
 
   @PatchMapping("/{id}/reject")
   public ResponseEntity<Void> rejectOrder(
-      @PathVariable("id") int id, @RequestParam("reason") String reason,@RequestParam("role") String role) {
-    orderService.rejectOrder(id, reason,role);
+      @PathVariable("id") int id,
+      @RequestParam("reason") String reason,
+      @RequestParam("role") String role) {
+    orderService.rejectOrder(id, reason, role);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
@@ -82,7 +84,7 @@ public class OrderController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  @PatchMapping("/{id}/complete-order-by-storekeeper")
+  @PatchMapping("/{id}/complete-by-storekeeper")
   public ResponseEntity<Void> completeOrderByStorekeeper(@PathVariable("id") int id) {
     orderService.completeOrderByStorekeeper(id);
     return new ResponseEntity<>(HttpStatus.OK);
@@ -91,5 +93,36 @@ public class OrderController {
   @GetMapping("/storekeeper-completed-orders")
   public ResponseEntity<List<OrderDto>> getStorekeeperCompletedOrders() {
     return ResponseEntity.ok(orderService.getStorekeeperCompletedOrders());
+  }
+
+  @GetMapping("/courier-new-orders")
+  public ResponseEntity<List<OrderDto>> getCourierNewOrders() {
+    return ResponseEntity.ok(orderService.getCourierNewOrders());
+  }
+
+  @PatchMapping("/{id}/accept-by-courier/{courierId}")
+  public ResponseEntity<Void> acceptOrderByCourier(
+      @PathVariable("id") int id, @PathVariable("courierId") int courierId) {
+    orderService.acceptOrderByCourier(id, courierId);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @GetMapping("/courier-accepted-orders/{courierId}")
+  public ResponseEntity<List<OrderDto>> getCourierAcceptedOrders(
+      @PathVariable("courierId") int courierId) {
+    return ResponseEntity.ok(orderService.getCourierAcceptedOrders(courierId));
+  }
+
+  @PatchMapping("/{id}/accept-in-way")
+  public ResponseEntity<Void> acceptInWayOrder(
+      @PathVariable("id") int id) {
+    orderService.acceptInWayOrder(id);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @GetMapping("/courier-in-way-orders/{courierId}")
+  public ResponseEntity<List<OrderDto>> getCourierInWayOrders(
+      @PathVariable("courierId") int courierId) {
+    return ResponseEntity.ok(orderService.getCourierInWayOrders(courierId));
   }
 }

@@ -1,9 +1,5 @@
 package kz.qBots.qSoft.data.dto;
 
-import kz.qBots.qSoft.data.entity.Cart;
-import kz.qBots.qSoft.data.entity.Item;
-import kz.qBots.qSoft.data.entity.ItemFeedback;
-import kz.qBots.qSoft.data.entity.Order;
 import kz.qBots.qSoft.data.enums.ClientType;
 import kz.qBots.qSoft.data.enums.Language;
 
@@ -24,4 +20,5 @@ public class UserDto {
     private String address;
     private ClientType clientType;
     private String shopName;
+    private Set<OrderDto> accepterOrders;
 }

@@ -19,6 +19,7 @@ public class Order {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
+
   private int total;
   private double discount;
   private String comment;
@@ -50,6 +51,10 @@ public class Order {
   @ManyToOne
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
+
+  @ManyToOne
+  @JoinColumn(name = "courier_id", referencedColumnName = "id")
+  private User courier;
 
   @ManyToOne
   @JoinColumn(name = "shop_id", referencedColumnName = "id")

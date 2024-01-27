@@ -38,4 +38,5 @@ public interface UserService {
     void deleteFavorite(int userId, int itemId);
     boolean isManager(User user);
     boolean isStorekeeper(User user);
+    boolean isCourier(User user);
 }

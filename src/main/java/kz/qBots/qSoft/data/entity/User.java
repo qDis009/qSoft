@@ -20,6 +20,7 @@ public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
+
   private long chatId;
   private Integer lastMessageId;
   private String fullName;
@@ -46,8 +47,7 @@ public class User {
       inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles;
 
-  @OneToMany
-  private Set<Item> items;
+  @OneToMany private Set<Item> items;
 
   @ManyToMany
   @JoinTable(
@@ -67,6 +67,9 @@ public class User {
 
   @OneToMany(mappedBy = "user")
   private Set<Complaint> complaints;
+
+  @OneToMany(mappedBy = "courier")
+  private Set<Order> acceptedOrders;
 
   public User(long chatId, String tgUserName) {
     this.chatId = chatId;

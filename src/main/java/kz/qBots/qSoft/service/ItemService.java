@@ -3,6 +3,7 @@ package kz.qBots.qSoft.service;
 import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.dto.ItemFeedbackDto;
 import kz.qBots.qSoft.data.enums.ItemType;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

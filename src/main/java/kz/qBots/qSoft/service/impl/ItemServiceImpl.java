@@ -9,6 +9,7 @@ import kz.qBots.qSoft.mapper.ItemMapper;
 import kz.qBots.qSoft.service.ItemFeedbackService;
 import kz.qBots.qSoft.service.ItemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -102,4 +103,5 @@ public class ItemServiceImpl implements ItemService {
   public List<ItemFeedbackDto> getFeedbacks(int id) {
     return itemFeedbackService.getFeedbacks(id);
   }
+
 }

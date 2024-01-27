@@ -81,7 +81,10 @@ public class OrderServiceImpl implements OrderService {
         .append(order.getPhoneNumber())
         .append("\n")
         .append("Адрес: ")
-        .append(order.getAddress())
+        .append(
+            order.getDeliveryType() == DeliveryType.DELIVERY
+                ? order.getAddress()
+                : DeliveryTypeConstants.DELIVERY_TYPE_STRING_MAP.get(DeliveryType.PICKUP))
         .append("\n")
         .append("Название ИП: ")
         .append(order.getIEName())
@@ -146,7 +149,6 @@ public class OrderServiceImpl implements OrderService {
   }
 
   private void sendManagerNotificationToClient(Order order) {
-    User client = userComponent.findById(order.getUser().getId());
     String message =
         "Ваш заказ №"
             + order.getId()
@@ -154,7 +156,7 @@ public class OrderServiceImpl implements OrderService {
             + "\n"
             + "Ожидайте когда с Вами свяжутся. Спасибо!";
     SendMessage sendMessage =
-        SendMessage.builder().text(message).chatId(client.getChatId()).build();
+        SendMessage.builder().text(message).chatId(order.getUser().getChatId()).build();
     try {
       telegramService.sendMessage(sendMessage);
     } catch (TelegramApiException e) {
@@ -183,7 +185,10 @@ public class OrderServiceImpl implements OrderService {
         .append(order.getPhoneNumber())
         .append("\n")
         .append("Адрес: ")
-        .append(order.getAddress())
+        .append(
+            order.getDeliveryType() == DeliveryType.DELIVERY
+                ? order.getAddress()
+                : DeliveryTypeConstants.DELIVERY_TYPE_STRING_MAP.get(DeliveryType.PICKUP))
         .append("\n")
         .append("Название ИП: ")
         .append(order.getIEName())
@@ -226,16 +231,22 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public void rejectOrder(int id, String reason,String role) {
+  public void rejectOrder(int id, String reason, String role) {
     Order order = orderComponent.findById(id);
     order.setOrderStatus(OrderStatus.REJECTED);
     order.setRejectReason(reason);
-    sendRejectReasonToClient(reason, order,role);
+    sendRejectReasonToClient(reason, order, role);
     orderComponent.update(order);
   }
 
-  private void sendRejectReasonToClient(String reason, Order order,String role) {
-    String message = "К сожалению, "+ RoleConstants.ROLE_MAP.get(role) +" Отклонил Ваш заказ №"+ order.getId() + " Причина: " + reason;
+  private void sendRejectReasonToClient(String reason, Order order, String role) {
+    String message =
+        "К сожалению, "
+            + RoleConstants.ROLE_MAP.get(role)
+            + " Отклонил Ваш заказ №"
+            + order.getId()
+            + " Причина: "
+            + reason;
     SendMessage sendMessage =
         SendMessage.builder().text(message).chatId(order.getUser().getChatId()).build();
     try {
@@ -298,7 +309,52 @@ public class OrderServiceImpl implements OrderService {
     Order order = orderComponent.findById(id);
     order.setOrderStatus(OrderStatus.COMPLETED);
     sendCompleteNotificationToClient(order);
+    if (order.getDeliveryType().equals(DeliveryType.DELIVERY)) {
+      sendCompleteNotificationToCourier(order);
+    }
     orderComponent.update(order);
+  }
+
+  private void sendCompleteNotificationToCourier(Order order) {
+    List<User> couriers = userComponent.findByRoleName("COURIER");
+    StringBuilder message = new StringBuilder();
+    message
+        .append("Заказ собран!\n")
+        .append("Заказ №")
+        .append(order.getId())
+        .append("\n")
+        .append("Тип оплаты: ")
+        .append(PaymentTypeConstants.PAYMENT_TYPE_STRING_MAP.get(order.getPaymentType()))
+        .append("\n")
+        .append("Доставка: ")
+        .append(DeliveryTypeConstants.DELIVERY_TYPE_STRING_MAP.get(DeliveryType.DELIVERY))
+        .append("\n")
+        .append("ФИО: ")
+        .append(order.getFullName())
+        .append("\n")
+        .append("Номер телефона: ")
+        .append(order.getPhoneNumber())
+        .append("\n")
+        .append("Адрес: ")
+        .append(order.getAddress())
+        .append("\n")
+        .append("Название ИП: ")
+        .append(order.getIEName())
+        .append("\n")
+        .append("Название магазина: ")
+        .append(order.getShopName())
+        .append("\n")
+        .append("Комментарий к заказу: ")
+        .append(order.getComment());
+    for (User courier : couriers) {
+      SendMessage sendMessage =
+          SendMessage.builder().text(message.toString()).chatId(courier.getChatId()).build();
+      try {
+        telegramService.sendMessage(sendMessage);
+      } catch (TelegramApiException e) {
+        // TODO log
+      }
+    }
   }
 
   private void sendCompleteNotificationToClient(Order order) {
@@ -322,7 +378,7 @@ public class OrderServiceImpl implements OrderService {
     try {
       telegramService.sendMessage(sendMessage);
     } catch (TelegramApiException e) {
-      //TODO log
+      // TODO log
     }
   }
 
@@ -334,5 +390,85 @@ public class OrderServiceImpl implements OrderService {
     return orderComponent.findByExcludedOrderStatus(excludedOrderStatus).stream()
         .map(orderMapper::mapOrderToOrderDto)
         .toList();
+  }
+
+  @Override
+  public List<OrderDto> getCourierNewOrders() {
+    return orderComponent
+        .findByOrderStatusAndDeliveryType(OrderStatus.COMPLETED, DeliveryType.DELIVERY)
+        .stream()
+        .map(orderMapper::mapOrderToOrderDto)
+        .toList();
+  }
+
+  @Override
+  public void acceptOrderByCourier(int id, int courierId) {
+    Order order = orderComponent.findById(id);
+    User courier = userComponent.findById(courierId);
+    order.setOrderStatus(OrderStatus.ACCEPTED_BY_COURIER);
+    order.setCourier(courier);
+    sendCourierAcceptedNotificationToClient(order, courierId);
+    orderComponent.update(order);
+  }
+
+  private void sendCourierAcceptedNotificationToClient(Order order, int courierId) {
+    User courier = userComponent.findById(courierId);
+    String message =
+        "Ваш заказ №"
+            + order.getId()
+            + " принят курьером!\n"
+            + "Имя курьера: "
+            + courier.getFullName()
+            + "\n"
+            + "Номер телефона: "
+            + courier.getPhoneNumber();
+    SendMessage sendMessage =
+        SendMessage.builder().text(message).chatId(order.getUser().getChatId()).build();
+    try {
+      telegramService.sendMessage(sendMessage);
+    } catch (TelegramApiException e) {
+      // TODO log
+    }
+  }
+
+  @Override
+  public List<OrderDto> getCourierAcceptedOrders(int courierId) {
+    return orderComponent
+        .findByOrderStatusAndCourierId(OrderStatus.ACCEPTED_BY_COURIER, courierId)
+        .stream()
+        .map(orderMapper::mapOrderToOrderDto)
+        .toList();
+  }
+
+  @Override
+  public List<OrderDto> getCourierInWayOrders(int courierId) {
+    return orderComponent.findByOrderStatusAndCourierId(OrderStatus.IN_THE_WAY, courierId).stream()
+        .map(orderMapper::mapOrderToOrderDto)
+        .toList();
+  }
+
+  @Override
+  public void acceptInWayOrder(int id) {
+    Order order = orderComponent.findById(id);
+    order.setOrderStatus(OrderStatus.IN_THE_WAY);
+    courierAcceptedInWayNotificationToClient(order);
+    orderComponent.update(order);
+  }
+
+  private void courierAcceptedInWayNotificationToClient(Order order) {
+    String message =
+        "Курьер выехал к Вам! \n"
+            + "Имя курьера: "
+            + order.getCourier().getFullName()
+            + "\n"
+            + "Телефон курьера: "
+            + order.getCourier().getPhoneNumber();
+    SendMessage sendMessage =
+        SendMessage.builder().text(message).chatId(order.getUser().getChatId()).build();
+    try {
+      telegramService.sendMessage(sendMessage);
+    } catch (TelegramApiException e) {
+      // TODO log
+    }
   }
 }

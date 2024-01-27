@@ -5,12 +5,17 @@ import kz.qBots.qSoft.data.dto.ItemFeedbackDto;
 import kz.qBots.qSoft.data.enums.ItemType;
 import kz.qBots.qSoft.service.ItemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -47,5 +52,14 @@ public class ItemController {
   @GetMapping("/{id}/feedbacks")
   public ResponseEntity<List<ItemFeedbackDto>> getFeedbacks(@PathVariable("id") int id) {
     return ResponseEntity.ok(itemService.getFeedbacks(id));
+  }
+
+  @GetMapping("/{id}/photo")
+  public ResponseEntity<Resource> getPhoto(@PathVariable("id") int id)
+      throws MalformedURLException {
+    String fileName = id + ".jpg";
+    Path photoPath = Paths.get("D:\\qshop\\items\\photos\\").resolve(fileName);
+    Resource resource = new UrlResource(photoPath.toUri());
+    return ResponseEntity.ok().body(resource);
   }
 }

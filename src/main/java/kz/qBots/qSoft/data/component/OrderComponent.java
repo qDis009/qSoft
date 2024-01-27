@@ -1,6 +1,7 @@
 package kz.qBots.qSoft.data.component;
 
 import kz.qBots.qSoft.data.entity.Order;
+import kz.qBots.qSoft.data.enums.DeliveryType;
 import kz.qBots.qSoft.data.enums.OrderStatus;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
@@ -16,5 +17,7 @@ public interface OrderComponent {
     List<Order> findByStatus(OrderStatus status);
     List<Order> findByExcludedOrderStatus(List<OrderStatus> excludedOrderStatus);
     List<Order> findByOrderStatuses(List<OrderStatus> orderStatuses);
+    List<Order> findByOrderStatusAndDeliveryType(OrderStatus status, DeliveryType deliveryType);
     Order create(Order order);
+    List<Order> findByOrderStatusAndCourierId(OrderStatus orderStatus,int courierId);
 }

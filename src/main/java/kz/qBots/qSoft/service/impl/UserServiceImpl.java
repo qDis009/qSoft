@@ -48,18 +48,18 @@ public class UserServiceImpl implements UserService {
   private final CartMapper cartMapper;
 
   @Override
-  public void processStartCommand(User user, Interface roleInterface,String text) {
+  public void processStartCommand(User user, Interface roleInterface, String text) {
     try {
       deletePreviousWebAppInfo(user.getChatId(), user.getLastMessageId());
       StartCommandDto startCommandDto =
-              new StartCommandDto(1, user.getChatId(),roleInterface); // TODO shopId
+          new StartCommandDto(1, user.getChatId(), roleInterface); // TODO shopId
       SendMessage message =
-              SendMessage.builder()
-                      .parseMode(TelegramConstants.PARSE_MODE_HTML)
-                      .chatId(user.getChatId())
-                      .text(CLICK_THE_BUTTON)
-                      .replyMarkup(prepareWebAppInfo(startCommandDto, text))
-                      .build();
+          SendMessage.builder()
+              .parseMode(TelegramConstants.PARSE_MODE_HTML)
+              .chatId(user.getChatId())
+              .text(CLICK_THE_BUTTON)
+              .replyMarkup(prepareWebAppInfo(startCommandDto, text))
+              .build();
       user.setLastMessageId(telegramService.sendMessage(message));
       userComponent.update(user);
     } catch (InvalidCommandException e) {
@@ -71,11 +71,11 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public boolean isManager(User user) {
-    Set<Role> roles=user.getRoles();
-    boolean isManager=false;
-    for(Role role:roles){
-      if(role.getName().equals("MANAGER")){
-        isManager=true;
+    Set<Role> roles = user.getRoles();
+    boolean isManager = false;
+    for (Role role : roles) {
+      if (role.getName().equals("MANAGER")) {
+        isManager = true;
         break;
       }
     }
@@ -84,15 +84,28 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public boolean isStorekeeper(User user) {
-    Set<Role> roles=user.getRoles();
-    boolean isStorekeeper=false;
-    for(Role role:roles){
-      if(role.getName().equals("STOREKEEPER")){
-        isStorekeeper=true;
+    Set<Role> roles = user.getRoles();
+    boolean isStorekeeper = false;
+    for (Role role : roles) {
+      if (role.getName().equals("STOREKEEPER")) {
+        isStorekeeper = true;
         break;
       }
     }
     return isStorekeeper;
+  }
+
+  @Override
+  public boolean isCourier(User user) {
+    Set<Role> roles = user.getRoles();
+    boolean isCourier = false;
+    for (Role role : roles) {
+      if (role.getName().equals("COURIER")) {
+        isCourier = true;
+        break;
+      }
+    }
+    return isCourier;
   }
 
   @Override
@@ -117,13 +130,14 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<CartDto> getCart(int id) {
     User user = userComponent.findById(id);
-    Set<Cart> carts=user.getCarts();
-    List<Cart> enabledCarts=new ArrayList<>();
-    carts.forEach(cart->{
-      if(cart.isEnabled()){
-        enabledCarts.add(cart);
-      }
-    });
+    Set<Cart> carts = user.getCarts();
+    List<Cart> enabledCarts = new ArrayList<>();
+    carts.forEach(
+        cart -> {
+          if (cart.isEnabled()) {
+            enabledCarts.add(cart);
+          }
+        });
     return enabledCarts.stream().map(cartMapper::mapCartToCartDto).toList();
   }
 

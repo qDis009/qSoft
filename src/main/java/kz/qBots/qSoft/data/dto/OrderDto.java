@@ -29,4 +29,5 @@ public class OrderDto {
   private String IEName;
   private String shopName;
   private String fullName;
+  private Integer courierId;
 }

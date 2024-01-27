@@ -13,6 +13,7 @@ import org.mapstruct.Mapping;
 public interface OrderMapper {
     @Mapping(target = "userId",source = "user.id")
     @Mapping(target = "shopId",source = "shop.id")
+    @Mapping(target = "courierId",source = "courier.id")
     @Mapping(target = "created", expression = "java(order.getCreated().toString())")
     OrderDto mapOrderToOrderDto(Order order);
     @Mapping(target = "user.id",source = "userId")

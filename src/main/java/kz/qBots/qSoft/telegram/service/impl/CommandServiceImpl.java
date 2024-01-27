@@ -17,9 +17,10 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class CommandServiceImpl implements CommandService {
   private final TelegramService telegramService;
   private final UserService userService;
-  private static final String MANAGER="Менеджер";
-  private static final String MAGAZINE="Магазин";
-  private static final String STOREKEEPER="Кладовщик";
+  private static final String MANAGER = "Менеджер";
+  private static final String MAGAZINE = "Магазин";
+  private static final String STOREKEEPER = "Кладовщик";
+  private static final String COURIER = "Курьер";
 
   @Override
   public void process(User user, Message message) throws TelegramApiException {
@@ -34,15 +35,28 @@ public class CommandServiceImpl implements CommandService {
         if (userService.isManager(user)) {
           userService.processStartCommand(user, Interface.MANAGER, MANAGER);
         } else {
-          user.setLastMessageId(telegramService.sendMessage(getMessageToUnregisteredUser(user,MANAGER)));
+          user.setLastMessageId(
+              telegramService.sendMessage(getMessageToUnregisteredUser(user, MANAGER)));
         }
       }
       case "/storekeeper" -> {
         if (userService.isStorekeeper(user)) {
-          userService.processStartCommand(user, Interface.STOREKEEPER, "Кладовщик");
+          userService.processStartCommand(user, Interface.STOREKEEPER, STOREKEEPER);
         } else {
-          user.setLastMessageId(telegramService.sendMessage(getMessageToUnregisteredUser(user,STOREKEEPER)));
+          user.setLastMessageId(
+              telegramService.sendMessage(getMessageToUnregisteredUser(user, STOREKEEPER)));
         }
+      }
+      case "/courier" -> {
+        if (userService.isCourier(user)) {
+          userService.processStartCommand(user, Interface.COURIER, COURIER);
+        } else {
+          user.setLastMessageId(
+              telegramService.sendMessage(getMessageToUnregisteredUser(user, COURIER)));
+        }
+      }
+      case "/reg" -> {
+        // TODO
       }
       default -> throw new InvalidCommandException("Cannot found command name: " + command);
     }
@@ -56,10 +70,10 @@ public class CommandServiceImpl implements CommandService {
     return messageText.split("")[1];
   }
 
-  private SendMessage getMessageToUnregisteredUser(User user,String role) {
+  private SendMessage getMessageToUnregisteredUser(User user, String role) {
     return SendMessage.builder()
-            .text("Вы не являетесь "+role)
-            .chatId(user.getChatId())
-            .build();
+        .text("Вы не являетесь " + role + "ом")
+        .chatId(user.getChatId())
+        .build();
   }
 }

@@ -23,4 +23,9 @@ public interface OrderService {
   List<OrderDto> getStorekeeperAcceptedOrders();
   void completeOrderByStorekeeper(int id);
   List<OrderDto> getStorekeeperCompletedOrders();
+  List<OrderDto> getCourierNewOrders();
+  void acceptOrderByCourier(int id,int courierId);
+  List<OrderDto> getCourierAcceptedOrders(int courierId);
+  List<OrderDto> getCourierInWayOrders(int courierId);
+  void acceptInWayOrder(int id);
 }

@@ -3,6 +3,7 @@ package kz.qBots.qSoft.data.component.impl;
 import jakarta.persistence.EntityNotFoundException;
 import kz.qBots.qSoft.data.component.OrderComponent;
 import kz.qBots.qSoft.data.entity.Order;
+import kz.qBots.qSoft.data.enums.DeliveryType;
 import kz.qBots.qSoft.data.enums.OrderStatus;
 import kz.qBots.qSoft.data.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +53,17 @@ public class OrderComponentImpl implements OrderComponent {
     }
 
     @Override
+    public List<Order> findByOrderStatusAndDeliveryType(OrderStatus status, DeliveryType deliveryType) {
+        return orderRepository.findByOrderStatusAndDeliveryTypeEquals(status,deliveryType);
+    }
+
+    @Override
     public Order create(Order order) {
         return orderRepository.save(order);
+    }
+
+    @Override
+    public List<Order> findByOrderStatusAndCourierId(OrderStatus orderStatus, int courierId) {
+        return orderRepository.findByOrderStatusAndCourierId(orderStatus,courierId);
     }
 }
