@@ -6,4 +6,5 @@ public interface ItemFeedbackComponent {
     ItemFeedback create(ItemFeedback itemFeedback);
     ItemFeedback findById(int id);
     void delete(ItemFeedback itemFeedback);
+    ItemFeedback findByItemIdAndUserId(int itemId,int userId);
 }

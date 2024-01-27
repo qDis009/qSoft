@@ -26,4 +26,9 @@ public class ItemFeedbackComponentImpl implements ItemFeedbackComponent {
     public void delete(ItemFeedback itemFeedback) {
         itemFeedbackRepository.delete(itemFeedback);
     }
+
+    @Override
+    public ItemFeedback findByItemIdAndUserId(int itemId, int userId) {
+        return itemFeedbackRepository.findByItemIdAndUserId(itemId,userId);
+    }
 }

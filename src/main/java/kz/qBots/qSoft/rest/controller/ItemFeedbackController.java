@@ -17,10 +17,11 @@ public class ItemFeedbackController {
   @PostMapping("/create")
   public ResponseEntity<ItemFeedbackDto> create(
       @RequestBody ItemFeedbackRequest itemFeedbackRequest) {
-    if (itemFeedbackService.hasComment(itemFeedbackRequest.getUserId(),itemFeedbackRequest.getItemId())){
+    if (itemFeedbackService.hasComment(
+        itemFeedbackRequest.getUserId(), itemFeedbackRequest.getItemId())) {
       return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
-      return ResponseEntity.ok(itemFeedbackService.create(itemFeedbackRequest));
+    return ResponseEntity.ok(itemFeedbackService.create(itemFeedbackRequest));
   }
 
   @DeleteMapping("/{id}/delete")

@@ -12,6 +12,7 @@ public interface ItemComponent {
     Item create(Item item);
 
     List<Item> findAllByIds(List<Integer> ids);
+    List<Item> findByItemTypeAndDiscountPercentageExist(ItemType itemType);
 
     Item findById(int id);
 

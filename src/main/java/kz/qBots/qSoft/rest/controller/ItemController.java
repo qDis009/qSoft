@@ -7,6 +7,9 @@ import kz.qBots.qSoft.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +30,12 @@ public class ItemController {
   @GetMapping("/get-all/{userId}")
   public ResponseEntity<List<ItemDto>> getAll(@PathVariable("userId") int userId) {
     return ResponseEntity.ok(itemService.findAll(userId));
+  }
+
+  @GetMapping("/get-all")
+  public ResponseEntity<Page<ItemDto>> getAll(
+      @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
+    return ResponseEntity.ok(itemService.findAll(pageable));
   }
 
   @GetMapping("/{id}")

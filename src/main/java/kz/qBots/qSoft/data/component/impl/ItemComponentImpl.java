@@ -69,4 +69,9 @@ public class ItemComponentImpl implements ItemComponent {
   public List<Item> findItemsByItemType(ItemType itemType) {
     return itemRepository.findByItemTypeOrderBySoldCountDesc(itemType);
   }
+
+  @Override
+  public List<Item> findByItemTypeAndDiscountPercentageExist(ItemType itemType) {
+    return itemRepository.findByItemTypeAndDiscountPercentageIsExist(itemType);
+  }
 }

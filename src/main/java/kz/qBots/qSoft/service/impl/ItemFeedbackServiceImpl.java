@@ -6,7 +6,6 @@ import kz.qBots.qSoft.data.component.UserComponent;
 import kz.qBots.qSoft.data.dto.ItemFeedbackDto;
 import kz.qBots.qSoft.data.entity.Item;
 import kz.qBots.qSoft.data.entity.ItemFeedback;
-import kz.qBots.qSoft.data.entity.User;
 import kz.qBots.qSoft.mapper.ItemFeedbackMapper;
 import kz.qBots.qSoft.rest.request.ItemFeedbackRequest;
 import kz.qBots.qSoft.service.ItemFeedbackService;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +22,6 @@ public class ItemFeedbackServiceImpl implements ItemFeedbackService {
   private final ItemFeedbackComponent itemFeedbackComponent;
   private final ItemFeedbackMapper itemFeedbackMapper;
   private final ItemComponent itemComponent;
-  private final UserComponent userComponent;
 
   @Transactional
   @Override
@@ -43,10 +41,10 @@ public class ItemFeedbackServiceImpl implements ItemFeedbackService {
     Item item = itemComponent.findById(itemFeedback.getItem().getId());
     int gradeCount = item.getGradeCount();
     double grade = itemFeedback.getGrade();
-    double totalGrade=grade+gradeCount*item.getGrade();
+    double totalGrade = grade + gradeCount * item.getGrade();
     gradeCount++;
     item.setGradeCount(gradeCount);
-    item.setGrade(totalGrade/gradeCount);
+    item.setGrade(totalGrade / gradeCount);
     itemComponent.update(item);
   }
 
@@ -62,33 +60,33 @@ public class ItemFeedbackServiceImpl implements ItemFeedbackService {
   }
 
   private void updateGradeAfterDelete(ItemFeedback itemFeedback) {
-    Item item=itemComponent.findById(itemFeedback.getItem().getId());
-    int gradeCount=item.getGradeCount();
-    if(gradeCount==1){
+    Item item = itemComponent.findById(itemFeedback.getItem().getId());
+    int gradeCount = item.getGradeCount();
+    if (gradeCount == 1) {
       item.setGrade(0);
       item.setGradeCount(0);
-    }else{
-      double grade=itemFeedback.getGrade();
-      double totalGrade=item.getGrade()*gradeCount-grade;
+    } else {
+      double grade = itemFeedback.getGrade();
+      double totalGrade = item.getGrade() * gradeCount - grade;
       gradeCount--;
       item.setGradeCount(gradeCount);
-      item.setGrade(totalGrade/gradeCount);
+      item.setGrade(totalGrade / gradeCount);
     }
     itemComponent.update(item);
   }
 
   private void updateFeedbackGradeAfterDelete(ItemFeedback itemFeedback) {
-    Item item=itemComponent.findById(itemFeedback.getItem().getId());
-    int feedbackGradeCount=item.getFeedbackGradeCount();
-    if(feedbackGradeCount==1){
+    Item item = itemComponent.findById(itemFeedback.getItem().getId());
+    int feedbackGradeCount = item.getFeedbackGradeCount();
+    if (feedbackGradeCount == 1) {
       item.setFeedbackGradeCount(0);
       item.setFeedbackGrade(0);
-    }else{
-      double feedbackGrade=itemFeedback.getGrade();
-      double totalFeedbackGrade=item.getFeedbackGrade()*feedbackGradeCount-feedbackGrade;
+    } else {
+      double feedbackGrade = itemFeedback.getGrade();
+      double totalFeedbackGrade = item.getFeedbackGrade() * feedbackGradeCount - feedbackGrade;
       feedbackGradeCount--;
       item.setFeedbackGradeCount(feedbackGradeCount);
-      item.setFeedbackGrade(totalFeedbackGrade/feedbackGradeCount);
+      item.setFeedbackGrade(totalFeedbackGrade / feedbackGradeCount);
     }
     itemComponent.update(item);
   }
@@ -119,15 +117,6 @@ public class ItemFeedbackServiceImpl implements ItemFeedbackService {
 
   @Override
   public boolean hasComment(int userId, int itemId) {
-    boolean hasComment=false;
-    User user=userComponent.findById(userId);
-    Set<ItemFeedback> itemFeedbacks=user.getItemFeedbacks();
-    for(ItemFeedback itemFeedback:itemFeedbacks){
-      if(itemFeedback.getItem().getId()==itemId){
-        hasComment=true;
-        break;
-      }
-    }
-    return hasComment;
+    return Objects.nonNull(itemFeedbackComponent.findByItemIdAndUserId(itemId, userId));
   }
 }

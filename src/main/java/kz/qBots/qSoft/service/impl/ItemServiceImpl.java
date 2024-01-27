@@ -43,11 +43,12 @@ public class ItemServiceImpl implements ItemService {
     List<ItemDto> items =
         itemComponent.findAll().stream().map(itemMapper::mapItemToItemDto).toList();
     Set<Integer> favoriteItems = itemComponent.findIdsByUserId(userId);
-    items.forEach(it->{
-      if(favoriteItems.contains(it.getId())){
-        it.setFavorite(true);
-      }
-    });
+    items.forEach(
+        it -> {
+          if (favoriteItems.contains(it.getId())) {
+            it.setFavorite(true);
+          }
+        });
     return items;
   }
 
@@ -71,31 +72,28 @@ public class ItemServiceImpl implements ItemService {
             .map(itemMapper::mapItemToItemDto)
             .toList();
     Set<Integer> favoriteItems = itemComponent.findIdsByUserId(userId);
-    items.forEach(it->{
-      if(favoriteItems.contains(it.getId())){
-        it.setFavorite(true);
-      }
-    });
+    items.forEach(
+        it -> {
+          if (favoriteItems.contains(it.getId())) {
+            it.setFavorite(true);
+          }
+        });
     return items;
   }
 
   @Override
   public List<ItemDto> getStocks(int userId) {
-    List<Item> items = itemComponent.findAll();
-    List<Item> itemsWithStock = new ArrayList<>();
+    List<Item> itemsWithStock =
+        itemComponent.findByItemTypeAndDiscountPercentageExist(ItemType.RETAIL);
     Set<Integer> favoriteItems = itemComponent.findIdsByUserId(userId);
-    items.forEach(it->{
-      if(it.getDiscountPercentage()!=0){
-        itemsWithStock.add(it);
-      }
-    });
     List<ItemDto> itemDtoWithStock =
         itemsWithStock.stream().map(itemMapper::mapItemToItemDto).toList();
-    itemDtoWithStock.forEach(it->{
-      if(favoriteItems.contains(it.getId())){
-        it.setFavorite(true);
-      }
-    });
+    itemDtoWithStock.forEach(
+        it -> {
+          if (favoriteItems.contains(it.getId())) {
+            it.setFavorite(true);
+          }
+        });
     return itemDtoWithStock;
   }
 
@@ -103,5 +101,4 @@ public class ItemServiceImpl implements ItemService {
   public List<ItemFeedbackDto> getFeedbacks(int id) {
     return itemFeedbackService.getFeedbacks(id);
   }
-
 }
