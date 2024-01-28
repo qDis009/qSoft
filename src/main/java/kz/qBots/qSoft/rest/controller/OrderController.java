@@ -114,8 +114,7 @@ public class OrderController {
   }
 
   @PatchMapping("/{id}/accept-in-way")
-  public ResponseEntity<Void> acceptInWayOrder(
-      @PathVariable("id") int id) {
+  public ResponseEntity<Void> acceptInWayOrder(@PathVariable("id") int id) {
     orderService.acceptInWayOrder(id);
     return new ResponseEntity<>(HttpStatus.OK);
   }
@@ -124,5 +123,11 @@ public class OrderController {
   public ResponseEntity<List<OrderDto>> getCourierInWayOrders(
       @PathVariable("courierId") int courierId) {
     return ResponseEntity.ok(orderService.getCourierInWayOrders(courierId));
+  }
+
+  @GetMapping("/courier-completed-orders/{courierId}")
+  public ResponseEntity<List<OrderDto>> getCourierCompletedOrders(
+      @PathVariable("courierId") int courierId) {
+    return ResponseEntity.ok(orderService.getCourierCompletedOrders(courierId));
   }
 }

@@ -28,4 +28,5 @@ public interface OrderService {
   List<OrderDto> getCourierAcceptedOrders(int courierId);
   List<OrderDto> getCourierInWayOrders(int courierId);
   void acceptInWayOrder(int id);
+  List<OrderDto> getCourierCompletedOrders(int courierId);
 }

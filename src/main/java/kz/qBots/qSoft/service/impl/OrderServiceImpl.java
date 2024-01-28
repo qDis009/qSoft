@@ -471,4 +471,12 @@ public class OrderServiceImpl implements OrderService {
       // TODO log
     }
   }
+
+  @Override
+  public List<OrderDto> getCourierCompletedOrders(int courierId) {
+    List<OrderStatus> orderStatuses = List.of(OrderStatus.GIVEN, OrderStatus.REJECTED);
+    return orderComponent.findByOrderStatusesAndCourierId(orderStatuses, courierId).stream()
+        .map(orderMapper::mapOrderToOrderDto)
+        .toList();
+  }
 }

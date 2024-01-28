@@ -66,4 +66,9 @@ public class OrderComponentImpl implements OrderComponent {
     public List<Order> findByOrderStatusAndCourierId(OrderStatus orderStatus, int courierId) {
         return orderRepository.findByOrderStatusAndCourierId(orderStatus,courierId);
     }
+
+    @Override
+    public List<Order> findByOrderStatusesAndCourierId(List<OrderStatus> orderStatuses, int courierId) {
+        return orderRepository.findByOrderStatusesAndCourierId(orderStatuses,courierId);
+    }
 }
