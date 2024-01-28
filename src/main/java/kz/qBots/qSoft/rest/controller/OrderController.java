@@ -130,4 +130,19 @@ public class OrderController {
       @PathVariable("courierId") int courierId) {
     return ResponseEntity.ok(orderService.getCourierCompletedOrders(courierId));
   }
+
+  @PatchMapping("/{id}/give-out")
+  public ResponseEntity<Void> giveOutOrder(@PathVariable("id") int id) {
+    orderService.sendCodeToClient(id);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @PatchMapping("/{id}/enter-code")
+  public ResponseEntity<String> enterCode(
+      @PathVariable("id") int id, @RequestParam("code") int code) {
+    if (!orderService.enterCode(id, code)) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid code");
+    }
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 }

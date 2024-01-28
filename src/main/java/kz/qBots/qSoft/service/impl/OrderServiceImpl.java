@@ -25,6 +25,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 @Service
@@ -478,5 +479,45 @@ public class OrderServiceImpl implements OrderService {
     return orderComponent.findByOrderStatusesAndCourierId(orderStatuses, courierId).stream()
         .map(orderMapper::mapOrderToOrderDto)
         .toList();
+  }
+
+  @Override
+  public void sendCodeToClient(int id) {
+    Order order = orderComponent.findById(id);
+    int code = generateCode();
+    order.setCode(code);
+    sendMessageWithCodeToClient(order, code);
+    orderComponent.update(order);
+  }
+
+  @Override
+  public boolean enterCode(int id, int code) {
+    Order order=orderComponent.findById(id);
+    if(order.getCode()==code){
+      order.setOrderStatus(OrderStatus.GIVEN);
+    }
+    orderComponent.update(order);
+    return order.getCode()==code;
+  }
+
+  private void sendMessageWithCodeToClient(Order order, int code) {
+    String message = "Ваш заказ №" +
+            order.getId() +
+            " доставлен!" +
+            "\n" +
+            "Пожалуйста продиктуйте данный код курьеру для подтверждения доставки:\n" +
+            code;
+    SendMessage sendMessage =
+        SendMessage.builder().text(message).chatId(order.getUser().getChatId()).build();
+    try {
+      telegramService.sendMessage(sendMessage);
+    } catch (TelegramApiException e) {
+      // TODO log
+    }
+  }
+
+  private int generateCode() {
+    Random random = new Random();
+    return 1000 + random.nextInt(9000);
   }
 }

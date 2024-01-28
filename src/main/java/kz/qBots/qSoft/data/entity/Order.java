@@ -30,6 +30,7 @@ public class Order {
   private String IEName;
   private String shopName;
   private String fullName;
+  private Integer code;
 
   @Enumerated(EnumType.STRING)
   private PaymentType paymentType;
