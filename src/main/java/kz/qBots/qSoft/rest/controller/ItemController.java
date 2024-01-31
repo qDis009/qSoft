@@ -2,7 +2,6 @@ package kz.qBots.qSoft.rest.controller;
 
 import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.dto.ItemFeedbackDto;
-import kz.qBots.qSoft.data.enums.ItemType;
 import kz.qBots.qSoft.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -10,11 +9,9 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.MalformedURLException;
 import java.nio.file.Path;
@@ -45,12 +42,12 @@ public class ItemController {
 
   @GetMapping("/retail-hit/{userId}")
   public ResponseEntity<List<ItemDto>> getRetailHit(@PathVariable("userId") int userId) {
-    return ResponseEntity.ok(itemService.findItemsByItemType(ItemType.RETAIL, userId));
+    return ResponseEntity.ok(itemService.findRetailHit(userId));
   }
 
   @GetMapping("/wholesale-hit/{userId}")
   public ResponseEntity<List<ItemDto>> getWholesaleHit(@PathVariable("userId") int userId) {
-    return ResponseEntity.ok(itemService.findItemsByItemType(ItemType.WHOLESALE, userId));
+    return ResponseEntity.ok(itemService.findWholesaleHit(userId));
   }
 
   @GetMapping("/stocks/{userId}")
@@ -70,5 +67,12 @@ public class ItemController {
     Path photoPath = Paths.get("D:\\qshop\\items\\photos\\").resolve(fileName);
     Resource resource = new UrlResource(photoPath.toUri());
     return ResponseEntity.ok().body(resource);
+  }
+
+  @PatchMapping("/{id}/set-enable")
+  public ResponseEntity<Void> setEnable(
+      @PathVariable("id") int id, @RequestParam("enable") boolean enable) {
+    itemService.setEnable(enable, id);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }

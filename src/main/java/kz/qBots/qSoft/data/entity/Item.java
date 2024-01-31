@@ -3,7 +3,6 @@ package kz.qBots.qSoft.data.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import kz.qBots.qSoft.data.enums.ItemType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +27,7 @@ public class Item {
   private String nameKz;
   private int soldCount;
   private Integer discountPercentage;
+  private Integer count;
   private int retailPrice;
   private int wholesalePrice;
   private boolean enabled = true;
@@ -41,9 +41,6 @@ public class Item {
   private String article;
   private String descriptionKz;
   private String descriptionRu;
-
-  @Enumerated(EnumType.STRING)
-  private ItemType itemType;
 
   @CreationTimestamp
   @Column(updatable = false)

@@ -141,12 +141,13 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public void acceptOrderByManager(int id) {
+  public OrderDto acceptOrderByManager(int id) {
     Order order = orderComponent.findById(id);
     order.setOrderStatus(OrderStatus.ACCEPTED_BY_MANAGER);
     sendNotificationToStorekeeper(order);
     sendManagerNotificationToClient(order);
     orderComponent.update(order);
+    return orderMapper.mapOrderToOrderDto(order);
   }
 
   private void sendManagerNotificationToClient(Order order) {
@@ -225,19 +226,20 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public List<OrderDto> getManagerAcceptedOrders() {
     List<OrderStatus> excludedOrderStatus =
-        List.of(OrderStatus.NEW, OrderStatus.GIVEN, OrderStatus.REJECTED);
+        List.of(OrderStatus.NEW, OrderStatus.GIVEN, OrderStatus.REJECTED,OrderStatus.IN_THE_WAY);
     return orderComponent.findByExcludedOrderStatus(excludedOrderStatus).stream()
         .map(orderMapper::mapOrderToOrderDto)
         .toList();
   }
 
   @Override
-  public void rejectOrder(int id, String reason, String role) {
+  public OrderDto rejectOrder(int id, String reason, String role) {
     Order order = orderComponent.findById(id);
     order.setOrderStatus(OrderStatus.REJECTED);
     order.setRejectReason(reason);
     sendRejectReasonToClient(reason, order, role);
     orderComponent.update(order);
+    return orderMapper.mapOrderToOrderDto(order);
   }
 
   private void sendRejectReasonToClient(String reason, Order order, String role) {
@@ -280,11 +282,12 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public void acceptOrderByStorekeeper(int id) {
+  public OrderDto acceptOrderByStorekeeper(int id) {
     Order order = orderComponent.findById(id);
     order.setOrderStatus(OrderStatus.ACCEPTED_BY_STOREKEEPER);
     sendStorekeeperNotificationToClient(order);
     orderComponent.update(order);
+    return orderMapper.mapOrderToOrderDto(order);
   }
 
   private void sendStorekeeperNotificationToClient(Order order) {
@@ -306,7 +309,7 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public void completeOrderByStorekeeper(int id) {
+  public OrderDto completeOrderByStorekeeper(int id) {
     Order order = orderComponent.findById(id);
     order.setOrderStatus(OrderStatus.COMPLETED);
     sendCompleteNotificationToClient(order);
@@ -314,6 +317,7 @@ public class OrderServiceImpl implements OrderService {
       sendCompleteNotificationToCourier(order);
     }
     orderComponent.update(order);
+    return orderMapper.mapOrderToOrderDto(order);
   }
 
   private void sendCompleteNotificationToCourier(Order order) {
@@ -403,13 +407,14 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public void acceptOrderByCourier(int id, int courierId) {
+  public OrderDto acceptOrderByCourier(int id, int courierId) {
     Order order = orderComponent.findById(id);
     User courier = userComponent.findById(courierId);
     order.setOrderStatus(OrderStatus.ACCEPTED_BY_COURIER);
     order.setCourier(courier);
     sendCourierAcceptedNotificationToClient(order, courierId);
     orderComponent.update(order);
+    return orderMapper.mapOrderToOrderDto(order);
   }
 
   private void sendCourierAcceptedNotificationToClient(Order order, int courierId) {
@@ -449,11 +454,12 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public void acceptInWayOrder(int id) {
+  public OrderDto acceptInWayOrder(int id) {
     Order order = orderComponent.findById(id);
     order.setOrderStatus(OrderStatus.IN_THE_WAY);
     courierAcceptedInWayNotificationToClient(order);
     orderComponent.update(order);
+    return orderMapper.mapOrderToOrderDto(order);
   }
 
   private void courierAcceptedInWayNotificationToClient(Order order) {
@@ -482,31 +488,52 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public void sendCodeToClient(int id) {
+  public OrderDto sendCodeToClient(int id) {
     Order order = orderComponent.findById(id);
     int code = generateCode();
     order.setCode(code);
     sendMessageWithCodeToClient(order, code);
     orderComponent.update(order);
+    return orderMapper.mapOrderToOrderDto(order);
   }
 
   @Override
   public boolean enterCode(int id, int code) {
-    Order order=orderComponent.findById(id);
-    if(order.getCode()==code){
+    Order order = orderComponent.findById(id);
+    if (order.getCode() == code) {
       order.setOrderStatus(OrderStatus.GIVEN);
+      sendSuccessOrderToClient(order);
     }
     orderComponent.update(order);
-    return order.getCode()==code;
+    return order.getCode() == code;
+  }
+
+  private void sendSuccessOrderToClient(Order order) {
+    String message =
+        "Ваш заказ №"
+            + order.getId()
+            + " выполнен!\n"
+            + "Спасибо что выбрали нас!\n"
+            + "Пожалуйста, оцените заказ.";
+    SendMessage sendMessage=SendMessage.builder()
+            .text(message)
+            .chatId(order.getUser().getChatId())
+            .build();
+    try {
+      telegramService.sendMessage(sendMessage);
+    } catch (TelegramApiException e) {
+      //TODO log
+    }
   }
 
   private void sendMessageWithCodeToClient(Order order, int code) {
-    String message = "Ваш заказ №" +
-            order.getId() +
-            " доставлен!" +
-            "\n" +
-            "Пожалуйста продиктуйте данный код курьеру для подтверждения доставки:\n" +
-            code;
+    String message =
+        "Ваш заказ №"
+            + order.getId()
+            + " доставлен!"
+            + "\n"
+            + "Пожалуйста продиктуйте данный код курьеру для подтверждения доставки:\n"
+            + code;
     SendMessage sendMessage =
         SendMessage.builder().text(message).chatId(order.getUser().getChatId()).build();
     try {

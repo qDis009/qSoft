@@ -1,6 +1,5 @@
 package kz.qBots.qSoft.data.dto;
 
-import kz.qBots.qSoft.data.enums.ItemType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,7 +26,7 @@ public class ItemDto {
   private String descriptionKz;
   private String descriptionRu;
   private String created;
-  private ItemType itemType;
   private boolean isFavorite;
   private Integer subCategoryId;
+  private Integer count;
 }

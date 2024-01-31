@@ -44,12 +44,11 @@ public class OrderController {
   }
 
   @PatchMapping("/{id}/reject")
-  public ResponseEntity<Void> rejectOrder(
+  public ResponseEntity<OrderDto> rejectOrder(
       @PathVariable("id") int id,
       @RequestParam("reason") String reason,
       @RequestParam("role") String role) {
-    orderService.rejectOrder(id, reason, role);
-    return new ResponseEntity<>(HttpStatus.OK);
+    return ResponseEntity.ok(orderService.rejectOrder(id, reason, role));
   }
 
   @GetMapping("/in-way-orders")
@@ -63,9 +62,8 @@ public class OrderController {
   }
 
   @PatchMapping("/{id}/accept-by-manager")
-  public ResponseEntity<Void> acceptOrderByManager(@PathVariable("id") int id) {
-    orderService.acceptOrderByManager(id);
-    return new ResponseEntity<>(HttpStatus.OK);
+  public ResponseEntity<OrderDto> acceptOrderByManager(@PathVariable("id") int id) {
+    return ResponseEntity.ok(orderService.acceptOrderByManager(id));
   }
 
   @GetMapping("/storekeeper-new-orders")
@@ -79,32 +77,28 @@ public class OrderController {
   }
 
   @PatchMapping("/{id}/accept-by-storekeeper")
-  public ResponseEntity<Void> acceptOrderByStorekeeper(@PathVariable("id") int id) {
-    orderService.acceptOrderByStorekeeper(id);
-    return new ResponseEntity<>(HttpStatus.OK);
+  public ResponseEntity<OrderDto> acceptOrderByStorekeeper(@PathVariable("id") int id) {
+    return ResponseEntity.ok(orderService.acceptOrderByStorekeeper(id));
   }
 
   @PatchMapping("/{id}/complete-by-storekeeper")
-  public ResponseEntity<Void> completeOrderByStorekeeper(@PathVariable("id") int id) {
-    orderService.completeOrderByStorekeeper(id);
-    return new ResponseEntity<>(HttpStatus.OK);
+  public ResponseEntity<OrderDto> completeOrderByStorekeeper(@PathVariable("id") int id) {
+    return ResponseEntity.ok(orderService.completeOrderByStorekeeper(id));
   }
 
   @GetMapping("/storekeeper-completed-orders")
   public ResponseEntity<List<OrderDto>> getStorekeeperCompletedOrders() {
     return ResponseEntity.ok(orderService.getStorekeeperCompletedOrders());
   }
-
   @GetMapping("/courier-new-orders")
   public ResponseEntity<List<OrderDto>> getCourierNewOrders() {
     return ResponseEntity.ok(orderService.getCourierNewOrders());
   }
 
   @PatchMapping("/{id}/accept-by-courier/{courierId}")
-  public ResponseEntity<Void> acceptOrderByCourier(
+  public ResponseEntity<OrderDto> acceptOrderByCourier(
       @PathVariable("id") int id, @PathVariable("courierId") int courierId) {
-    orderService.acceptOrderByCourier(id, courierId);
-    return new ResponseEntity<>(HttpStatus.OK);
+    return ResponseEntity.ok(orderService.acceptOrderByCourier(id, courierId));
   }
 
   @GetMapping("/courier-accepted-orders/{courierId}")
@@ -114,9 +108,8 @@ public class OrderController {
   }
 
   @PatchMapping("/{id}/accept-in-way")
-  public ResponseEntity<Void> acceptInWayOrder(@PathVariable("id") int id) {
-    orderService.acceptInWayOrder(id);
-    return new ResponseEntity<>(HttpStatus.OK);
+  public ResponseEntity<OrderDto> acceptInWayOrder(@PathVariable("id") int id) {
+    return ResponseEntity.ok(orderService.acceptInWayOrder(id));
   }
 
   @GetMapping("/courier-in-way-orders/{courierId}")
@@ -132,9 +125,8 @@ public class OrderController {
   }
 
   @PatchMapping("/{id}/give-out")
-  public ResponseEntity<Void> giveOutOrder(@PathVariable("id") int id) {
-    orderService.sendCodeToClient(id);
-    return new ResponseEntity<>(HttpStatus.OK);
+  public ResponseEntity<OrderDto> giveOutOrder(@PathVariable("id") int id) {
+    return ResponseEntity.ok(orderService.sendCodeToClient(id));
   }
 
   @PatchMapping("/{id}/enter-code")

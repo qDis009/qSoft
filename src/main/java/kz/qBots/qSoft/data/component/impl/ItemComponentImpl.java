@@ -3,14 +3,12 @@ package kz.qBots.qSoft.data.component.impl;
 import jakarta.persistence.EntityNotFoundException;
 import kz.qBots.qSoft.data.component.ItemComponent;
 import kz.qBots.qSoft.data.entity.Item;
-import kz.qBots.qSoft.data.enums.ItemType;
 import kz.qBots.qSoft.data.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,21 +55,32 @@ public class ItemComponentImpl implements ItemComponent {
 
   @Override
   public Set<Integer> findIdsByUserId(int userId) {
-    List<Item> items=itemRepository.findItemsByUserId(userId);
-    Set<Integer> ids=new HashSet<>();
-    items.forEach(it->{
-      ids.add(it.getId());
-    });
+    List<Item> items = itemRepository.findItemsByUserId(userId);
+    Set<Integer> ids = new HashSet<>();
+    items.forEach(
+        it -> {
+          ids.add(it.getId());
+        });
     return ids;
   }
 
   @Override
-  public List<Item> findItemsByItemType(ItemType itemType) {
-    return itemRepository.findByItemTypeOrderBySoldCountDesc(itemType);
+  public List<Item> findRetailItemsOrderBySoldCount() {
+    return itemRepository.findRetailOrderBySoldCount();
   }
 
   @Override
-  public List<Item> findByItemTypeAndDiscountPercentageExist(ItemType itemType) {
-    return itemRepository.findByItemTypeAndDiscountPercentageIsExist(itemType);
+  public List<Item> findWholesaleItemsOrderBySoldCount() {
+    return itemRepository.findWholesaleOrderBySoldCount();
+  }
+
+  @Override
+  public List<Item> findRetailItemsWithDiscountPercentageExist() {
+    return itemRepository.findRetailItemsWithDiscountPercentageIsExist();
+  }
+
+  @Override
+  public void setEnable(boolean enable, int id) {
+    itemRepository.setEnable(enable, id);
   }
 }

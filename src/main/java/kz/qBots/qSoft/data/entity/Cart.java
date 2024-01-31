@@ -2,7 +2,7 @@ package kz.qBots.qSoft.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import kz.qBots.qSoft.data.enums.ItemType;
+import kz.qBots.qSoft.data.enums.ClientType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,13 +32,13 @@ public class Cart {
 
   @JsonIgnore
   public int getTotalPrice() {
-    return item.getItemType() == ItemType.RETAIL
+    return user.getClientType() == ClientType.RETAIL
         ? item.getRetailPrice() * itemCount
         : item.getWholesalePrice() * itemCount;
   }
 
   @JsonIgnore
   public double getTotalDiscount() {
-    return itemCount * item.getDiscount();
+    return user.getClientType() == ClientType.RETAIL ? itemCount * item.getDiscount() : 0;
   }
 }
