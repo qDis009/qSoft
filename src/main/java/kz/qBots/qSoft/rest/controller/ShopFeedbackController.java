@@ -16,7 +16,7 @@ public class ShopFeedbackController {
 
   @PostMapping("/create")
   public ResponseEntity<ShopFeedbackDto> create(
-      @RequestPart ShopFeedbackRequest model, @RequestParam MultipartFile file) {
+      @RequestParam ShopFeedbackRequest model, @RequestParam MultipartFile file) {
     return ResponseEntity.ok(shopFeedbackService.create(model,file));
   }
 }

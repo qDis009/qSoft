@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -19,6 +20,9 @@ public class ShopFeedback {
   private double grade;
   private String comment;
 
+  @OneToMany(mappedBy = "shopFeedback")
+  private Set<Image> images;
+
   @ManyToOne
   @JoinColumn(name = "shop_id", referencedColumnName = "id")
   private Shop shop;
@@ -26,4 +30,9 @@ public class ShopFeedback {
   @ManyToOne
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
+
+  @CreationTimestamp
+  @Column(updatable = false)
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd 'T' HH:mm:ss.SSS 'Z'")
+  private LocalDateTime created;
 }

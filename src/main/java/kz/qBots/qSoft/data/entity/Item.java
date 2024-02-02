@@ -32,11 +32,11 @@ public class Item {
   private int wholesalePrice;
   private boolean enabled = true;
   private boolean deleted = false;
+  private boolean hit = false;
   private double grade;
   private double feedbackGrade;
   private int gradeCount;
   private int feedbackGradeCount;
-  private String imageUrl;
   private String imageUrl3D;
   private String article;
   private String descriptionKz;
@@ -53,6 +53,9 @@ public class Item {
   @OneToMany(mappedBy = "item")
   private Set<Cart> carts;
 
+  @OneToMany(mappedBy = "item")
+  private Set<Image> images;
+
   @ManyToOne
   @JoinColumn(name = "shop_id", referencedColumnName = "id")
   private Shop shop;
@@ -65,6 +68,7 @@ public class Item {
   public double getDiscount() {
     return retailPrice * discountPercentage / 100d;
   }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -72,6 +76,7 @@ public class Item {
     Item item = (Item) o;
     return Objects.equals(id, item.id);
   }
+
   @Override
   public int hashCode() {
     return Objects.hash(id);

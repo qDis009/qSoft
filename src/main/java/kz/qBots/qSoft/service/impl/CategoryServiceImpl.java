@@ -26,4 +26,9 @@ public class CategoryServiceImpl implements CategoryService {
     Category category = categoryComponent.findById(id);
     return categoryMapper.mapCategoryToCategoryDto(category);
   }
+
+  @Override
+  public void setEnable(boolean enable, int id) {
+    categoryComponent.setEnable(enable, id);
+  }
 }

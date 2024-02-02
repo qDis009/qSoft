@@ -39,4 +39,5 @@ public interface UserService {
     boolean isManager(User user);
     boolean isStorekeeper(User user);
     boolean isCourier(User user);
+    boolean isAdmin(User user);
 }

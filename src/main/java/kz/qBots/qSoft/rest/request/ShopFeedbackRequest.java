@@ -10,4 +10,5 @@ public class ShopFeedbackRequest {
   private String comment;
   private Integer shopId;
   private Integer userId;
+  private String created;
 }

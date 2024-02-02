@@ -96,6 +96,19 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public boolean isAdmin(User user) {
+    Set<Role> roles = user.getRoles();
+    boolean isAdmin = false;
+    for (Role role : roles) {
+      if (role.getName().equals("ADMIN")) {
+        isAdmin = true;
+        break;
+      }
+    }
+    return isAdmin;
+  }
+
+  @Override
   public boolean isCourier(User user) {
     Set<Role> roles = user.getRoles();
     boolean isCourier = false;

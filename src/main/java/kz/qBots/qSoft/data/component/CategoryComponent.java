@@ -8,4 +8,5 @@ public interface CategoryComponent {
   Page<Category> findAll(Pageable pageable);
 
   Category findById(int id);
+  void setEnable(boolean enable,int id);
 }

@@ -13,5 +13,6 @@ public interface ShopFeedbackMapper {
     ShopFeedback mapShopFeedbackRequestToShopFeedback(ShopFeedbackRequest shopFeedbackRequest);
     @Mapping(target = "userId",source = "user.id")
     @Mapping(target = "shopId",source = "shop.id")
+    @Mapping(target = "created", expression = "java(shopFeedback.getCreated().toString())")
     ShopFeedbackDto mapShopFeedbackToShopFeedbackDto(ShopFeedback shopFeedback);
 }

@@ -4,8 +4,6 @@ import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.dto.ItemFeedbackDto;
 import kz.qBots.qSoft.service.ItemService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -13,9 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -60,19 +55,16 @@ public class ItemController {
     return ResponseEntity.ok(itemService.getFeedbacks(id));
   }
 
-  @GetMapping("/{id}/photo")
-  public ResponseEntity<Resource> getPhoto(@PathVariable("id") int id)
-      throws MalformedURLException {
-    String fileName = id + ".jpg";
-    Path photoPath = Paths.get("D:\\qshop\\items\\photos\\").resolve(fileName);
-    Resource resource = new UrlResource(photoPath.toUri());
-    return ResponseEntity.ok().body(resource);
-  }
-
   @PatchMapping("/{id}/set-enable")
   public ResponseEntity<Void> setEnable(
       @PathVariable("id") int id, @RequestParam("enable") boolean enable) {
     itemService.setEnable(enable, id);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @PatchMapping("/{id}/delete")
+  public ResponseEntity<Void> delete(@PathVariable("id") int id) {
+    itemService.delete(id);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 }

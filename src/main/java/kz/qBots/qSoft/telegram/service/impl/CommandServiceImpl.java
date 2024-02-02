@@ -21,6 +21,7 @@ public class CommandServiceImpl implements CommandService {
   private static final String MAGAZINE = "Магазин";
   private static final String STOREKEEPER = "Кладовщик";
   private static final String COURIER = "Курьер";
+  private static final String ADMIN = "Админ";
 
   @Override
   public void process(User user, Message message) throws TelegramApiException {
@@ -55,6 +56,14 @@ public class CommandServiceImpl implements CommandService {
               telegramService.sendMessage(getMessageToUnregisteredUser(user, COURIER)));
         }
       }
+      case "/admin" -> {
+        if (userService.isAdmin(user)) {
+          userService.processStartCommand(user, Interface.ADMIN, ADMIN);
+        } else {
+          user.setLastMessageId(
+              telegramService.sendMessage(getMessageToUnregisteredUser(user, ADMIN)));
+        }
+      }
       case "/reg" -> {
         // TODO
       }
@@ -64,10 +73,6 @@ public class CommandServiceImpl implements CommandService {
 
   private String getCommand(String messageText) {
     return messageText.split(" ")[0];
-  }
-
-  private String getRole(String messageText) {
-    return messageText.split("")[1];
   }
 
   private SendMessage getMessageToUnregisteredUser(User user, String role) {

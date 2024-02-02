@@ -8,4 +8,5 @@ public interface CategoryService {
   Page<CategoryDto> findAll(Pageable pageable);
 
   CategoryDto findById(int id);
+  void setEnable(boolean enable,int id);
 }

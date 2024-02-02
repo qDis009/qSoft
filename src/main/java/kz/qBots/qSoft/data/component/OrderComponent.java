@@ -3,7 +3,6 @@ package kz.qBots.qSoft.data.component;
 import kz.qBots.qSoft.data.entity.Order;
 import kz.qBots.qSoft.data.enums.DeliveryType;
 import kz.qBots.qSoft.data.enums.OrderStatus;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -11,4 +11,6 @@ public class ShopFeedbackDto {
   private String comment;
   private Integer shopId;
   private Integer userId;
+  private String created;
+  private boolean enable;
 }

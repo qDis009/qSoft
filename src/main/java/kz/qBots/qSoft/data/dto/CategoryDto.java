@@ -1,7 +1,5 @@
 package kz.qBots.qSoft.data.dto;
 
-import kz.qBots.qSoft.data.entity.Shop;
-import kz.qBots.qSoft.data.entity.SubCategory;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +11,6 @@ public class CategoryDto {
   private Integer id;
   private String nameKz;
   private String nameRu;
+  private boolean enable;
   private Set<SubCategoryDto> subCategories;
 }

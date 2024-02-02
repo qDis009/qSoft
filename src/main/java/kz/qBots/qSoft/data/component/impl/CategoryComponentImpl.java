@@ -20,6 +20,11 @@ public class CategoryComponentImpl implements CategoryComponent {
   }
 
   @Override
+  public void setEnable(boolean enable, int id) {
+    categoryRepository.setEnable(enable,id);
+  }
+
+  @Override
   public Category findById(int id) {
     return categoryRepository.findById(id).orElseThrow(EntityNotFoundException::new);
   }

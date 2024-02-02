@@ -1,6 +1,5 @@
 package kz.qBots.qSoft.data.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +16,7 @@ public class Category {
 
   private String nameKz;
   private String nameRu;
+  private boolean enabled = true;
 
   @ManyToMany
   @JoinTable(
