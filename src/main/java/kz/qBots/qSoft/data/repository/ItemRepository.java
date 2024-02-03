@@ -16,13 +16,18 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 
   @Query("select u.items from User u where u.id = :userId")
   List<Item> findItemsByUserId(@Param("userId") Integer userId);
-  @Query("select item from Item item where item.retailPrice <> 0 order by item.soldCount desc")
-  List<Item> findRetailOrderBySoldCount();
-  @Query("select item from Item item where item.wholesalePrice <> 0 order by item.wholesalePrice desc")
-  List<Item> findWholesaleOrderBySoldCount();
+
   @Query(
-      "select item from Item item where item.retailPrice <> 0 and item.discountPercentage <> 0")
+      "select item from Item item where item.retailPrice <> 0 and item.soldCount <> 0 or item.retailPrice <> 0 and item.hit=true order by item.soldCount desc")
+  List<Item> findRetailOrderBySoldCount();
+
+  @Query(
+      "select item from Item item where item.wholesalePrice <> 0 and item.soldCount <> 0 or item.wholesalePrice <> 0 and item.hit=true order by item.soldCount desc")
+  List<Item> findWholesaleOrderBySoldCount();
+
+  @Query("select item from Item item where item.retailPrice <> 0 and item.discountPercentage <> 0")
   List<Item> findRetailItemsWithDiscountPercentageIsExist();
+
   @Modifying
   @Transactional
   @Query(value = "update market.item set enabled=:enable where id =:id", nativeQuery = true)

@@ -30,16 +30,23 @@ public class SubCategoryServiceImpl implements SubCategoryService {
   }
 
   @Override
-  public List<ItemDto> findItemsBySubCategoryId(int subCategoryId,int userId) {
-    SubCategory subCategory=subCategoryComponent.findById(subCategoryId);
-    Set<Item> subCategoryItems=subCategory.getItems();
-    Set<Integer> favoriteItems=itemComponent.findIdsByUserId(userId);
-    List<ItemDto> subCategoryItemsDto=subCategoryItems.stream().map(itemMapper::mapItemToItemDto).toList();
-    subCategoryItemsDto.forEach(it->{
-      if(favoriteItems.contains(it.getId())){
-        it.setFavorite(true);
-      }
-    });
-    return subCategoryItemsDto;
+  public List<ItemDto> findItemsBySubCategoryId(int subCategoryId, int userId) {
+    SubCategory subCategory = subCategoryComponent.findById(subCategoryId);
+    Set<Item> subCategoryItems = subCategory.getItems();
+    Set<Integer> favoriteItems = itemComponent.findIdsByUserId(userId);
+    List<ItemDto> subCategoryItemsDtos =
+        subCategoryItems.stream().map(itemMapper::mapItemToItemDto).toList();
+    subCategoryItemsDtos.forEach(
+        it -> {
+          if (favoriteItems.contains(it.getId())) {
+            it.setFavorite(true);
+          }
+        });
+    return subCategoryItemsDtos;
+  }
+
+  @Override
+  public void setEnable(boolean enable, int id) {
+    subCategoryComponent.setEnable(enable, id);
   }
 }

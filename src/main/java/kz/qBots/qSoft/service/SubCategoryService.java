@@ -9,4 +9,5 @@ import java.util.List;
 public interface SubCategoryService {
   SubCategoryDto findById(int id);
   List<ItemDto> findItemsBySubCategoryId(int subCategoryId, int userId);
+  void setEnable(boolean enable,int id);
 }

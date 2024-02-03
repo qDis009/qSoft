@@ -10,10 +10,15 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class SubCategoryComponentImpl implements SubCategoryComponent {
-    private final SubCategoryRepository subCategoryRepository;
+  private final SubCategoryRepository subCategoryRepository;
 
-    @Override
-    public SubCategory findById(int id) {
-        return subCategoryRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-    }
+  @Override
+  public SubCategory findById(int id) {
+    return subCategoryRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+  }
+
+  @Override
+  public void setEnable(boolean enable, int id) {
+    subCategoryRepository.setEnable(enable, id);
+  }
 }

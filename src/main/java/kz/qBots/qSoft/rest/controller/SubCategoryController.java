@@ -4,11 +4,9 @@ import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.dto.SubCategoryDto;
 import kz.qBots.qSoft.service.SubCategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,9 +20,17 @@ public class SubCategoryController {
   public ResponseEntity<SubCategoryDto> getById(@PathVariable("id") int id) {
     return ResponseEntity.ok(subCategoryService.findById(id));
   }
+
   @GetMapping("/{id}/items/{userId}")
-  public ResponseEntity<List<ItemDto>> getItemsBySubCategory(@PathVariable("id") int id,
-                                                             @PathVariable("userId") int userId){
-    return ResponseEntity.ok(subCategoryService.findItemsBySubCategoryId(id,userId));
+  public ResponseEntity<List<ItemDto>> getItemsBySubCategory(
+      @PathVariable("id") int id, @PathVariable("userId") int userId) {
+    return ResponseEntity.ok(subCategoryService.findItemsBySubCategoryId(id, userId));
+  }
+
+  @PatchMapping("/{id}/set-enable")
+  public ResponseEntity<Void> setEnable(
+      @PathVariable("id") int id, @RequestParam("enable") boolean enable) {
+    subCategoryService.setEnable(enable, id);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }

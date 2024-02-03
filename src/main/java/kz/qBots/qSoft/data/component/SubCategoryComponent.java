@@ -4,4 +4,5 @@ import kz.qBots.qSoft.data.entity.SubCategory;
 
 public interface SubCategoryComponent {
     SubCategory findById(int id);
+    void setEnable(boolean enable,int id);
 }
