@@ -8,7 +8,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ShopFeedbackMapper {
-    @Mapping(target = "shop.id",source = "shopId")
     @Mapping(target = "user.id",source = "userId")
     ShopFeedback mapShopFeedbackRequestToShopFeedback(ShopFeedbackRequest shopFeedbackRequest);
     @Mapping(target = "userId",source = "user.id")

@@ -2,6 +2,7 @@ package kz.qBots.qSoft.rest.controller;
 
 import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.dto.ItemFeedbackDto;
+import kz.qBots.qSoft.rest.request.ItemRequest;
 import kz.qBots.qSoft.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,9 +21,16 @@ import java.util.List;
 public class ItemController {
   private final ItemService itemService;
 
+  @PostMapping("/create")
+  public ResponseEntity<ItemDto> create(
+      @RequestParam ItemRequest itemRequest, @RequestParam List<MultipartFile> multipartFiles) {
+    return ResponseEntity.ok(itemService.create(itemRequest,multipartFiles));
+  }
+
   @GetMapping("/get-all/{userId}")
-  public ResponseEntity<List<ItemDto>> getAll(@PathVariable("userId") int userId) {
-    return ResponseEntity.ok(itemService.findAll(userId));
+  public ResponseEntity<List<ItemDto>> getAll(
+      @PathVariable("userId") int userId, @RequestParam("clientType") String clientType) {
+    return ResponseEntity.ok(itemService.findAll(userId, clientType));
   }
 
   @GetMapping("/get-all")

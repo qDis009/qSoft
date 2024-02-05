@@ -23,7 +23,7 @@ public interface ItemComponent {
     List<Item> findItemsByUserId(int userId);
     List<Item> findRetailItemsOrderBySoldCount();
     List<Item> findWholesaleItemsOrderBySoldCount();
-
-    List<Item> findAll();
+    List<Item> findEnableRetailItems();
+    List<Item> findEnableWholesaleItems();
     void setEnable(boolean enable,int id);
 }

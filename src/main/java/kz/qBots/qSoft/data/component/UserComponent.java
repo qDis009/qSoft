@@ -1,6 +1,5 @@
 package kz.qBots.qSoft.data.component;
 
-import kz.qBots.qSoft.data.dto.UserDto;
 import kz.qBots.qSoft.data.entity.User;
 
 import java.util.List;

@@ -20,7 +20,6 @@ public class ItemDto {
   private boolean deleted;
   private double grade;
   private double feedbackGrade;
-  private String imageUrl;
   private String imageUrl3D;
   private String article;
   private String descriptionKz;

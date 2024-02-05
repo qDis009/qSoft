@@ -20,6 +20,6 @@ public class Image {
   private Item item;
 
   @ManyToOne
-  @JoinColumn(name = "shop_category_id", referencedColumnName = "id")
+  @JoinColumn(name = "shop_feedback_id", referencedColumnName = "id")
   private ShopFeedback shopFeedback;
 }

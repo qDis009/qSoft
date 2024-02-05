@@ -5,12 +5,14 @@ import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.dto.ItemFeedbackDto;
 import kz.qBots.qSoft.data.entity.Item;
 import kz.qBots.qSoft.mapper.ItemMapper;
+import kz.qBots.qSoft.rest.request.ItemRequest;
 import kz.qBots.qSoft.service.ItemFeedbackService;
 import kz.qBots.qSoft.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
@@ -26,7 +28,14 @@ public class ItemServiceImpl implements ItemService {
   public void delete(int id) {
     Item item = itemComponent.findById(id);
     item.setDeleted(true);
+    item.setEnabled(false);
     itemComponent.update(item);
+  }
+
+  @Override
+  public ItemDto create(ItemRequest itemRequest, List<MultipartFile> multipartFiles) {
+    //TODO file
+    return null;
   }
 
   @Override
@@ -35,9 +44,17 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public List<ItemDto> findAll(int userId) {
-    List<ItemDto> items =
-        itemComponent.findAll().stream().map(itemMapper::mapItemToItemDto).toList();
+  public List<ItemDto> findAll(int userId, String clientType) {
+    List<ItemDto> items;
+    if (clientType.equals("WHOLESALE")) {
+      items =
+          itemComponent.findEnableWholesaleItems().stream()
+              .map(itemMapper::mapItemToItemDto)
+              .toList();
+    } else {
+      items =
+          itemComponent.findEnableRetailItems().stream().map(itemMapper::mapItemToItemDto).toList();
+    }
     Set<Integer> favoriteItems = itemComponent.findIdsByUserId(userId);
     items.forEach(
         it -> {

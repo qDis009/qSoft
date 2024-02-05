@@ -32,7 +32,7 @@ public class Item {
   private int wholesalePrice;
   private boolean enabled = true;
   private boolean deleted = false;
-  private boolean hit = false;
+  private boolean hit;
   private double grade;
   private double feedbackGrade;
   private int gradeCount;

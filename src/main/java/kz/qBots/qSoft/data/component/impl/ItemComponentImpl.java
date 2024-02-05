@@ -44,8 +44,13 @@ public class ItemComponentImpl implements ItemComponent {
   }
 
   @Override
-  public List<Item> findAll() {
-    return itemRepository.findAll();
+  public List<Item> findEnableRetailItems() {
+    return itemRepository.findEnableRetailItems();
+  }
+
+  @Override
+  public List<Item> findEnableWholesaleItems() {
+    return itemRepository.findEnableWholesaleItems();
   }
 
   @Override
