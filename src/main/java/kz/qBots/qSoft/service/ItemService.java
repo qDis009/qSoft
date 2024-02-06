@@ -12,19 +12,22 @@ import java.util.List;
 
 public interface ItemService {
   void delete(int id);
+
   ItemDto create(ItemRequest itemRequest, List<MultipartFile> multipartFiles);
+
   Page<ItemDto> findAll(Pageable pageable);
 
-  List<ItemDto> findAll(int userId,String clientType);
-
-  List<ItemDto> findItemsByUserId(int userId);
+  List<ItemDto> findAll(int userId, String clientType);
 
   ItemDto findById(int id);
+
   List<ItemDto> findRetailHit(int userId);
+
   List<ItemDto> findWholesaleHit(int userId);
 
   List<ItemDto> getStocks(int userId);
 
   List<ItemFeedbackDto> getFeedbacks(int id);
-  void setEnable(boolean enable,int id);
+
+  void setEnable(boolean enable, int id);
 }

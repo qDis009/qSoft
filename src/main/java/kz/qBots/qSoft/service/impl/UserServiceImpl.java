@@ -1,6 +1,6 @@
 package kz.qBots.qSoft.service.impl;
 
-import kz.qBots.qSoft.config.property.ServerProperty;
+import kz.qBots.qSoft.data.component.CartComponent;
 import kz.qBots.qSoft.data.component.ItemComponent;
 import kz.qBots.qSoft.data.component.UserComponent;
 import kz.qBots.qSoft.data.dto.CartDto;
@@ -10,6 +10,7 @@ import kz.qBots.qSoft.data.dto.UserDto;
 import kz.qBots.qSoft.data.entity.*;
 import kz.qBots.qSoft.exception.InvalidCommandException;
 import kz.qBots.qSoft.mapper.CartMapper;
+import kz.qBots.qSoft.mapper.ItemMapper;
 import kz.qBots.qSoft.mapper.UserMapper;
 import kz.qBots.qSoft.service.ItemService;
 import kz.qBots.qSoft.service.OrderService;
@@ -41,14 +42,14 @@ public class UserServiceImpl implements UserService {
   private final UserComponent userComponent;
   private final UserMapper userMapper;
   private final OrderService orderService;
-  private final ItemService itemService;
   private final TelegramService telegramService;
-  private final ServerProperty serverProperty;
   private final ItemComponent itemComponent;
   private final CartMapper cartMapper;
+  private final CartComponent cartComponent;
+  private final ItemMapper itemMapper;
 
   @Override
-  public void processStartCommand(User user, Interface roleInterface, String text) {
+  public void processStartCommand(User user, Interface roleInterface, String text, String url) {
     try {
       deletePreviousWebAppInfo(user.getChatId(), user.getLastMessageId());
       StartCommandDto startCommandDto =
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
               .parseMode(TelegramConstants.PARSE_MODE_HTML)
               .chatId(user.getChatId())
               .text(CLICK_THE_BUTTON)
-              .replyMarkup(prepareWebAppInfo(startCommandDto, text))
+              .replyMarkup(prepareWebAppInfo(startCommandDto, text, url))
               .build();
       user.setLastMessageId(telegramService.sendMessage(message));
       userComponent.update(user);
@@ -142,16 +143,8 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public List<CartDto> getCart(int id) {
-    User user = userComponent.findById(id);
-    Set<Cart> carts = user.getCarts();
-    List<Cart> enabledCarts = new ArrayList<>();
-    carts.forEach(
-        cart -> {
-          if (cart.isEnabled()) {
-            enabledCarts.add(cart);
-          }
-        });
-    return enabledCarts.stream().map(cartMapper::mapCartToCartDto).toList();
+    List<Cart> carts = cartComponent.findCartsByUserId(id);
+    return carts.stream().map(cartMapper::mapCartToCartDto).toList();
   }
 
   @Override
@@ -179,7 +172,15 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public List<ItemDto> getFavorite(int id) {
-    return itemService.findItemsByUserId(id);
+    List<Item> items = itemComponent.findItemsByUserId(id);
+    List<Item> enableItems = new ArrayList<>();
+    items.forEach(
+        item -> {
+          if (item.isEnabled()) {
+            enableItems.add(item);
+          }
+        });
+    return enableItems.stream().map(itemMapper::mapItemToItemDto).toList();
   }
 
   @Transactional
@@ -201,13 +202,14 @@ public class UserServiceImpl implements UserService {
     }
   }
 
-  private String buildWebAppInfoUrl(StartCommandDto startCommandDto) {
-    return startCommandDto.buildWebAppInfoUrl(serverProperty.getUrl());
+  private String buildWebAppInfoUrl(StartCommandDto startCommandDto, String url) {
+    return startCommandDto.buildWebAppInfoUrl(url);
   }
 
-  private InlineKeyboardMarkup prepareWebAppInfo(StartCommandDto startCommandDto, String text) {
+  private InlineKeyboardMarkup prepareWebAppInfo(
+      StartCommandDto startCommandDto, String text, String url) {
     WebAppInfo webAppInfo = new WebAppInfo();
-    webAppInfo.setUrl(buildWebAppInfoUrl(startCommandDto));
+    webAppInfo.setUrl(buildWebAppInfoUrl(startCommandDto, url));
     InlineKeyboardButton inlineKeyboardButton =
         InlineKeyboardButton.builder().webApp(webAppInfo).text(text).build();
     InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();

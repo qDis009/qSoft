@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CartComponentImpl implements CartComponent {
@@ -26,6 +28,11 @@ public class CartComponentImpl implements CartComponent {
   @Override
   public void update(Cart cart) {
     cartRepository.save(cart);
+  }
+
+  @Override
+  public List<Cart> findCartsByUserId(int userId) {
+    return cartRepository.findCartsByUserId(userId);
   }
 
   @Override

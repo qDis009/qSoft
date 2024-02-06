@@ -22,6 +22,11 @@ public class CommandServiceImpl implements CommandService {
   private static final String STOREKEEPER = "Кладовщик";
   private static final String COURIER = "Курьер";
   private static final String ADMIN = "Админ";
+  private static final String CLIENT_URL = "https://109.233.108.126:471";
+  private static final String MANAGER_URL = "https://109.233.108.126:472";
+  private static final String STOREKEEPER_URL = "";
+  private static final String COURIER_URL = "";
+  private static final String ADMIN_URL = "";
 
   @Override
   public void process(User user, Message message) throws TelegramApiException {
@@ -30,11 +35,11 @@ public class CommandServiceImpl implements CommandService {
     switch (command) {
       case "/magazine" -> {
         // telegramService.deleteMessage(user.getChatId(), user.getLastMessageId());
-        userService.processStartCommand(user, Interface.USER, MAGAZINE);
+        userService.processStartCommand(user, Interface.USER, MAGAZINE, CLIENT_URL);
       }
       case "/manager" -> {
         if (userService.isManager(user)) {
-          userService.processStartCommand(user, Interface.MANAGER, MANAGER);
+          userService.processStartCommand(user, Interface.MANAGER, MANAGER, MANAGER_URL);
         } else {
           user.setLastMessageId(
               telegramService.sendMessage(getMessageToUnregisteredUser(user, MANAGER)));
@@ -42,7 +47,8 @@ public class CommandServiceImpl implements CommandService {
       }
       case "/storekeeper" -> {
         if (userService.isStorekeeper(user)) {
-          userService.processStartCommand(user, Interface.STOREKEEPER, STOREKEEPER);
+          userService.processStartCommand(
+              user, Interface.STOREKEEPER, STOREKEEPER, STOREKEEPER_URL);
         } else {
           user.setLastMessageId(
               telegramService.sendMessage(getMessageToUnregisteredUser(user, STOREKEEPER)));
@@ -50,7 +56,7 @@ public class CommandServiceImpl implements CommandService {
       }
       case "/courier" -> {
         if (userService.isCourier(user)) {
-          userService.processStartCommand(user, Interface.COURIER, COURIER);
+          userService.processStartCommand(user, Interface.COURIER, COURIER, COURIER_URL);
         } else {
           user.setLastMessageId(
               telegramService.sendMessage(getMessageToUnregisteredUser(user, COURIER)));
@@ -58,7 +64,7 @@ public class CommandServiceImpl implements CommandService {
       }
       case "/admin" -> {
         if (userService.isAdmin(user)) {
-          userService.processStartCommand(user, Interface.ADMIN, ADMIN);
+          userService.processStartCommand(user, Interface.ADMIN, ADMIN, ADMIN_URL);
         } else {
           user.setLastMessageId(
               telegramService.sendMessage(getMessageToUnregisteredUser(user, ADMIN)));

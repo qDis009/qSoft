@@ -15,29 +15,33 @@ import java.util.List;
 import java.util.Set;
 
 public interface UserService {
-    UserDto getById(Integer id);
+  UserDto getById(Integer id);
 
-    UserDto update(UserDto userDto);
+  UserDto update(UserDto userDto);
 
-    void setLanguage(int id, String language);
+  void setLanguage(int id, String language);
 
-    Page<OrderDto> getOrdersHistory(int id, Pageable pageable);
+  Page<OrderDto> getOrdersHistory(int id, Pageable pageable);
 
-    List<ItemDto> getFavorite(int userId);
+  List<ItemDto> getFavorite(int userId);
 
-    void processStartCommand(User user, Interface roleInterface,String text);
+  void processStartCommand(User user, Interface roleInterface, String text, String url);
 
-    List<User> findByRoleName(String roleName);
+  List<User> findByRoleName(String roleName);
 
-    void addFavorite(int userId, int itemId);
+  void addFavorite(int userId, int itemId);
 
-    List<CartDto> getCart(int id);
+  List<CartDto> getCart(int id);
 
-    UserDto getByChatId(long chatId);
+  UserDto getByChatId(long chatId);
 
-    void deleteFavorite(int userId, int itemId);
-    boolean isManager(User user);
-    boolean isStorekeeper(User user);
-    boolean isCourier(User user);
-    boolean isAdmin(User user);
+  void deleteFavorite(int userId, int itemId);
+
+  boolean isManager(User user);
+
+  boolean isStorekeeper(User user);
+
+  boolean isCourier(User user);
+
+  boolean isAdmin(User user);
 }

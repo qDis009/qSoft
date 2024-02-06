@@ -66,13 +66,6 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public List<ItemDto> findItemsByUserId(int userId) {
-    return itemComponent.findItemsByUserId(userId).stream()
-        .map(itemMapper::mapItemToItemDto)
-        .toList();
-  }
-
-  @Override
   public ItemDto findById(int id) {
     Item item = itemComponent.findById(id);
     return itemMapper.mapItemToItemDto(item);

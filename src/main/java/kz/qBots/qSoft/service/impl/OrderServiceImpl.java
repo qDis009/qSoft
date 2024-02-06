@@ -213,6 +213,27 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   public void setStatus(int id, String status) {
+    Order order = orderComponent.findById(id);
+    switch (status) {
+      case "ACCEPTED_BY_MANAGER" -> {
+        sendManagerNotificationToClient(order);
+        sendNotificationToStorekeeper(order);
+      }
+      case "ACCEPTED_BY_STOREKEEPER" -> {
+        sendStorekeeperNotificationToClient(order);
+      }
+      case "COMPLETED" -> {
+        sendCompleteNotificationToClient(order);
+        if (order.getDeliveryType().equals(DeliveryType.DELIVERY)) {
+          sendCompleteNotificationToCourier(order);
+        }
+      }
+      case "ACCEPTED_BY_COURIER" -> {
+//        sendCourierAcceptedNotificationToClient(order, courierId);
+      }
+      case "IN_THE_WAY" -> {}
+      case "GIVEN" -> {}
+    }
     orderComponent.setStatus(id, status);
   }
 
@@ -226,7 +247,7 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public List<OrderDto> getManagerAcceptedOrders() {
     List<OrderStatus> excludedOrderStatus =
-        List.of(OrderStatus.NEW, OrderStatus.GIVEN, OrderStatus.REJECTED,OrderStatus.IN_THE_WAY);
+        List.of(OrderStatus.NEW, OrderStatus.GIVEN, OrderStatus.REJECTED, OrderStatus.IN_THE_WAY);
     return orderComponent.findByExcludedOrderStatus(excludedOrderStatus).stream()
         .map(orderMapper::mapOrderToOrderDto)
         .toList();
@@ -515,14 +536,12 @@ public class OrderServiceImpl implements OrderService {
             + " выполнен!\n"
             + "Спасибо что выбрали нас!\n"
             + "Пожалуйста, оцените заказ.";
-    SendMessage sendMessage=SendMessage.builder()
-            .text(message)
-            .chatId(order.getUser().getChatId())
-            .build();
+    SendMessage sendMessage =
+        SendMessage.builder().text(message).chatId(order.getUser().getChatId()).build();
     try {
       telegramService.sendMessage(sendMessage);
     } catch (TelegramApiException e) {
-      //TODO log
+      // TODO log
     }
   }
 

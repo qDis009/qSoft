@@ -35,6 +35,7 @@ public class FileServiceImpl implements FileService {
       throw new RuntimeException(e);
     }
     image.setPath(fileName);
+    imageComponent.update(image);
     return image.getId();
   }
 }
