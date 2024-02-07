@@ -20,5 +20,6 @@ public class UserDto {
     private String address;
     private ClientType clientType;
     private String shopName;
-    private Set<OrderDto> accepterOrders;
+    private Set<OrderDto> acceptedOrders;
+    private Set<RoleDto> roles;
 }

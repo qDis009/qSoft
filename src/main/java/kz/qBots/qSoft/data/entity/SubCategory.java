@@ -17,6 +17,7 @@ public class SubCategory {
   private String nameKz;
   private String nameRu;
   private boolean enabled = true;
+  private boolean deleted = false;
 
   @ManyToOne
   @JoinColumn(name = "category_id", referencedColumnName = "id")

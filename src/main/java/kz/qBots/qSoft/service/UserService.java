@@ -44,4 +44,9 @@ public interface UserService {
   boolean isCourier(User user);
 
   boolean isAdmin(User user);
+
+  List<UserDto> getCouriers();
+
+  List<UserDto> getEmployees();
+  void deleteEmployee(int id);
 }

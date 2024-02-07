@@ -110,6 +110,25 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public List<UserDto> getCouriers() {
+    return userComponent.findByRoleName("COURIER").stream()
+        .map(userMapper::mapUserToUserDto)
+        .toList();
+  }
+
+  @Override
+  public List<UserDto> getEmployees() {
+    return userComponent.findUsersWithRoles().stream().map(userMapper::mapUserToUserDto).toList();
+  }
+
+  @Override
+  public void deleteEmployee(int id) {
+    User employee = userComponent.findById(id);
+    employee.getRoles().clear();
+    userComponent.update(employee);
+  }
+
+  @Override
   public boolean isCourier(User user) {
     Set<Role> roles = user.getRoles();
     boolean isCourier = false;

@@ -1,11 +1,7 @@
 package kz.qBots.qSoft.service.impl;
 
 import kz.qBots.qSoft.data.component.ImageComponent;
-import kz.qBots.qSoft.data.component.ShopFeedbackComponent;
-import kz.qBots.qSoft.data.dto.ShopFeedbackDto;
 import kz.qBots.qSoft.data.entity.Image;
-import kz.qBots.qSoft.data.entity.ShopFeedback;
-import kz.qBots.qSoft.mapper.ShopFeedbackMapper;
 import kz.qBots.qSoft.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
@@ -14,6 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -23,19 +22,23 @@ public class FileServiceImpl implements FileService {
   private static final String UPLOAD_SHOP_FEEDBACK_PATH = "D:\\qshop\\shopFeedbacks\\files\\%s.%s";
 
   @Override
-  public Integer uploadShopFeedbackFile(MultipartFile multipartFile) {
-    Image image = new Image();
-    imageComponent.create(image);
-    String extension = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
-    String fileName = String.format(UPLOAD_SHOP_FEEDBACK_PATH, image.getId(), extension);
-    File file = new File(fileName);
-    try {
-      multipartFile.transferTo(file);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+  public Set<Image> uploadShopFeedbackFile(List<MultipartFile> multipartFiles) {
+    Set<Image> images=new HashSet<>();
+    for(MultipartFile multipartFile:multipartFiles){
+      Image image=new Image();
+      imageComponent.create(image);
+      String extension=FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+      String fileName=String.format(UPLOAD_SHOP_FEEDBACK_PATH, image.getId(), extension);
+      File file=new File(fileName);
+      try {
+        multipartFile.transferTo(file);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      image.setPath(fileName);
+      imageComponent.update(image);
+      images.add(image);
     }
-    image.setPath(fileName);
-    imageComponent.update(image);
-    return image.getId();
+    return images;
   }
 }

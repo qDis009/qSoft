@@ -71,7 +71,7 @@ public class ItemController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  @PatchMapping("/{id}/delete")
+  @DeleteMapping("/{id}/delete")
   public ResponseEntity<Void> delete(@PathVariable("id") int id) {
     itemService.delete(id);
     return new ResponseEntity<>(HttpStatus.OK);

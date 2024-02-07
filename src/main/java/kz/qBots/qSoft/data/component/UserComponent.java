@@ -15,4 +15,5 @@ public interface UserComponent {
 
   void update(User user);
   List<User> findByRoleName(String roleName);
+  List<User> findUsersWithRoles();
 }

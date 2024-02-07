@@ -44,4 +44,9 @@ public class UserComponentImpl implements UserComponent {
     return userRepository.findByRoles_Name(roleName);
 
   }
+
+  @Override
+  public List<User> findUsersWithRoles() {
+    return userRepository.findUsersWithRoles();
+  }
 }

@@ -15,13 +15,16 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
   List<Item> findAllByIdIn(List<Integer> ids);
+
   @Query("select i from Item i where i.deleted=false")
   Page<Item> findAll(Pageable pageable);
 
   @Query("select i from Item i where i.enabled=true and i.retailPrice <> 0")
   List<Item> findEnableRetailItems();
+
   @Query("select i from Item i where i.enabled=true and i.wholesalePrice <> 0")
   List<Item> findEnableWholesaleItems();
+
   @Query("select u.items from User u where u.id = :userId")
   List<Item> findItemsByUserId(@Param("userId") Integer userId);
 
@@ -33,11 +36,28 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
       "select item from Item item where item.wholesalePrice <> 0 and item.soldCount <> 0 and item.enabled=true or item.wholesalePrice <> 0 and item.hit=true and item.enabled=true order by item.soldCount desc")
   List<Item> findWholesaleOrderBySoldCount();
 
-  @Query("select item from Item item where item.retailPrice <> 0 and item.discountPercentage <> 0 and item.enabled=true")
+  @Query(
+      "select item from Item item where item.retailPrice <> 0 and item.discountPercentage <> 0 and item.enabled=true")
   List<Item> findRetailItemsWithDiscountPercentageIsExist();
 
   @Modifying
   @Transactional
   @Query(value = "update market.item set enabled=:enable where id =:id", nativeQuery = true)
   void setEnable(boolean enable, int id);
+
+  @Modifying
+  @Transactional
+  @Query(
+      value =
+          "update Item i set i.enabled=:newEnable where i.subCategory.id=:subCategoryId and i.deleted=false")
+  void updateEnableForItemsInSubCategory(
+      @Param("subCategoryId") int subCategoryId, @Param("newEnable") boolean newEnable);
+
+  @Query("select i from Item i where i.subCategory.id=:subCategoryId and i.enabled=true")
+  List<Item> findItemsBySubCategoryId(int subCategoryId);
+
+  @Modifying
+  @Transactional
+  @Query("update Item i set i.deleted=true,i.enabled=false where i.subCategory.id=:subCategoryId")
+  List<Item> deleteItemsBySubCategory_Id(int subCategoryId);
 }

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/category")
@@ -26,7 +27,6 @@ public class CategoryController {
   public ResponseEntity<CategoryDto> getById(@PathVariable("id") int id) {
     return ResponseEntity.ok(categoryService.findById(id));
   }
-
   @PatchMapping("/{id}/set-enable")
   public ResponseEntity<Void> setEnable(
       @PathVariable("id") int id, @RequestParam("enable") boolean enable) {

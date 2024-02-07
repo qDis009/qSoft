@@ -88,4 +88,19 @@ public class ItemComponentImpl implements ItemComponent {
   public void setEnable(boolean enable, int id) {
     itemRepository.setEnable(enable, id);
   }
+
+  @Override
+  public void updateEnableForItemsInSubCategory(int subCategoryId, boolean newEnable) {
+    itemRepository.updateEnableForItemsInSubCategory(subCategoryId, newEnable);
+  }
+
+  @Override
+  public List<Item> findItemsBySubCategoryId(int subCategoryId) {
+    return itemRepository.findItemsBySubCategoryId(subCategoryId);
+  }
+
+  @Override
+  public void deleteItemsBySubCategoryId(int subCategoryId) {
+    itemRepository.deleteItemsBySubCategory_Id(subCategoryId);
+  }
 }

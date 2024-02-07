@@ -20,12 +20,13 @@ public class ShopFeedbackController {
 
   @PostMapping("/create")
   public ResponseEntity<ShopFeedbackDto> create(
-      @RequestParam ShopFeedbackRequest model, @RequestParam List<Integer> imageIds) {
-    return ResponseEntity.ok(shopFeedbackService.create(model,imageIds));
+      @RequestPart ShopFeedbackRequest model, @RequestPart List<MultipartFile> multipartFiles) {
+    return ResponseEntity.ok(shopFeedbackService.create(model,multipartFiles));
   }
 
-  @PostMapping("/upload-file")
-  public ResponseEntity<Integer> uploadFile(@RequestParam("file") MultipartFile file) {
-    return ResponseEntity.ok(fileService.uploadShopFeedbackFile(file));
-  }
+//  @PostMapping("/upload-file")
+//  public ResponseEntity<Integer> uploadFile(@RequestParam("file") MultipartFile file) {
+//    return ResponseEntity.ok(fileService.uploadShopFeedbackFile(file));
+//  }
+
 }

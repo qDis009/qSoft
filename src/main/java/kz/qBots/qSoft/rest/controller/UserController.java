@@ -82,4 +82,20 @@ public class UserController {
     resentSeenService.addResentSeen(userId, itemId);
     return new ResponseEntity<>(HttpStatus.OK);
   }
+
+  @GetMapping("/couriers")
+  public ResponseEntity<List<UserDto>> getCouriers() {
+    return ResponseEntity.ok(userService.getCouriers());
+  }
+
+  @GetMapping("/employees")
+  public ResponseEntity<List<UserDto>> getEmployees() {
+    return ResponseEntity.ok(userService.getEmployees());
+  }
+
+  @DeleteMapping("/{id}/delete-employee")
+  public ResponseEntity<Void> deleteEmployee(@PathVariable("id") int id) {
+    userService.deleteEmployee(id);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 }

@@ -7,5 +7,5 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ShopFeedbackService {
-  ShopFeedbackDto create(ShopFeedbackRequest model, List<Integer> imageIds);
+  ShopFeedbackDto create(ShopFeedbackRequest model, List<MultipartFile> multipartFiles);
 }

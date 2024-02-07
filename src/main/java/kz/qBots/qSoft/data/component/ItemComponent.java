@@ -8,22 +8,35 @@ import java.util.List;
 import java.util.Set;
 
 public interface ItemComponent {
-    Item create(Item item);
+  Item create(Item item);
 
-    List<Item> findAllByIds(List<Integer> ids);
-    List<Item> findRetailItemsWithDiscountPercentageExist();
+  List<Item> findAllByIds(List<Integer> ids);
 
-    Item findById(int id);
+  List<Item> findRetailItemsWithDiscountPercentageExist();
 
-    void update(Item item);
+  Item findById(int id);
 
-    Page<Item> findAll(Pageable pageable);
+  void update(Item item);
 
-    Set<Integer> findIdsByUserId(int userId);
-    List<Item> findItemsByUserId(int userId);
-    List<Item> findRetailItemsOrderBySoldCount();
-    List<Item> findWholesaleItemsOrderBySoldCount();
-    List<Item> findEnableRetailItems();
-    List<Item> findEnableWholesaleItems();
-    void setEnable(boolean enable,int id);
+  Page<Item> findAll(Pageable pageable);
+
+  Set<Integer> findIdsByUserId(int userId);
+
+  List<Item> findItemsByUserId(int userId);
+
+  List<Item> findRetailItemsOrderBySoldCount();
+
+  List<Item> findWholesaleItemsOrderBySoldCount();
+
+  List<Item> findEnableRetailItems();
+
+  List<Item> findEnableWholesaleItems();
+
+  void setEnable(boolean enable, int id);
+
+  void updateEnableForItemsInSubCategory(int subCategoryId, boolean newEnable);
+
+  List<Item> findItemsBySubCategoryId(int subCategoryId);
+
+  void deleteItemsBySubCategoryId(int subCategoryId);
 }

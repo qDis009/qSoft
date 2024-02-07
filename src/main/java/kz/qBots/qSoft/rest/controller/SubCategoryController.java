@@ -21,16 +21,33 @@ public class SubCategoryController {
     return ResponseEntity.ok(subCategoryService.findById(id));
   }
 
+  @GetMapping("/get-all")
+  public ResponseEntity<List<SubCategoryDto>> getAll() {
+    return ResponseEntity.ok(subCategoryService.getAll());
+  }
+
   @GetMapping("/{id}/items/{userId}")
   public ResponseEntity<List<ItemDto>> getItemsBySubCategory(
       @PathVariable("id") int id, @PathVariable("userId") int userId) {
     return ResponseEntity.ok(subCategoryService.findItemsBySubCategoryId(id, userId));
   }
 
+  @GetMapping("/subCategories/{categoryId}")
+  public ResponseEntity<List<SubCategoryDto>> getSubCategoryByCategoryId(
+      @PathVariable("categoryId") int categoryId) {
+    return ResponseEntity.ok(subCategoryService.getSubCategoriesByCategoryId(categoryId));
+  }
+
   @PatchMapping("/{id}/set-enable")
   public ResponseEntity<Void> setEnable(
       @PathVariable("id") int id, @RequestParam("enable") boolean enable) {
     subCategoryService.setEnable(enable, id);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @DeleteMapping("/{id}/delete")
+  public ResponseEntity<Void> delete(@PathVariable("id") int id) {
+    subCategoryService.delete(id);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 }

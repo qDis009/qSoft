@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     @Query(value = "update market.user set language = :language where id = :id",nativeQuery = true)
     void setLanguage(int id,String language);
     List<User> findByRoles_Name(String roleName);
+    @Query("select u from User u join fetch u.roles")
+    List<User> findUsersWithRoles();
 }
