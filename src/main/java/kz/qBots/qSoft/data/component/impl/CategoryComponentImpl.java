@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryComponentImpl implements CategoryComponent {
@@ -22,6 +24,11 @@ public class CategoryComponentImpl implements CategoryComponent {
   @Override
   public void setEnable(boolean enable, int id) {
     categoryRepository.setEnable(enable,id);
+  }
+
+  @Override
+  public List<Category> getEnableCategories() {
+    return categoryRepository.getEnableCategories();
   }
 
   @Override

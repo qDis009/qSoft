@@ -2,7 +2,6 @@ package kz.qBots.qSoft.service.impl;
 
 import kz.qBots.qSoft.data.component.CategoryComponent;
 import kz.qBots.qSoft.data.dto.CategoryDto;
-import kz.qBots.qSoft.data.dto.SubCategoryDto;
 import kz.qBots.qSoft.data.entity.Category;
 import kz.qBots.qSoft.data.entity.SubCategory;
 import kz.qBots.qSoft.mapper.CategoryMapper;
@@ -36,17 +35,23 @@ public class CategoryServiceImpl implements CategoryService {
 
   @Override
   public void setEnable(boolean enable, int id) {
-    updateEnableForItemsAndSubCategory(id,enable);
+    updateEnableForItemsAndSubCategory(id, enable);
     categoryComponent.setEnable(enable, id);
   }
 
+  @Override
+  public List<CategoryDto> getEnableCategories() {
+    return categoryComponent.getEnableCategories().stream()
+        .map(categoryMapper::mapCategoryToCategoryDto)
+        .toList();
+  }
 
-  private void updateEnableForItemsAndSubCategory(int id,boolean newEnable){
-    Category category=categoryComponent.findById(id);
-    Set<SubCategory> subCategories=category.getSubCategories();
-    for(SubCategory subCategory:subCategories){
-      if(!subCategory.isDeleted()){
-        subCategoryService.setEnable(newEnable,id);
+  private void updateEnableForItemsAndSubCategory(int id, boolean newEnable) {
+    Category category = categoryComponent.findById(id);
+    Set<SubCategory> subCategories = category.getSubCategories();
+    for (SubCategory subCategory : subCategories) {
+      if (!subCategory.isDeleted()) {
+        subCategoryService.setEnable(newEnable, subCategory.getId());
       }
     }
   }

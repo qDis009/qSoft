@@ -5,12 +5,13 @@ import kz.qBots.qSoft.rest.request.OrderRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface OrderService {
   Page<OrderDto> findByUserId(int id, Pageable pageable);
   OrderDto findById(int id);
-  OrderDto order(OrderRequest orderRequest);
+  OrderDto order(OrderRequest orderRequest) throws IOException;
   void setStatus(int id,String status);
   List<OrderDto> getManagerNewOrders();
   List<OrderDto> getManagerAcceptedOrders();

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,10 +24,16 @@ public class CategoryController {
     return ResponseEntity.ok(categoryService.findAll(pageable));
   }
 
+  @GetMapping("/enable-categories")
+  public ResponseEntity<List<CategoryDto>> getEnableCategories() {
+    return ResponseEntity.ok(categoryService.getEnableCategories());
+  }
+
   @GetMapping("/{id}")
   public ResponseEntity<CategoryDto> getById(@PathVariable("id") int id) {
     return ResponseEntity.ok(categoryService.findById(id));
   }
+
   @PatchMapping("/{id}/set-enable")
   public ResponseEntity<Void> setEnable(
       @PathVariable("id") int id, @RequestParam("enable") boolean enable) {

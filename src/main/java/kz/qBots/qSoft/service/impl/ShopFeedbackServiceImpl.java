@@ -2,21 +2,21 @@ package kz.qBots.qSoft.service.impl;
 
 import kz.qBots.qSoft.data.component.ShopFeedbackComponent;
 import kz.qBots.qSoft.data.dto.ShopFeedbackDto;
+import kz.qBots.qSoft.data.entity.Image;
 import kz.qBots.qSoft.data.entity.ShopFeedback;
 import kz.qBots.qSoft.data.entity.User;
 import kz.qBots.qSoft.mapper.ShopFeedbackMapper;
 import kz.qBots.qSoft.rest.request.ShopFeedbackRequest;
-import kz.qBots.qSoft.service.FileService;
 import kz.qBots.qSoft.service.ShopFeedbackService;
 import kz.qBots.qSoft.service.UserService;
 import kz.qBots.qSoft.telegram.service.TelegramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -25,22 +25,17 @@ public class ShopFeedbackServiceImpl implements ShopFeedbackService {
   private final ShopFeedbackMapper shopFeedbackMapper;
   private final TelegramService telegramService;
   private final UserService userService;
-  private final FileService fileService;
 
   @Override
-  public ShopFeedbackDto create(ShopFeedbackRequest model, List<MultipartFile> multipartFiles) {
+  public ShopFeedbackDto create(ShopFeedbackRequest model) {
     ShopFeedback shopFeedback =
         shopFeedbackComponent.create(
             shopFeedbackMapper.mapShopFeedbackRequestToShopFeedback(model));
-    if (!multipartFiles.isEmpty()) {
-      shopFeedback.setImages(fileService.uploadShopFeedbackFile(multipartFiles));
-    }
-    if (!shopFeedback.getComment().isEmpty())
-      sendMessageToAdmin(shopFeedback.getComment(), shopFeedback.getUser());
     return shopFeedbackMapper.mapShopFeedbackToShopFeedbackDto(shopFeedback);
   }
 
-  public void sendMessageToAdmin(String message, User user) {
+  @Override
+  public void sendMessageToAdmin(String message, User user, Set<Image> images) {
     List<User> admins = userService.findByRoleName("ADMIN");
     String messageText =
         "Предложение/жалоба от клиента!\n"
@@ -61,6 +56,5 @@ public class ShopFeedbackServiceImpl implements ShopFeedbackService {
         // TODO
       }
     }
-    // TODO add file
   }
 }

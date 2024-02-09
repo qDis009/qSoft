@@ -4,10 +4,17 @@ import kz.qBots.qSoft.data.dto.OrderDto;
 import kz.qBots.qSoft.rest.request.OrderRequest;
 import kz.qBots.qSoft.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -17,7 +24,7 @@ public class OrderController {
   private final OrderService orderService;
 
   @PostMapping
-  public ResponseEntity<OrderDto> order(@RequestBody OrderRequest orderRequest) {
+  public ResponseEntity<OrderDto> order(@RequestBody OrderRequest orderRequest) throws IOException {
     return ResponseEntity.ok(orderService.order(orderRequest));
   }
 
@@ -61,6 +68,14 @@ public class OrderController {
     return ResponseEntity.ok(orderService.getManagerCompletedOrders());
   }
 
+  @GetMapping("/{id}/pdf-file")
+  public ResponseEntity<Resource> getPdfFile(@PathVariable("id") int id)
+      throws MalformedURLException {
+    Path filePath = Paths.get("D:\\qshop\\orders\\reports\\").resolve(id + ".pdf");
+    Resource resource = new UrlResource(filePath.toUri());
+    return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).body(resource);
+  }
+
   @PatchMapping("/{id}/accept-by-manager")
   public ResponseEntity<OrderDto> acceptOrderByManager(@PathVariable("id") int id) {
     return ResponseEntity.ok(orderService.acceptOrderByManager(id));
@@ -90,6 +105,7 @@ public class OrderController {
   public ResponseEntity<List<OrderDto>> getStorekeeperCompletedOrders() {
     return ResponseEntity.ok(orderService.getStorekeeperCompletedOrders());
   }
+
   @GetMapping("/courier-new-orders")
   public ResponseEntity<List<OrderDto>> getCourierNewOrders() {
     return ResponseEntity.ok(orderService.getCourierNewOrders());

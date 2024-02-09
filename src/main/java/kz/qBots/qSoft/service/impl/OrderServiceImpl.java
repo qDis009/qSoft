@@ -15,6 +15,7 @@ import kz.qBots.qSoft.data.enums.OrderStatus;
 import kz.qBots.qSoft.mapper.OrderMapper;
 import kz.qBots.qSoft.rest.request.OrderRequest;
 import kz.qBots.qSoft.service.OrderService;
+import kz.qBots.qSoft.service.PdfService;
 import kz.qBots.qSoft.telegram.service.TelegramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -36,6 +40,7 @@ public class OrderServiceImpl implements OrderService {
   private final CartComponent cartComponent;
   private final UserComponent userComponent;
   private final TelegramService telegramService;
+  private final PdfService pdfService;
 
   @Override
   public Page<OrderDto> findByUserId(int id, Pageable pageable) {
@@ -58,6 +63,11 @@ public class OrderServiceImpl implements OrderService {
     orderComponent.update(order);
     sendOrderNotificationToClient(user, order, orderCarts);
     sendNotificationToManager(order);
+    try {
+      pdfService.createOrderReport(order);
+    } catch (IOException e) {
+      //TODO log
+    }
     return orderMapper.mapOrderToOrderDto(order);
   }
 
@@ -109,7 +119,7 @@ public class OrderServiceImpl implements OrderService {
   private void sendOrderNotificationToClient(User user, Order order, Set<Cart> orderCarts) {
     StringBuilder messageText = new StringBuilder();
     messageText.append("Ayan-market - Ваш заказ (№").append(order.getId()).append(")").append("\n");
-    messageText.append(order.getCreated()).append(" Вы оформили заказ").append("\n");
+    messageText.append(getDate(order.getCreated())).append(" Вы оформили заказ").append("\n");
     for (Cart cart : orderCarts) {
       messageText
           .append(cart.getItem().getNameRu())
@@ -138,6 +148,11 @@ public class OrderServiceImpl implements OrderService {
       order.addTotal(cart.getTotalPrice());
       cartComponent.update(cart);
     }
+  }
+
+  private String getDate(LocalDateTime time) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    return time.format(formatter);
   }
 
   @Override
@@ -229,7 +244,7 @@ public class OrderServiceImpl implements OrderService {
         }
       }
       case "ACCEPTED_BY_COURIER" -> {
-//        sendCourierAcceptedNotificationToClient(order, courierId);
+        //        sendCourierAcceptedNotificationToClient(order, courierId);
       }
       case "IN_THE_WAY" -> {}
       case "GIVEN" -> {}

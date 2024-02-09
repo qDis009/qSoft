@@ -1,7 +1,6 @@
 package kz.qBots.qSoft.service;
 
 import kz.qBots.qSoft.data.dto.CategoryDto;
-import kz.qBots.qSoft.data.dto.SubCategoryDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,4 +11,5 @@ public interface CategoryService {
 
   CategoryDto findById(int id);
   void setEnable(boolean enable,int id);
+  List<CategoryDto> getEnableCategories();
 }
