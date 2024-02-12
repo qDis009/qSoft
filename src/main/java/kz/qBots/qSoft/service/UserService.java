@@ -49,4 +49,5 @@ public interface UserService {
 
   List<UserDto> getEmployees();
   void deleteEmployee(int id);
+  void addRole(int id,int roleId);
 }

@@ -1,8 +1,10 @@
 package kz.qBots.qSoft.service.impl;
 
 import kz.qBots.qSoft.data.component.ImageComponent;
+import kz.qBots.qSoft.data.component.ItemComponent;
 import kz.qBots.qSoft.data.component.ShopFeedbackComponent;
 import kz.qBots.qSoft.data.entity.Image;
+import kz.qBots.qSoft.data.entity.Item;
 import kz.qBots.qSoft.data.entity.ShopFeedback;
 import kz.qBots.qSoft.service.FileService;
 import kz.qBots.qSoft.service.ShopFeedbackService;
@@ -24,6 +26,7 @@ public class FileServiceImpl implements FileService {
   private final ImageComponent imageComponent;
   private final ShopFeedbackComponent shopFeedbackComponent;
   private final ShopFeedbackService shopFeedbackService;
+  private final ItemComponent itemComponent;
   private static final String UPLOAD_SHOP_FEEDBACK_PATH = "D:\\qshop\\shopFeedbacks\\files\\%s.%s";
 
   @Override
@@ -39,7 +42,7 @@ public class FileServiceImpl implements FileService {
       try {
         multipartFile.transferTo(file);
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        //TODO log
       }
       image.setPath(fileName);
       image.setShopFeedback(shopFeedback);
@@ -51,5 +54,29 @@ public class FileServiceImpl implements FileService {
     if (!shopFeedback.getComment().isEmpty())
       shopFeedbackService.sendMessageToAdmin(
           shopFeedback.getComment(), shopFeedback.getUser(), images);
+  }
+
+  @Override
+  public void uploadItemPhotos(int itemId, List<MultipartFile> multipartFiles) {
+    Item item = itemComponent.findById(itemId);
+    Set<Image> images = new HashSet<>();
+    for (MultipartFile multipartFile : multipartFiles) {
+      Image image=new Image();
+      imageComponent.create(image);
+      String extension=FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+      String fileName=String.format(UPLOAD_SHOP_FEEDBACK_PATH,image.getId(),extension);
+      File file=new File(fileName);
+      try {
+        multipartFile.transferTo(file);
+      } catch (IOException e) {
+        //TODO log
+      }
+      image.setPath(fileName);
+      image.setItem(item);
+      imageComponent.update(image);
+      images.add(image);
+    }
+    item.setImages(images);
+    itemComponent.update(item);
   }
 }

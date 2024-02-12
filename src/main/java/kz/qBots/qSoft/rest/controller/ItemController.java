@@ -3,6 +3,7 @@ package kz.qBots.qSoft.rest.controller;
 import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.dto.ItemFeedbackDto;
 import kz.qBots.qSoft.rest.request.ItemRequest;
+import kz.qBots.qSoft.service.FileService;
 import kz.qBots.qSoft.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,11 +21,18 @@ import java.util.List;
 @RequestMapping("/item")
 public class ItemController {
   private final ItemService itemService;
+  private final FileService fileService;
 
   @PostMapping("/create")
-  public ResponseEntity<ItemDto> create(
-      @RequestParam ItemRequest itemRequest, @RequestParam List<MultipartFile> multipartFiles) {
-    return ResponseEntity.ok(itemService.create(itemRequest,multipartFiles));
+  public ResponseEntity<ItemDto> create(@RequestBody ItemRequest itemRequest) {
+    return ResponseEntity.ok(itemService.create(itemRequest));
+  }
+
+  @PostMapping("/{id}/upload-photos")
+  public ResponseEntity<Void> uploadPhotos(
+      @PathVariable("id") int id, @RequestParam("photos") List<MultipartFile> multipartFiles) {
+    fileService.uploadItemPhotos(id,multipartFiles);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @GetMapping("/get-all/{userId}")

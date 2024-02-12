@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface RoleComponent {
     List<Role> getAll();
+    Role findById(int id);
 }

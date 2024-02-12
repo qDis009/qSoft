@@ -2,6 +2,7 @@ package kz.qBots.qSoft.service.impl;
 
 import kz.qBots.qSoft.data.component.CartComponent;
 import kz.qBots.qSoft.data.component.ItemComponent;
+import kz.qBots.qSoft.data.component.RoleComponent;
 import kz.qBots.qSoft.data.component.UserComponent;
 import kz.qBots.qSoft.data.dto.CartDto;
 import kz.qBots.qSoft.data.dto.ItemDto;
@@ -47,6 +48,7 @@ public class UserServiceImpl implements UserService {
   private final CartMapper cartMapper;
   private final CartComponent cartComponent;
   private final ItemMapper itemMapper;
+  private final RoleComponent roleComponent;
 
   @Override
   public void processStartCommand(User user, Interface roleInterface, String text, String url) {
@@ -126,6 +128,14 @@ public class UserServiceImpl implements UserService {
     User employee = userComponent.findById(id);
     employee.getRoles().clear();
     userComponent.update(employee);
+  }
+
+  @Override
+  public void addRole(int id, int roleId) {
+    User user=userComponent.findById(id);
+    Role role=roleComponent.findById(roleId);
+    user.getRoles().add(role);
+    userComponent.update(user);
   }
 
   @Override

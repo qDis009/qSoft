@@ -6,9 +6,11 @@ import kz.qBots.qSoft.data.component.UserComponent;
 import kz.qBots.qSoft.data.dto.ItemFeedbackDto;
 import kz.qBots.qSoft.data.entity.Item;
 import kz.qBots.qSoft.data.entity.ItemFeedback;
+import kz.qBots.qSoft.data.entity.User;
 import kz.qBots.qSoft.mapper.ItemFeedbackMapper;
 import kz.qBots.qSoft.rest.request.ItemFeedbackRequest;
 import kz.qBots.qSoft.service.ItemFeedbackService;
+import kz.qBots.qSoft.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,8 @@ public class ItemFeedbackServiceImpl implements ItemFeedbackService {
   private final ItemFeedbackComponent itemFeedbackComponent;
   private final ItemFeedbackMapper itemFeedbackMapper;
   private final ItemComponent itemComponent;
+  private final UserService userService;
+  private final UserComponent userComponent;
 
   @Transactional
   @Override
@@ -117,6 +121,7 @@ public class ItemFeedbackServiceImpl implements ItemFeedbackService {
 
   @Override
   public boolean hasComment(int userId, int itemId) {
-    return Objects.nonNull(itemFeedbackComponent.findByItemIdAndUserId(itemId, userId));
+    User user=userComponent.findById(userId);
+    return Objects.nonNull(itemFeedbackComponent.findByItemIdAndUserId(itemId, userId))&&!userService.isAdmin(user);
   }
 }

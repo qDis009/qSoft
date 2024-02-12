@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -80,7 +81,7 @@ public class PdfServiceImpl implements PdfService {
         .add(new Text(order.getPhoneNumber()).setFont(bold))
         .add("\n")
         .add(new Text("Адрес: ").setFont(regular))
-        .add(new Text(order.getAddress()).setFont(bold))
+        .add(new Text(Objects.isNull(order.getAddress())?"Самовывоз":order.getAddress()).setFont(bold)) //TODO set address on front
         .add("\n")
         .add(new Text("Название ИП: ").setFont(regular))
         .add(new Text(order.getIEName()).setFont(bold))
@@ -113,6 +114,7 @@ public class PdfServiceImpl implements PdfService {
                   ? (cart.getItem().getRetailPrice() - cart.getItem().getDiscount())
                   : cart.getItem().getWholesalePrice()));
       table.addCell(String.valueOf(cart.getTotalPrice() - cart.getTotalDiscount()));
+      cnt++;
     }
     Paragraph paragraph3=new Paragraph().setTextAlignment(TextAlignment.RIGHT).setFont(bold).setFontSize(12);
     paragraph3.add(new Text("ИТОГО: ")).add(order.getTotal()-order.getDiscount()+" тг.");

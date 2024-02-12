@@ -10,7 +10,6 @@ public class ItemRequest {
     private String nameKz;
     private String descriptionKz;
     private String descriptionRu;
-    private int categoryId;
     private int subCategoryId;
     private String article;
     private Integer count;

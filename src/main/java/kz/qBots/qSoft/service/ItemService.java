@@ -13,7 +13,7 @@ import java.util.List;
 public interface ItemService {
   void delete(int id);
 
-  ItemDto create(ItemRequest itemRequest, List<MultipartFile> multipartFiles);
+  ItemDto create(ItemRequest itemRequest);
 
   Page<ItemDto> findAll(Pageable pageable);
 

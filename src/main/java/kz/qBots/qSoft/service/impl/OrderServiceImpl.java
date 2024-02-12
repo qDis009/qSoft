@@ -111,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
       try {
         telegramService.sendMessage(sendMessage);
       } catch (TelegramApiException e) {
-        throw new RuntimeException(e);
+        //TODO log
       }
     }
   }

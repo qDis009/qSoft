@@ -98,4 +98,11 @@ public class UserController {
     userService.deleteEmployee(id);
     return new ResponseEntity<>(HttpStatus.OK);
   }
+
+  @PostMapping("/{id}/add-role/{roleId}")
+  public ResponseEntity<Void> addRole(
+      @PathVariable("id") int id, @PathVariable("roleId") int roleId) {
+    userService.addRole(id, roleId);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 }
