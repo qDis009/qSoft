@@ -33,11 +33,6 @@ public class OrderComponentImpl implements OrderComponent {
     }
 
     @Override
-    public void setStatus(int id, String status) {
-        orderRepository.setStatus(id,status);
-    }
-
-    @Override
     public List<Order> findByStatus(OrderStatus status) {
         return orderRepository.findByOrderStatus(status);
     }

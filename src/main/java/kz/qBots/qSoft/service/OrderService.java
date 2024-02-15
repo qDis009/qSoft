@@ -12,7 +12,6 @@ public interface OrderService {
   Page<OrderDto> findByUserId(int id, Pageable pageable);
   OrderDto findById(int id);
   OrderDto order(OrderRequest orderRequest) throws IOException;
-  void setStatus(int id,String status);
   List<OrderDto> getManagerNewOrders();
   List<OrderDto> getManagerAcceptedOrders();
   OrderDto rejectOrder(int id,String reason,String role);
@@ -32,4 +31,6 @@ public interface OrderService {
   List<OrderDto> getCourierCompletedOrders(int courierId);
   OrderDto sendCodeToClient(int id);
   boolean enterCode(int id,int code);
+  OrderDto setOrderStatusToGiven(int id);
+  OrderDto acceptInWayByCourier(int id,int courierId);
 }

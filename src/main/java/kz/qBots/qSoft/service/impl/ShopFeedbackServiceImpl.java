@@ -12,9 +12,12 @@ import kz.qBots.qSoft.service.UserService;
 import kz.qBots.qSoft.telegram.service.TelegramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.File;
 import java.util.List;
 import java.util.Set;
 
@@ -53,7 +56,19 @@ public class ShopFeedbackServiceImpl implements ShopFeedbackService {
       try {
         admin.setLastMessageId(telegramService.sendMessage(sendMessage));
       } catch (TelegramApiException e) {
-        // TODO
+        // TODO log
+      }
+      for (Image image : images) {
+        SendDocument sendDocument =
+            SendDocument.builder()
+                .document(new InputFile(new File(image.getPath())))
+                .chatId(admin.getChatId())
+                .build();
+        try {
+          telegramService.sendDocument(sendDocument);
+        } catch (TelegramApiException e) {
+          //TODO log
+        }
       }
     }
   }

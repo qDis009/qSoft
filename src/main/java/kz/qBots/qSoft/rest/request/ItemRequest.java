@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ItemRequest {
+    private Integer id;
     private String nameRu;
     private String nameKz;
     private String descriptionKz;
@@ -16,7 +17,6 @@ public class ItemRequest {
     private int retailPrice;
     private int wholesalePrice;
     private Integer discountPercentage;
-    private String created;
     private String imageUrl3D;
     private boolean hit;
 }

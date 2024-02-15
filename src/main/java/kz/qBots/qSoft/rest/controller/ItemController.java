@@ -31,7 +31,7 @@ public class ItemController {
   @PostMapping("/{id}/upload-photos")
   public ResponseEntity<Void> uploadPhotos(
       @PathVariable("id") int id, @RequestParam("photos") List<MultipartFile> multipartFiles) {
-    fileService.uploadItemPhotos(id,multipartFiles);
+    fileService.uploadItemPhotos(id, multipartFiles);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
@@ -83,5 +83,10 @@ public class ItemController {
   public ResponseEntity<Void> delete(@PathVariable("id") int id) {
     itemService.delete(id);
     return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @PutMapping("/update")
+  public ResponseEntity<ItemDto> update(ItemRequest itemRequest) {
+    return ResponseEntity.ok(itemService.update(itemRequest));
   }
 }

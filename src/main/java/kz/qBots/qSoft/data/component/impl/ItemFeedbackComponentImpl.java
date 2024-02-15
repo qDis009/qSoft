@@ -7,6 +7,8 @@ import kz.qBots.qSoft.data.repository.ItemFeedbackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ItemFeedbackComponentImpl implements ItemFeedbackComponent {
@@ -28,7 +30,7 @@ public class ItemFeedbackComponentImpl implements ItemFeedbackComponent {
     }
 
     @Override
-    public ItemFeedback findByItemIdAndUserId(int itemId, int userId) {
+    public List<ItemFeedback> findByItemIdAndUserId(int itemId, int userId) {
         return itemFeedbackRepository.findByItemIdAndUserId(itemId,userId);
     }
 }

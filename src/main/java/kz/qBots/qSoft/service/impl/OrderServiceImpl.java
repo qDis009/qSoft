@@ -66,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
     try {
       pdfService.createOrderReport(order);
     } catch (IOException e) {
-      //TODO log
+      // TODO log
     }
     return orderMapper.mapOrderToOrderDto(order);
   }
@@ -111,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
       try {
         telegramService.sendMessage(sendMessage);
       } catch (TelegramApiException e) {
-        //TODO log
+        // TODO log
       }
     }
   }
@@ -224,32 +224,6 @@ public class OrderServiceImpl implements OrderService {
         // TODO log
       }
     }
-  }
-
-  @Override
-  public void setStatus(int id, String status) {
-    Order order = orderComponent.findById(id);
-    switch (status) {
-      case "ACCEPTED_BY_MANAGER" -> {
-        sendManagerNotificationToClient(order);
-        sendNotificationToStorekeeper(order);
-      }
-      case "ACCEPTED_BY_STOREKEEPER" -> {
-        sendStorekeeperNotificationToClient(order);
-      }
-      case "COMPLETED" -> {
-        sendCompleteNotificationToClient(order);
-        if (order.getDeliveryType().equals(DeliveryType.DELIVERY)) {
-          sendCompleteNotificationToCourier(order);
-        }
-      }
-      case "ACCEPTED_BY_COURIER" -> {
-        //        sendCourierAcceptedNotificationToClient(order, courierId);
-      }
-      case "IN_THE_WAY" -> {}
-      case "GIVEN" -> {}
-    }
-    orderComponent.setStatus(id, status);
   }
 
   @Override
@@ -542,6 +516,25 @@ public class OrderServiceImpl implements OrderService {
     }
     orderComponent.update(order);
     return order.getCode() == code;
+  }
+
+  @Override
+  public OrderDto setOrderStatusToGiven(int id) {
+    Order order = orderComponent.findById(id);
+    order.setOrderStatus(OrderStatus.GIVEN);
+    orderComponent.update(order);
+    return orderMapper.mapOrderToOrderDto(order);
+  }
+
+  @Override
+  public OrderDto acceptInWayByCourier(int id, int courierId) {
+    Order order = orderComponent.findById(id);
+    User courier = userComponent.findById(courierId);
+    order.setOrderStatus(OrderStatus.IN_THE_WAY);
+    order.setCourier(courier);
+    sendCourierAcceptedNotificationToClient(order, courierId);
+    orderComponent.update(order);
+    return orderMapper.mapOrderToOrderDto(order);
   }
 
   private void sendSuccessOrderToClient(Order order) {

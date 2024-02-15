@@ -121,7 +121,8 @@ public class ItemFeedbackServiceImpl implements ItemFeedbackService {
 
   @Override
   public boolean hasComment(int userId, int itemId) {
-    User user=userComponent.findById(userId);
-    return Objects.nonNull(itemFeedbackComponent.findByItemIdAndUserId(itemId, userId))&&!userService.isAdmin(user);
+    User user = userComponent.findById(userId);
+    return !itemFeedbackComponent.findByItemIdAndUserId(itemId, userId).isEmpty()
+        && !userService.isAdmin(user);
   }
 }

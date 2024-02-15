@@ -20,4 +20,6 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     List<User> findByRoles_Name(String roleName);
     @Query("select u from User u join fetch u.roles")
     List<User> findUsersWithRoles();
+
+    List<User> findUserByRolesIsNull();
 }

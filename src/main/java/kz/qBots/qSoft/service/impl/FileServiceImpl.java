@@ -28,6 +28,7 @@ public class FileServiceImpl implements FileService {
   private final ShopFeedbackService shopFeedbackService;
   private final ItemComponent itemComponent;
   private static final String UPLOAD_SHOP_FEEDBACK_PATH = "D:\\qshop\\shopFeedbacks\\files\\%s.%s";
+  private static final String UPLOAD_ITEM_PHOTO_PATH = "D:\\qshop\\items\\photos\\%s.%s";
 
   @Override
   public void uploadShopFeedbackFile(int shopFeedbackId, List<MultipartFile> multipartFiles) {
@@ -37,12 +38,12 @@ public class FileServiceImpl implements FileService {
       Image image = new Image();
       imageComponent.create(image);
       String extension = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
-      String fileName = String.format(UPLOAD_SHOP_FEEDBACK_PATH, image.getId(), extension);
+      String fileName = String.format(UPLOAD_SHOP_FEEDBACK_PATH, multipartFile.getOriginalFilename(), extension);
       File file = new File(fileName);
       try {
         multipartFile.transferTo(file);
       } catch (IOException e) {
-        //TODO log
+        // TODO log
       }
       image.setPath(fileName);
       image.setShopFeedback(shopFeedback);
@@ -61,15 +62,15 @@ public class FileServiceImpl implements FileService {
     Item item = itemComponent.findById(itemId);
     Set<Image> images = new HashSet<>();
     for (MultipartFile multipartFile : multipartFiles) {
-      Image image=new Image();
+      Image image = new Image();
       imageComponent.create(image);
-      String extension=FilenameUtils.getExtension(multipartFile.getOriginalFilename());
-      String fileName=String.format(UPLOAD_SHOP_FEEDBACK_PATH,image.getId(),extension);
-      File file=new File(fileName);
+      String extension = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+      String fileName = String.format(UPLOAD_ITEM_PHOTO_PATH, image.getId(), extension);
+      File file = new File(fileName);
       try {
         multipartFile.transferTo(file);
       } catch (IOException e) {
-        //TODO log
+        // TODO log
       }
       image.setPath(fileName);
       image.setItem(item);

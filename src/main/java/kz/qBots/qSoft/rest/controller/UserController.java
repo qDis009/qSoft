@@ -13,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -103,6 +104,20 @@ public class UserController {
   public ResponseEntity<Void> addRole(
       @PathVariable("id") int id, @PathVariable("roleId") int roleId) {
     userService.addRole(id, roleId);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @GetMapping("/send-notification")
+  public ResponseEntity<Void> sendNotification(
+      @RequestParam("comment") String comment, @RequestParam("itemIds") List<Integer> itemIds) {
+    userService.sendNotification(comment, itemIds);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @GetMapping("/send-news")
+  public ResponseEntity<Void> sendNews(
+      @RequestPart("comment") String comment,@RequestPart("files")List<MultipartFile> multipartFiles) {
+    userService.sendNews(comment, multipartFiles);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 }

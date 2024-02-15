@@ -10,6 +10,8 @@ import kz.qBots.qSoft.data.entity.User;
 import kz.qBots.qSoft.telegram.enums.Interface;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
 import java.util.Set;
@@ -48,6 +50,12 @@ public interface UserService {
   List<UserDto> getCouriers();
 
   List<UserDto> getEmployees();
+
   void deleteEmployee(int id);
-  void addRole(int id,int roleId);
+
+  void addRole(int id, int roleId);
+
+  void sendNotification(String comment, List<Integer> itemIds);
+
+  void sendNews(String comment, List<MultipartFile> multipartFiles);
 }

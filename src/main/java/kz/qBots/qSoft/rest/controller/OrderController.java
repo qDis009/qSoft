@@ -33,13 +33,6 @@ public class OrderController {
     return ResponseEntity.ok(orderService.findById(id));
   }
 
-  @PatchMapping("/{id}/set-status")
-  public ResponseEntity<Void> setStatus(
-      @PathVariable("id") int id, @RequestParam("status") String status) {
-    orderService.setStatus(id, status);
-    return new ResponseEntity<>(HttpStatus.OK);
-  }
-
   @GetMapping("/manager-new-orders")
   public ResponseEntity<List<OrderDto>> getManagerNewOrders() {
     return ResponseEntity.ok(orderService.getManagerNewOrders());
@@ -152,5 +145,16 @@ public class OrderController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid code");
     }
     return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @PatchMapping("/{id}/set-given")
+  public ResponseEntity<OrderDto> setOrderStatusToGiven(@PathVariable("id") int id) {
+    return ResponseEntity.ok(orderService.setOrderStatusToGiven(id));
+  }
+
+  @PatchMapping("/{id}/accept-in-way/{courierId}")
+  public ResponseEntity<OrderDto> acceptInWayByCourier(
+      @PathVariable("id") int id, @PathVariable("courierId") int courierId) {
+    return ResponseEntity.ok(orderService.acceptInWayByCourier(id, courierId));
   }
 }

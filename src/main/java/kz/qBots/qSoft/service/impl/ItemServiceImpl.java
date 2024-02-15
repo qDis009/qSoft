@@ -22,6 +22,7 @@ public class ItemServiceImpl implements ItemService {
   private final ItemComponent itemComponent;
   private final ItemMapper itemMapper;
   private final ItemFeedbackService itemFeedbackService;
+  private static final String ITEM_PHOTO_PATH = "D:\\qshop\\items\\photos\\";
 
   @Override
   public void delete(int id) {
@@ -34,6 +35,13 @@ public class ItemServiceImpl implements ItemService {
   @Override
   public ItemDto create(ItemRequest itemRequest) {
     Item item = itemComponent.create(itemMapper.mapItemRequestToItem(itemRequest));
+    return itemMapper.mapItemToItemDto(item);
+  }
+
+  @Override
+  public ItemDto update(ItemRequest itemRequest) {
+    Item item = itemMapper.mapItemRequestToItem(itemRequest);
+    itemComponent.update(item);
     return itemMapper.mapItemToItemDto(item);
   }
 

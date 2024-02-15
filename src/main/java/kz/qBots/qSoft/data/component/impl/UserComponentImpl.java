@@ -49,4 +49,9 @@ public class UserComponentImpl implements UserComponent {
   public List<User> findUsersWithRoles() {
     return userRepository.findUsersWithRoles();
   }
+
+  @Override
+  public List<User> findUsersWithoutRole() {
+    return userRepository.findUserByRolesIsNull();
+  }
 }
