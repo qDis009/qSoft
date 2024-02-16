@@ -36,9 +36,8 @@ public class ItemController {
   }
 
   @GetMapping("/get-all/{userId}")
-  public ResponseEntity<List<ItemDto>> getAll(
-      @PathVariable("userId") int userId, @RequestParam("clientType") String clientType) {
-    return ResponseEntity.ok(itemService.findAll(userId, clientType));
+  public ResponseEntity<List<ItemDto>> getAll(@PathVariable("userId") int userId) {
+    return ResponseEntity.ok(itemService.findAll(userId));
   }
 
   @GetMapping("/get-all")
@@ -86,7 +85,7 @@ public class ItemController {
   }
 
   @PutMapping("/update")
-  public ResponseEntity<ItemDto> update(ItemRequest itemRequest) {
-    return ResponseEntity.ok(itemService.update(itemRequest));
+  public ResponseEntity<ItemDto> update(@RequestBody ItemDto itemDto) {
+    return ResponseEntity.ok(itemService.update(itemDto));
   }
 }

@@ -3,7 +3,6 @@ package kz.qBots.qSoft.data.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Set;
 
 @Getter
 @Setter
@@ -29,5 +28,4 @@ public class ItemDto {
   private boolean isFavorite;
   private Integer subCategoryId;
   private Integer count;
-  private Set<ImageDto> images;
 }

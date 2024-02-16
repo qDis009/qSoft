@@ -19,4 +19,6 @@ public interface ItemMapper {
 
   @Mapping(target = "subCategory.id", source = "subCategoryId")
   Item mapItemRequestToItem(ItemRequest itemRequest);
+  @Mapping(target = "subCategory.id",source = "subCategoryId")
+  Item mapItemDtoToItem(ItemDto itemDto);
 }

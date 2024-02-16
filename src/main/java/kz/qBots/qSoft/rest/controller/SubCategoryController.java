@@ -2,6 +2,7 @@ package kz.qBots.qSoft.rest.controller;
 
 import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.dto.SubCategoryDto;
+import kz.qBots.qSoft.rest.request.SubCategoryRequest;
 import kz.qBots.qSoft.service.SubCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,11 @@ import java.util.List;
 @RequestMapping("/sub-category")
 public class SubCategoryController {
   private final SubCategoryService subCategoryService;
+
+  @PostMapping("/create")
+  public ResponseEntity<SubCategoryDto> create(@RequestBody SubCategoryRequest subCategoryRequest) {
+    return ResponseEntity.ok(subCategoryService.create(subCategoryRequest));
+  }
 
   @GetMapping("/{id}")
   public ResponseEntity<SubCategoryDto> getById(@PathVariable("id") int id) {

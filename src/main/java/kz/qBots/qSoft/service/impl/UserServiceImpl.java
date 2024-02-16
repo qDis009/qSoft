@@ -4,15 +4,13 @@ import kz.qBots.qSoft.data.component.CartComponent;
 import kz.qBots.qSoft.data.component.ItemComponent;
 import kz.qBots.qSoft.data.component.RoleComponent;
 import kz.qBots.qSoft.data.component.UserComponent;
-import kz.qBots.qSoft.data.dto.CartDto;
-import kz.qBots.qSoft.data.dto.ItemDto;
-import kz.qBots.qSoft.data.dto.OrderDto;
-import kz.qBots.qSoft.data.dto.UserDto;
+import kz.qBots.qSoft.data.dto.*;
 import kz.qBots.qSoft.data.entity.*;
 import kz.qBots.qSoft.data.enums.ClientType;
 import kz.qBots.qSoft.exception.InvalidCommandException;
 import kz.qBots.qSoft.mapper.CartMapper;
 import kz.qBots.qSoft.mapper.ItemMapper;
+import kz.qBots.qSoft.mapper.RoleMapper;
 import kz.qBots.qSoft.mapper.UserMapper;
 import kz.qBots.qSoft.service.ItemService;
 import kz.qBots.qSoft.service.OrderService;
@@ -59,6 +57,7 @@ public class UserServiceImpl implements UserService {
   private final CartComponent cartComponent;
   private final ItemMapper itemMapper;
   private final RoleComponent roleComponent;
+  private final RoleMapper roleMapper;
 
   @Override
   public void processStartCommand(User user, Interface roleInterface, String text, String url) {
@@ -132,14 +131,6 @@ public class UserServiceImpl implements UserService {
     User employee = userComponent.findById(id);
     employee.getRoles().clear();
     userComponent.update(employee);
-  }
-
-  @Override
-  public void addRole(int id, int roleId) {
-    User user = userComponent.findById(id);
-    Role role = roleComponent.findById(roleId);
-    user.getRoles().add(role);
-    userComponent.update(user);
   }
 
   @Override
@@ -221,10 +212,15 @@ public class UserServiceImpl implements UserService {
         try {
           telegramService.sendDocument(sendDocument);
         } catch (TelegramApiException e) {
-          //TODO
+          // TODO
         }
       }
     }
+  }
+
+  @Override
+  public List<UserDto> getClients() {
+    return userComponent.findUsersWithoutRole().stream().map(userMapper::mapUserToUserDto).toList();
   }
 
   @Override

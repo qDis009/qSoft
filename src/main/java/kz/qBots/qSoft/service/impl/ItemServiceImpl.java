@@ -1,9 +1,12 @@
 package kz.qBots.qSoft.service.impl;
 
 import kz.qBots.qSoft.data.component.ItemComponent;
+import kz.qBots.qSoft.data.component.UserComponent;
 import kz.qBots.qSoft.data.dto.ItemDto;
 import kz.qBots.qSoft.data.dto.ItemFeedbackDto;
 import kz.qBots.qSoft.data.entity.Item;
+import kz.qBots.qSoft.data.entity.User;
+import kz.qBots.qSoft.data.enums.ClientType;
 import kz.qBots.qSoft.mapper.ItemMapper;
 import kz.qBots.qSoft.rest.request.ItemRequest;
 import kz.qBots.qSoft.service.ItemFeedbackService;
@@ -21,8 +24,8 @@ import java.util.Set;
 public class ItemServiceImpl implements ItemService {
   private final ItemComponent itemComponent;
   private final ItemMapper itemMapper;
+  private final UserComponent userComponent;
   private final ItemFeedbackService itemFeedbackService;
-  private static final String ITEM_PHOTO_PATH = "D:\\qshop\\items\\photos\\";
 
   @Override
   public void delete(int id) {
@@ -39,8 +42,8 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public ItemDto update(ItemRequest itemRequest) {
-    Item item = itemMapper.mapItemRequestToItem(itemRequest);
+  public ItemDto update(ItemDto itemDto) {
+    Item item = itemMapper.mapItemDtoToItem(itemDto);
     itemComponent.update(item);
     return itemMapper.mapItemToItemDto(item);
   }
@@ -51,9 +54,10 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public List<ItemDto> findAll(int userId, String clientType) {
+  public List<ItemDto> findAll(int userId) {
     List<ItemDto> items;
-    if (clientType.equals("WHOLESALE")) {
+    User client = userComponent.findById(userId);
+    if (client.getClientType().equals(ClientType.WHOLESALE)) {
       items =
           itemComponent.findEnableWholesaleItems().stream()
               .map(itemMapper::mapItemToItemDto)

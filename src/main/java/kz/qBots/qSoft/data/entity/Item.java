@@ -26,7 +26,7 @@ public class Item {
   private String nameRu;
   private String nameKz;
   private int soldCount;
-  private Integer discountPercentage;
+  private int discountPercentage;
   private Integer count;
   private int retailPrice;
   private int wholesalePrice;
@@ -53,6 +53,7 @@ public class Item {
   @OneToMany(mappedBy = "item")
   private Set<Cart> carts;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "item")
   private Set<Image> images;
 

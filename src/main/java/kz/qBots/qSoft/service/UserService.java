@@ -1,9 +1,6 @@
 package kz.qBots.qSoft.service;
 
-import kz.qBots.qSoft.data.dto.CartDto;
-import kz.qBots.qSoft.data.dto.ItemDto;
-import kz.qBots.qSoft.data.dto.OrderDto;
-import kz.qBots.qSoft.data.dto.UserDto;
+import kz.qBots.qSoft.data.dto.*;
 import kz.qBots.qSoft.data.entity.Cart;
 import kz.qBots.qSoft.data.entity.Order;
 import kz.qBots.qSoft.data.entity.User;
@@ -53,9 +50,9 @@ public interface UserService {
 
   void deleteEmployee(int id);
 
-  void addRole(int id, int roleId);
 
   void sendNotification(String comment, List<Integer> itemIds);
 
   void sendNews(String comment, List<MultipartFile> multipartFiles);
+  List<UserDto> getClients();
 }

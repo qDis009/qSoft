@@ -4,10 +4,12 @@ import kz.qBots.qSoft.config.constants.DeliveryTypeConstants;
 import kz.qBots.qSoft.config.constants.PaymentTypeConstants;
 import kz.qBots.qSoft.config.constants.RoleConstants;
 import kz.qBots.qSoft.data.component.CartComponent;
+import kz.qBots.qSoft.data.component.ItemComponent;
 import kz.qBots.qSoft.data.component.OrderComponent;
 import kz.qBots.qSoft.data.component.UserComponent;
 import kz.qBots.qSoft.data.dto.OrderDto;
 import kz.qBots.qSoft.data.entity.Cart;
+import kz.qBots.qSoft.data.entity.Item;
 import kz.qBots.qSoft.data.entity.Order;
 import kz.qBots.qSoft.data.entity.User;
 import kz.qBots.qSoft.data.enums.DeliveryType;
@@ -28,6 +30,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -41,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
   private final UserComponent userComponent;
   private final TelegramService telegramService;
   private final PdfService pdfService;
+  private final ItemComponent itemComponent;
 
   @Override
   public Page<OrderDto> findByUserId(int id, Pageable pageable) {
@@ -513,6 +517,8 @@ public class OrderServiceImpl implements OrderService {
     if (order.getCode() == code) {
       order.setOrderStatus(OrderStatus.GIVEN);
       sendSuccessOrderToClient(order);
+      reduceItemCount(order);
+      boughtItemsByUser(order);
     }
     orderComponent.update(order);
     return order.getCode() == code;
@@ -523,7 +529,30 @@ public class OrderServiceImpl implements OrderService {
     Order order = orderComponent.findById(id);
     order.setOrderStatus(OrderStatus.GIVEN);
     orderComponent.update(order);
+    reduceItemCount(order);
+    boughtItemsByUser(order);
     return orderMapper.mapOrderToOrderDto(order);
+  }
+
+  private void reduceItemCount(Order order) {
+    Set<Cart> carts = order.getCarts();
+    for (Cart cart : carts) {
+      Item item = itemComponent.findById(cart.getItem().getId());
+      item.setCount(Math.max(0, item.getCount() - cart.getItemCount()));
+      itemComponent.update(item);
+    }
+  }
+
+  private void boughtItemsByUser(Order order) {
+    Set<Cart> carts = order.getCarts();
+    User user = userComponent.findById(order.getUser().getId());
+    Set<Item> boughtItems =
+        user.getBoughtItems().isEmpty() ? new HashSet<>() : user.getBoughtItems();
+    for (Cart cart : carts) {
+      boughtItems.add(itemComponent.findById(cart.getItem().getId()));
+    }
+    user.setBoughtItems(boughtItems);
+    userComponent.update(user);
   }
 
   @Override

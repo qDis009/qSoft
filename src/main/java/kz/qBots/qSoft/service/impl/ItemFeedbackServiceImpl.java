@@ -125,4 +125,5 @@ public class ItemFeedbackServiceImpl implements ItemFeedbackService {
     return !itemFeedbackComponent.findByItemIdAndUserId(itemId, userId).isEmpty()
         && !userService.isAdmin(user);
   }
+
 }

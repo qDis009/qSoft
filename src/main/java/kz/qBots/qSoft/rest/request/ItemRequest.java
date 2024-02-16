@@ -6,17 +6,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ItemRequest {
-    private Integer id;
     private String nameRu;
     private String nameKz;
     private String descriptionKz;
     private String descriptionRu;
-    private int subCategoryId;
     private String article;
     private Integer count;
+    private Integer subCategoryId;
     private int retailPrice;
     private int wholesalePrice;
-    private Integer discountPercentage;
+    private int discountPercentage;
     private String imageUrl3D;
     private boolean hit;
 }

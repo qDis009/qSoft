@@ -34,9 +34,13 @@ public class SubCategoryComponentImpl implements SubCategoryComponent {
     return subCategoryRepository.findAll();
   }
 
-
   @Override
   public void update(SubCategory subCategory) {
     subCategoryRepository.save(subCategory);
+  }
+
+  @Override
+  public SubCategory create(SubCategory subCategory) {
+    return subCategoryRepository.save(subCategory);
   }
 }

@@ -7,6 +7,7 @@ import kz.qBots.qSoft.data.dto.SubCategoryDto;
 import kz.qBots.qSoft.data.entity.SubCategory;
 import kz.qBots.qSoft.mapper.ItemMapper;
 import kz.qBots.qSoft.mapper.SubCategoryMapper;
+import kz.qBots.qSoft.rest.request.SubCategoryRequest;
 import kz.qBots.qSoft.service.SubCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -71,5 +72,13 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     return subCategoryComponent.findSubCategoriesByCategoryId(categoryId).stream()
         .map(subCategoryMapper::mapSubCategoryToSubCategoryDto)
         .toList();
+  }
+
+  @Override
+  public SubCategoryDto create(SubCategoryRequest subCategoryRequest) {
+    SubCategory subCategory =
+        subCategoryComponent.create(
+            subCategoryMapper.mapSubCategoryRequestToSubCategory(subCategoryRequest));
+    return subCategoryMapper.mapSubCategoryToSubCategoryDto(subCategory);
   }
 }

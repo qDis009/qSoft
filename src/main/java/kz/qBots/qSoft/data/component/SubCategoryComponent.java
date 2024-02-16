@@ -14,4 +14,5 @@ public interface SubCategoryComponent {
   List<SubCategory> findAll();
 
   void update(SubCategory subCategory);
+  SubCategory create(SubCategory subCategory);
 }

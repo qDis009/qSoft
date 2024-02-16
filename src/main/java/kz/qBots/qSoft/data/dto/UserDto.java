@@ -1,5 +1,6 @@
 package kz.qBots.qSoft.data.dto;
 
+import kz.qBots.qSoft.data.entity.Role;
 import kz.qBots.qSoft.data.enums.ClientType;
 import kz.qBots.qSoft.data.enums.Language;
 
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Set;
+
 
 @Getter
 @Setter
@@ -20,6 +22,5 @@ public class UserDto {
     private String address;
     private ClientType clientType;
     private String shopName;
-    private Set<OrderDto> acceptedOrders;
-    private Set<RoleDto> roles;
+    private Set<Role> roles;
 }

@@ -15,11 +15,12 @@ public interface ItemService {
   void delete(int id);
 
   ItemDto create(ItemRequest itemRequest);
-  ItemDto update(ItemRequest itemRequest);
+
+  ItemDto update(ItemDto itemDto);
 
   Page<ItemDto> findAll(Pageable pageable);
 
-  List<ItemDto> findAll(int userId, String clientType);
+  List<ItemDto> findAll(int userId);
 
   ItemDto findById(int id);
 

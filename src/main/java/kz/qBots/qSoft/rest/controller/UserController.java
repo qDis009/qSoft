@@ -1,9 +1,6 @@
 package kz.qBots.qSoft.rest.controller;
 
-import kz.qBots.qSoft.data.dto.CartDto;
-import kz.qBots.qSoft.data.dto.ItemDto;
-import kz.qBots.qSoft.data.dto.OrderDto;
-import kz.qBots.qSoft.data.dto.UserDto;
+import kz.qBots.qSoft.data.dto.*;
 import kz.qBots.qSoft.service.ResentSeenService;
 import kz.qBots.qSoft.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -100,13 +97,6 @@ public class UserController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  @PostMapping("/{id}/add-role/{roleId}")
-  public ResponseEntity<Void> addRole(
-      @PathVariable("id") int id, @PathVariable("roleId") int roleId) {
-    userService.addRole(id, roleId);
-    return new ResponseEntity<>(HttpStatus.OK);
-  }
-
   @GetMapping("/send-notification")
   public ResponseEntity<Void> sendNotification(
       @RequestParam("comment") String comment, @RequestParam("itemIds") List<Integer> itemIds) {
@@ -116,8 +106,14 @@ public class UserController {
 
   @GetMapping("/send-news")
   public ResponseEntity<Void> sendNews(
-      @RequestPart("comment") String comment,@RequestPart("files")List<MultipartFile> multipartFiles) {
+      @RequestPart("comment") String comment,
+      @RequestPart("files") List<MultipartFile> multipartFiles) {
     userService.sendNews(comment, multipartFiles);
     return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @GetMapping("/clients")
+  public ResponseEntity<List<UserDto>> getClients() {
+    return ResponseEntity.ok(userService.getClients());
   }
 }
