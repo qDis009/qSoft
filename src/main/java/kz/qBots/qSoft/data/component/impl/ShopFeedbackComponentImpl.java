@@ -7,6 +7,8 @@ import kz.qBots.qSoft.data.repository.ShopFeedbackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class ShopFeedbackComponentImpl implements ShopFeedbackComponent {
@@ -25,5 +27,12 @@ public class ShopFeedbackComponentImpl implements ShopFeedbackComponent {
   @Override
   public ShopFeedback update(ShopFeedback shopFeedback) {
     return shopFeedbackRepository.save(shopFeedback);
+  }
+
+  @Override
+  public ShopFeedback findShopFeedbackByCreatedTime(LocalDateTime created) {
+    return shopFeedbackRepository
+        .findShopFeedbackByCreated(created)
+        .orElseThrow(EntityNotFoundException::new);
   }
 }

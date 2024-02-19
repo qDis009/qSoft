@@ -1,6 +1,7 @@
 package kz.qBots.qSoft.data.component;
 
 import kz.qBots.qSoft.data.entity.User;
+import kz.qBots.qSoft.data.enums.ClientType;
 
 import java.util.List;
 
@@ -14,7 +15,12 @@ public interface UserComponent {
   void setLanguage(int id, String language);
 
   void update(User user);
+
   List<User> findByRoleName(String roleName);
+
   List<User> findUsersWithRoles();
+
   List<User> findUsersWithoutRole();
+
+  List<User> findUsersByClientType(ClientType clientType);
 }

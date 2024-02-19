@@ -4,10 +4,12 @@ import kz.qBots.qSoft.data.dto.*;
 import kz.qBots.qSoft.data.entity.Cart;
 import kz.qBots.qSoft.data.entity.Order;
 import kz.qBots.qSoft.data.entity.User;
+import kz.qBots.qSoft.data.enums.ClientType;
 import kz.qBots.qSoft.telegram.enums.Interface;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
@@ -50,9 +52,13 @@ public interface UserService {
 
   void deleteEmployee(int id);
 
-
   void sendNotification(String comment, List<Integer> itemIds);
 
   void sendNews(String comment, List<MultipartFile> multipartFiles);
+
   List<UserDto> getClients();
+
+  void processWholesaleClientsCommand(User user);
+  void deleteCommand(int id);
+  void processShopFeedbackCommand(User user);
 }

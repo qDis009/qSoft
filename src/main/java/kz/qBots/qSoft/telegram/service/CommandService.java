@@ -6,4 +6,5 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public interface CommandService {
   void process(User user, Message message) throws TelegramApiException;
+  void stringCommandProcess(User user,Message message);
 }

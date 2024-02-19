@@ -14,53 +14,58 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
 public class TelegramUpdateHandler extends TelegramLongPollingBot {
-    private final TelegramProperty telegramProperty;
-    private final UserComponent userComponent;
-    private final CommandService commandService;
+  private final TelegramProperty telegramProperty;
+  private final UserComponent userComponent;
+  private final CommandService commandService;
 
-    public TelegramUpdateHandler(TelegramProperty telegramProperty, UserComponent userComponent, CommandService commandService) {
-        this.telegramProperty=telegramProperty;
-        this.userComponent=userComponent;
-        this.commandService = commandService;
+  public TelegramUpdateHandler(
+      TelegramProperty telegramProperty,
+      UserComponent userComponent,
+      CommandService commandService) {
+    this.telegramProperty = telegramProperty;
+    this.userComponent = userComponent;
+    this.commandService = commandService;
+  }
+
+  @Override
+  public void onUpdateReceived(Update update) {
+    long chatId = update.getMessage().getChatId();
+    User user;
+    try {
+      user = userComponent.findByChatId(chatId);
+    } catch (EntityNotFoundException e) {
+      Chat chat = update.getMessage().getChat();
+      user = userComponent.create(new User(chat.getId(), chat.getUserName()));
     }
-
-    @Override
-    public void onUpdateReceived(Update update) {
-        long chatId=update.getMessage().getChatId();
-        User user;
-        try{
-            user=userComponent.findByChatId(chatId);
-        }catch (EntityNotFoundException e){
-            Chat chat=update.getMessage().getChat();
-            user=userComponent.create(new User(chat.getId(),chat.getUserName()));
+    try {
+      if (isTextMessage(update)) {
+        String messageText = update.getMessage().getText();
+        if (messageText.startsWith("/")) {
+          commandService.process(user, update.getMessage());
+        } else {
+          commandService.stringCommandProcess(user, update.getMessage());
         }
-        try{
-            if(isTextMessage(update)){
-                String messageText=update.getMessage().getText();
-                if (messageText.startsWith("/")) {
-                    commandService.process(user, update.getMessage());
-                } else {
-                    //TODO logic for text messages
-                }
-            }else if(update.hasCallbackQuery()){
-                //TODO callbackQuery
-            }
-        }catch (InvalidCommandException e){
+      } else if (update.hasCallbackQuery()) {
+        // TODO callbackQuery
+      }
+    } catch (InvalidCommandException e) {
 
-        }catch (TelegramApiException e) {
+    } catch (TelegramApiException e) {
 
-        }
     }
-    private boolean isTextMessage(Update update){
-        return update.hasMessage()&&update.getMessage().hasText();
-    }
-    @Override
-    public String getBotUsername() {
-        return telegramProperty.getUsername();
-    }
+  }
 
-    @Override
-    public String getBotToken() {
-        return telegramProperty.getToken();
-    }
+  private boolean isTextMessage(Update update) {
+    return update.hasMessage() && update.getMessage().hasText();
+  }
+
+  @Override
+  public String getBotUsername() {
+    return telegramProperty.getUsername();
+  }
+
+  @Override
+  public String getBotToken() {
+    return telegramProperty.getToken();
+  }
 }

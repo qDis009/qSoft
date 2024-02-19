@@ -32,6 +32,10 @@ public class CommandServiceImpl implements CommandService {
   public void process(User user, Message message) throws TelegramApiException {
     String messageText = message.getText();
     String command = getCommand(messageText);
+    if(isDeleteCommand(messageText)){
+      int id=Integer.parseInt(messageText.substring(4));
+      userService.deleteCommand(id);
+    }
     switch (command) {
       case "/magazine" -> {
         // telegramService.deleteMessage(user.getChatId(), user.getLastMessageId());
@@ -70,17 +74,31 @@ public class CommandServiceImpl implements CommandService {
               telegramService.sendMessage(getMessageToUnregisteredUser(user, ADMIN)));
         }
       }
-      case "/reg" -> {
-        // TODO
-      }
       default -> throw new InvalidCommandException("Cannot found command name: " + command);
+    }
+  }
+
+  @Override
+  public void stringCommandProcess(User user, Message message) {
+    String messageText = message.getText();
+    switch (messageText) {
+      case "Список оптовиков" -> {
+        userService.processWholesaleClientsCommand(user);
+      }
+      case "Скачать отчет" -> {}
+      case "Жалобы и предложения" -> {
+        userService.processShopFeedbackCommand(user);
+      }
+      case "Связь с разработчиками" -> {}
     }
   }
 
   private String getCommand(String messageText) {
     return messageText.split(" ")[0];
   }
-
+  private boolean isDeleteCommand(String messageText){
+    return messageText.startsWith("/del");
+  }
   private SendMessage getMessageToUnregisteredUser(User user, String role) {
     return SendMessage.builder()
         .text("Вы не являетесь " + role + "ом")

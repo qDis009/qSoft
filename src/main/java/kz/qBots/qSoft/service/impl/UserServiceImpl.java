@@ -32,7 +32,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.api.objects.webapp.WebAppInfo;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -56,8 +58,6 @@ public class UserServiceImpl implements UserService {
   private final CartMapper cartMapper;
   private final CartComponent cartComponent;
   private final ItemMapper itemMapper;
-  private final RoleComponent roleComponent;
-  private final RoleMapper roleMapper;
 
   @Override
   public void processStartCommand(User user, Interface roleInterface, String text, String url) {
@@ -73,12 +73,33 @@ public class UserServiceImpl implements UserService {
               .replyMarkup(prepareWebAppInfo(startCommandDto, text, url))
               .build();
       user.setLastMessageId(telegramService.sendMessage(message));
+      telegramService.sendMessage(createAdminKeyboard(user));
       userComponent.update(user);
     } catch (InvalidCommandException e) {
       // TODO
     } catch (TelegramApiException e) {
       // TODO
     }
+  }
+
+  private SendMessage createAdminKeyboard(User user) {
+    ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+    List<KeyboardRow> keyboard = new ArrayList<>();
+    KeyboardRow row1 = new KeyboardRow();
+    row1.add("Список оптовиков");
+    row1.add("Скачать отчёт");
+    keyboard.add(row1);
+    KeyboardRow row2 = new KeyboardRow();
+    row2.add("Жалобы и предложения");
+    row2.add("Связь с разработчиками");
+    keyboard.add(row2);
+    keyboardMarkup.setKeyboard(keyboard);
+    keyboardMarkup.setResizeKeyboard(true);
+    keyboardMarkup.setOneTimeKeyboard(true);
+    SendMessage sendMessage = new SendMessage();
+    sendMessage.setChatId(user.getChatId());
+    sendMessage.setReplyMarkup(keyboardMarkup);
+    return sendMessage;
   }
 
   @Override
@@ -221,6 +242,47 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<UserDto> getClients() {
     return userComponent.findUsersWithoutRole().stream().map(userMapper::mapUserToUserDto).toList();
+  }
+
+  @Override
+  public void processWholesaleClientsCommand(User user) {
+    List<User> wholesaleClients = userComponent.findUsersByClientType(ClientType.WHOLESALE);
+    StringBuilder stringBuilder = new StringBuilder();
+    for (User wholesaleClient : wholesaleClients) {
+      stringBuilder
+          .append("/del")
+          .append(wholesaleClient.getId())
+          .append("❌ - ")
+          .append("\uD83D\uDD0E")
+          .append(wholesaleClient.getFullName())
+          .append("\n");
+    }
+    stringBuilder.append(
+        "Чтобы добавить нового пользователя, отправьте контакт пользователя. Он должен быть зарегистрированным.");
+    SendMessage sendMessage =
+        SendMessage.builder().text(stringBuilder.toString()).chatId(user.getChatId()).build();
+    try {
+      telegramService.sendMessage(sendMessage);
+    } catch (TelegramApiException e) {
+      // TODO
+    }
+  }
+
+  @Override
+  public void deleteCommand(int id) {
+    User client = userComponent.findById(id);
+    client.setClientType(ClientType.RETAIL);
+    userComponent.update(client);
+  }
+
+  @Override
+  public void processShopFeedbackCommand(User user) {}
+
+  private InlineKeyboardMarkup createInlineKeyboardWithShopFeedback() {
+    InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+    List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+    InlineKeyboardButton button = new InlineKeyboardButton();
+    return null;
   }
 
   @Override

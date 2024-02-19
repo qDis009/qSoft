@@ -3,6 +3,7 @@ package kz.qBots.qSoft.data.component.impl;
 import jakarta.persistence.EntityNotFoundException;
 import kz.qBots.qSoft.data.component.UserComponent;
 import kz.qBots.qSoft.data.entity.User;
+import kz.qBots.qSoft.data.enums.ClientType;
 import kz.qBots.qSoft.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,6 @@ public class UserComponentImpl implements UserComponent {
   @Override
   public List<User> findByRoleName(String roleName) {
     return userRepository.findByRoles_Name(roleName);
-
   }
 
   @Override
@@ -53,5 +53,10 @@ public class UserComponentImpl implements UserComponent {
   @Override
   public List<User> findUsersWithoutRole() {
     return userRepository.findUserByRolesIsNull();
+  }
+
+  @Override
+  public List<User> findUsersByClientType(ClientType clientType) {
+    return userRepository.findUserByClientType(clientType);
   }
 }
